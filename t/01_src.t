@@ -34,6 +34,13 @@ subtest 'from html' => sub {
     test(wq($html));
 };
 
+if (eval "require URI; 1;") {
+    subtest 'from URI' => sub {
+        plan tests => 5;
+        test(wq(URI->new('file://' . Cwd::abs_path('t/data/foo.html'))));
+    };
+}
+
 done_testing;
 
 sub test {
