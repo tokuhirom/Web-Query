@@ -237,6 +237,8 @@ Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF GMAIL COME<gt>
 
 =head1 SEE ALSO
 
+L<pQuery>
+
 =head1 LICENSE
 
 Copyright (C) Tokuhiro Matsuno
