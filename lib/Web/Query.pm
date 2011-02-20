@@ -164,6 +164,8 @@ Web::Query built at top of the CPAN modules, L<HTML::TreeBuilder::XPath>, L<LWP:
 So, this module uses L<HTML::Selector::XPath>, then this module only supports CSS3 selector supported by HTML::Selector::XPath.
 Web::Query doesn't support jQuery's extended quries(yet?).
 
+B<THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE>.
+
 =head1 FUNCTIONS
 
 =over 4
