@@ -4,9 +4,9 @@ use Module::Install::AuthorTests;
 name 'Web-Query';
 all_from 'lib/Web/Query.pm';
 
-requires 'HTML::TreeBuilder::XPath';
-requires 'HTML::Selector::XPath';
-requires 'LWP::UserAgent' => 5.385;
+requires 'HTML::TreeBuilder::XPath' => 0.12;
+requires 'HTML::Selector::XPath'    => 0.06;
+requires 'LWP::UserAgent'           => 5.385;
 requires 'parent';
 
 tests 't/*.t t/*/*.t t/*/*/*.t t/*/*/*/*.t';
