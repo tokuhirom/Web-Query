@@ -1,4 +1,8 @@
 Revision history for Perl extension Web::Query
 
+0.02
+
+    - added docs for find method(reported by kan++).
+
 0.01    Sat Feb 19 10:38:22 2011
         - original version
