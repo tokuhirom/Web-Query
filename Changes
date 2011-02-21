@@ -1,5 +1,10 @@
 Revision history for Perl extension Web::Query
 
+0.03
+
+    - fix fucking win32 new line issue.
+      (it may works, i hope.)
+
 0.02
 
     - added docs for find method(reported by kan++).
