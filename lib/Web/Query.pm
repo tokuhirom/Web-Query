@@ -222,6 +222,10 @@ Get/Set the inner text.
 
 Get/Set the attribute value in element.
 
+=item $q = $q->find($selector)
+
+This method find nodes by $selector from $q. $selector is a CSS3 selector.
+
 =item $q->each(sub { my ($i, $elem) = @_; ... })
 
 Visit each nodes. C<< $i >> is a counter value, 0 origin. C<< $elem >> is iteration item.
