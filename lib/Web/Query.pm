@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use 5.008001;
 use parent qw/Exporter/;
-our $VERSION = '0.01';
+our $VERSION = '0.03';
 use HTML::TreeBuilder::XPath;
 use LWP::UserAgent;
 use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
@@ -178,6 +178,8 @@ Web::Query built at top of the CPAN modules, L<HTML::TreeBuilder::XPath>, L<LWP:
 So, this module uses L<HTML::Selector::XPath>, then this module only supports CSS3 selector supported by HTML::Selector::XPath.
 Web::Query doesn't support jQuery's extended quries(yet?).
 
+B<THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE>.
+
 =head1 FUNCTIONS
 
 =over 4
@@ -233,6 +235,10 @@ Get/Set the inner text.
 =item $q->attr($name, $val);
 
 Get/Set the attribute value in element.
+
+=item $q = $q->find($selector)
+
+This method find nodes by $selector from $q. $selector is a CSS3 selector.
 
 =item $q->each(sub { my ($i, $elem) = @_; ... })
 
