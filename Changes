@@ -1,5 +1,9 @@
 Revision history for Perl extension Web::Query
 
+0.04
+
+    - added ->size and ->parent method.
+
 0.03
 
     - fix fucking win32 new line issue.
