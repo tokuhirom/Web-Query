@@ -79,6 +79,20 @@ sub end {
     return $self->{before};
 }
 
+sub size {
+    my $self = shift;
+    return scalar(@{$self->{trees}});
+}
+
+sub parent {
+    my $self = shift;
+    my @new;
+    for my $tree (@{$self->{trees}}) {
+        push @new, $tree->getParentNode();
+    }
+    return Web::Query->new_from_element(\@new, $self);
+}
+
 sub find {
     my ($self, $selector) = @_;
     my @new;
@@ -228,6 +242,14 @@ C<< $_ >> is localized by C<< $elem >>.
 =item $q->end()
 
 Back to the before context like jQuery.
+
+=item my $size = $q->size() : Int
+
+Return the number of DOM elements matched by the Web::Query object.
+
+=item my $parent = $q->parent() : Web::Query
+
+Return the parent node from C<< $q >>.
 
 =back
 
