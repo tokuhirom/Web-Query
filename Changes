@@ -1,5 +1,9 @@
 Revision history for Perl extension Web::Query
 
+0.05
+
+    - added docs for 'how do i customize useragent'.
+
 0.04
 
     - added ->size and ->parent method.
