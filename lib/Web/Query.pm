@@ -259,6 +259,12 @@ Return the parent node from C<< $q >>.
 
 =back
 
+=head1 HOW DO I CUSTOMIZE USER AGENT?
+
+You can specify your own instance of L<LWP::UserAgent>.
+
+    $Web::Query::UserAgent = LWP::UserAgent->new( agent => 'Mozilla/5.0' );
+
 =head1 AUTHOR
 
 Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF GMAIL COME<gt>
