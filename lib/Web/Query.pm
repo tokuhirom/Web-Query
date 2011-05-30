@@ -93,6 +93,25 @@ sub parent {
     return Web::Query->new_from_element(\@new, $self);
 }
 
+sub first {
+    my $self = shift;
+    $self->{trees} = +[$self->{trees}[0]];
+    return $self;
+}
+
+sub last {
+    my $self = shift;
+    $self->{trees} = +[$self->{trees}[-1]];
+    return $self;
+}
+
+sub slice {
+    my ($self, $start, $end) = @_;
+    $end = 1 unless defined $end;
+    $self->{trees} = +[splice @{$self->{trees}}, $start, $end];
+    return $self;
+}
+
 sub find {
     my ($self, $selector) = @_;
     my @new;
@@ -256,6 +275,18 @@ Return the number of DOM elements matched by the Web::Query object.
 =item my $parent = $q->parent() : Web::Query
 
 Return the parent node from C<< $q >>.
+
+=item my $first = $q->first()
+
+Return the first matching element.
+
+=item my $last = $q->last()
+
+Return the last matching element.
+
+=item my $slice = $q->slice($start, $end)
+
+Return a subset of the matching elements.
 
 =back
 
