@@ -105,13 +105,6 @@ sub last {
     return $self;
 }
 
-sub slice {
-    my ($self, $start, $end) = @_;
-    $end = 1 unless defined $end;
-    $self->{trees} = +[splice @{$self->{trees}}, $start, $end];
-    return $self;
-}
-
 sub find {
     my ($self, $selector) = @_;
     my @new;
@@ -283,10 +276,6 @@ Return the first matching element.
 =item my $last = $q->last()
 
 Return the last matching element.
-
-=item my $slice = $q->slice($start, $end)
-
-Return a subset of the matching elements.
 
 =back
 
