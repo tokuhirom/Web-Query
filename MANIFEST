@@ -19,6 +19,7 @@ t/00_compile.t
 t/01_src.t
 t/02_op.t
 t/03_traverse.t
+t/04_element.t
 t/data/foo.html
 xt/01_podspell.t
 xt/02_perlcritic.t

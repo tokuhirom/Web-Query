@@ -1,5 +1,9 @@
 Revision history for Perl extension Web::Query
 
+0.06
+
+    - added first, last methods(akiym)
+
 0.05
 
     - added docs for 'how do i customize useragent'.
