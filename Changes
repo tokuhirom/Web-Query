@@ -1,5 +1,9 @@
 Revision history for Perl extension Web::Query
 
+0.07
+
+    - HTML5 support
+
 0.06
 
     - added first, last methods(akiym)
