@@ -34,3 +34,17 @@ API
 URL
 URI
 db
+CPAN
+CSS
+DOM
+HTML
+Str
+html
+https
+ingy's
+innerHTML
+interaface
+jQuery
+jQuery's
+pQuery
+url

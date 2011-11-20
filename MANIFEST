@@ -14,7 +14,6 @@ Makefile.PL
 MANIFEST			This list of files
 META.yml
 README
-README.pod
 t/00_compile.t
 t/01_src.t
 t/02_op.t
@@ -24,4 +23,7 @@ t/data/foo.html
 xt/01_podspell.t
 xt/02_perlcritic.t
 xt/03_pod.t
+xt/04_minimum_version.t
+xt/05_cpan_meta.t
+xt/06_meta_author.t
 xt/live/01_simple.t

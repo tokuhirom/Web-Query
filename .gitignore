@@ -13,3 +13,8 @@ blib/
 pm_to_blib
 MYMETA.yml
 META.yml
+MYMETA.*
+META.json
+README
+^inc/
+Web-Query-*/
