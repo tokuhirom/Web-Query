@@ -97,13 +97,13 @@ sub parent {
 
 sub first {
     my $self = shift;
-    $self->{trees} = +[$self->{trees}[0]];
+    $self->{trees} = +[$self->{trees}[0] || ()];
     return $self;
 }
 
 sub last {
     my $self = shift;
-    $self->{trees} = +[$self->{trees}[-1]];
+    $self->{trees} = +[$self->{trees}[-1] || ()];
     return $self;
 }
 
