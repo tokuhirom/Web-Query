@@ -97,13 +97,13 @@ sub parent {
 
 sub first {
     my $self = shift;
-    $self->{trees} = +[$self->{trees}[0]];
+    $self->{trees} = +[$self->{trees}[0] || ()];
     return $self;
 }
 
 sub last {
     my $self = shift;
-    $self->{trees} = +[$self->{trees}[-1]];
+    $self->{trees} = +[$self->{trees}[-1] || ()];
     return $self;
 }
 
@@ -154,6 +154,34 @@ sub each {
         $code->($i++, $_);
     }
     return $self;
+}
+
+sub map {
+    my ($self, $code) = @_;
+    my $i = 0; 
+    return +[map {
+        my $tree = $_;
+        local $_ = wq($tree);
+        $code->($i++, $_);
+    } @{$self->{trees}}];
+}   
+
+sub filter {
+    my $self = shift;
+
+    if (ref($_[0]) eq 'CODE') {
+        my $code = $_[0];
+        my $i = 0; 
+        $self->{trees} = +[grep {
+            my $tree = $_;
+            local $_ = wq($tree);
+            $code->($i++, $_);
+        } @{$self->{trees}}];
+        return $self;
+
+    } else {
+        return $self->find($_[0])
+    }
 }
 
 sub DESTROY {
@@ -258,6 +286,14 @@ This method find nodes by $selector from $q. $selector is a CSS3 selector.
 
 Visit each nodes. C<< $i >> is a counter value, 0 origin. C<< $elem >> is iteration item.
 C<< $_ >> is localized by C<< $elem >>.
+
+=item $q->map(sub { my ($i, $elem) = @_; ... })
+
+Creates a new array with the results of calling a provided function on every element.
+
+=item $q->filter(sub { my ($i, $elem) = @_; ... })
+
+Reduce the elements to those that pass the function's test.
 
 =item $q->end()
 
