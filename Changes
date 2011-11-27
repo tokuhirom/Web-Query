@@ -1,5 +1,12 @@
 Revision history for Perl extension Web::Query
 
+0.08
+
+    - added ->map and ->filter methods
+      (Hiroki Honda)
+    - fixed as (empty)->first->size and (empty)->last->size return 0
+      (Hiroki Honda)
+
 0.07
 
     - HTML5 support
