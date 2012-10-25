@@ -97,14 +97,12 @@ sub parent {
 
 sub first {
     my $self = shift;
-    $self->{trees} = +[$self->{trees}[0] || ()];
-    return $self;
+    return Web::Query->new_from_element([$self->{trees}[0] || ()], $self);
 }
 
 sub last {
     my $self = shift;
-    $self->{trees} = +[$self->{trees}[-1] || ()];
-    return $self;
+    return Web::Query->new_from_element([$self->{trees}[-1] || ()], $self);
 }
 
 sub find {
