@@ -1,5 +1,11 @@
 Revision history for Perl extension Web::Query
 
+0.09
+
+    - Switch to Module::Build
+    - first() and last() should construct new object, but not modify self
+      (Oleg++)
+
 0.08
 
     - added ->map and ->filter methods
