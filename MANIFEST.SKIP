@@ -34,3 +34,5 @@ perltidy.ERR$
 \b\.gitignore
 \.bak$
 ^Web-Query-
+^inc/
+(\b|\A)\.gitignore
