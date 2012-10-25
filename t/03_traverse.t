@@ -3,6 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use Web::Query qw/wq/;
+use Scalar::Util qw/refaddr/;
 
 my $html = <<'...';
 <html><body><div id="foo"><div id="bar"><div id="baz"></div></div></div></body></html>
@@ -10,6 +11,19 @@ my $html = <<'...';
 subtest 'parent' => sub {
     is wq($html)->find('#baz')->parent()->attr('id'), 'bar';
     is wq($html)->find('#bar')->parent()->attr('id'), 'foo';
+};
+
+subtest 'first/last return new instance' => sub {
+    subtest 'first' => sub {
+        my $q = wq($html)->find('div');
+        my $first = $q->first;
+        isnt(refaddr($first), refaddr($q));
+    };
+    subtest 'last' => sub {
+        my $q = wq($html)->find('div');
+        my $last = $q->last;
+        isnt(refaddr($last), refaddr($q));
+    };
 };
 subtest 'size' => sub {
     is wq($html)->find('div')->size,  3;

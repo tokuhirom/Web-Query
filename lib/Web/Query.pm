@@ -309,9 +309,13 @@ Return the parent node from C<< $q >>.
 
 Return the first matching element.
 
+This method constructs a new Web::Query object from the first matching element.
+
 =item my $last = $q->last()
 
 Return the last matching element.
+
+This method constructs a new Web::Query object from the last matching element.
 
 =back
 

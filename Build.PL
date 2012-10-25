@@ -13,7 +13,8 @@ my $build = Module::Build->new(
         'HTML::TreeBuilder::XPath' => '0.12',
         'parent'                   => '0',
         'LWP::UserAgent'           => '5.385',
-        'HTML::Selector::XPath'    => '0.06'
+        'HTML::Selector::XPath'    => '0.06',
+        'Scalar::Util' => 0,
     },
     no_index    => { 'directory' => [ 'inc', 't', 'xt' ] },
     name        => 'Web-Query',
