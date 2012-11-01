@@ -12,6 +12,8 @@ use HTML::Entities qw/encode_entities/;
 
 our @EXPORT = qw/wq/;
 
+our $RESPONSE;
+
 sub wq { Web::Query->new(@_) }
 
 our $UserAgent = LWP::UserAgent->new();
@@ -46,9 +48,12 @@ sub new {
 
 sub new_from_url {
     my ($class, $url) = @_;
-    my $res = __ua()->get($url);
-    die $res->status_line unless $res->is_success;
-    return $class->new_from_html($res->decoded_content);
+    $RESPONSE = __ua()->get($url);
+    if ($RESPONSE->is_success) {
+        return $class->new_from_html($RESPONSE->decoded_content);
+    } else {
+        return undef;
+    }
 }
 
 sub new_from_file {
@@ -238,6 +243,10 @@ This is a shortcut for C<< Web::Query->new($stuff) >>. This function is exported
 
 Create new instance of Web::Query. You can make the instance from URL(http, https, file scheme), HTML in string, URL in string, L<URI> object, and instance of L<HTML::Element>.
 
+This method throw the exception on unknown $stuff.
+
+This method returns undefined value on non successful response with URL.
+
 =item my $q = Web::Query->new_from_element($element: HTML::Element)
 
 Create new instance of Web::Query from instance of L<HTML::Element>.
@@ -249,6 +258,16 @@ Create new instance of Web::Query from html.
 =item my $q = Web::Query->new_from_url($url: Str)
 
 Create new instance of Web::Query from url.
+
+If the response is not success(It means /^20[0-9]$/), this method returns undefined value.
+
+You can get a last result of response, use the C<< $Web::Query::RESPONSE >>.
+
+Here is a best practical code:
+
+    my $url = 'http://example.com/';
+    my $q = Web::Query->new_from_url($url)
+        or die "Cannot get a resource from $url: " . Web::Query->last_response()->status_line;
 
 =item my $q = Web::Query->new_from_file($file_name: Str)
 
@@ -324,6 +343,16 @@ This method constructs a new Web::Query object from the last matching element.
 You can specify your own instance of L<LWP::UserAgent>.
 
     $Web::Query::UserAgent = LWP::UserAgent->new( agent => 'Mozilla/5.0' );
+
+=head1 INCOMPATIBLE CHANGES
+
+=over 4
+
+=item 0.10
+
+new_from_url() is no longer throws exception on bad response from HTTP server.
+
+=back
 
 =head1 AUTHOR
 
