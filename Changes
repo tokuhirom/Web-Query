@@ -1,5 +1,12 @@
 Revision history for Perl extension Web::Query
 
+0.10
+
+    [INCOMPATIBLE CHANGES]
+    - new_from_url() is no longer throws exception on bad response from HTTP server.
+      https://rt.cpan.org/Ticket/Display.html?id=76187
+      (oleg++)
+
 0.09
 
     - Switch to Module::Build
