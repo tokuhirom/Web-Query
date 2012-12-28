@@ -187,6 +187,11 @@ sub filter {
     }
 }
 
+sub remove {
+    $_->delete for @{$_[0]->{trees}};
+    return $_[0]
+}
+
 sub DESTROY {
     if ($_[0]->{need_delete}) {
         $_->delete for @{$_[0]->{trees}}; # avoid memory leaks
