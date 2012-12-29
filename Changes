@@ -1,5 +1,10 @@
 Revision history for Perl extension Web::Query
 
+0.11
+
+    - Implement a remove method that effects the html results.
+      (gugod++)
+
 0.10
 
     [INCOMPATIBLE CHANGES]
