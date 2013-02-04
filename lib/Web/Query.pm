@@ -24,26 +24,39 @@ sub __ua {
 }
 
 sub new {
-    my ($class, $stuff) = @_;
+    my ($class, $stuff, $options) = @_;
+
+    my $self = $class->_resolve_new($stuff);
+
+    $self->{indent} = $options->{indent} if $options->{indent};
+
+    return $self;
+}
+
+sub _resolve_new {
+    my( $class, $stuff ) = @_;
+
     if (blessed $stuff) {
         if ($stuff->isa('HTML::Element')) {
             return $class->new_from_element([$stuff]);
-        } elsif ($stuff->isa('URI')) {
+        } 
+        
+        if ($stuff->isa('URI')) {
             return $class->new_from_url($stuff->as_string);
-        } else {
-            die "Unknown source type: $stuff";
-        }
-    } elsif (ref $stuff eq 'ARRAY') {
-        return $class->new_from_element($stuff);
-    } if (!ref $stuff && $stuff =~ m{^(?:https?|file)://}) {
-        return $class->new_from_url($stuff);
-    } elsif (!ref $stuff && $stuff =~ /<html/i) {
-        return $class->new_from_html($stuff);
-    } elsif (!ref $stuff && $stuff !~ /\n/ && -f $stuff) {
-        return $class->new_from_file($stuff);
-    } else {
+        } 
+
         die "Unknown source type: $stuff";
     }
+
+    return $class->new_from_element($stuff) if ref $stuff eq 'ARRAY';
+
+    return $class->new_from_url($stuff) if $stuff =~ m{^(?:https?|file)://};
+
+    return $class->new_from_html($stuff) if $stuff =~ /<html/i;
+
+    return $class->new_from_file($stuff) if $stuff !~ /\n/ && -f $stuff;
+
+    die "Unknown source type: $stuff";
 }
 
 sub new_from_url {
@@ -127,7 +140,12 @@ sub html {
         map { $_->delete_content; $_->push_content(HTML::TreeBuilder->new_from_content($_[0])->guts) } @{$self->{trees}};
         return $self;
     } else {
-        my @html = map { $_->as_HTML(q{&<>'"}) } @{$self->{trees}};
+        my @html = map { $_->as_HTML( 
+                                q{&<>'"},
+                                $self->{indent},
+                                {}
+                            ) } 
+                       @{$self->{trees}};
         return wantarray ? @html : $html[0];
     }
 }
@@ -245,13 +263,16 @@ This is a shortcut for C<< Web::Query->new($stuff) >>. This function is exported
 
 =over 4
 
-=item my $q = Web::Query->new($stuff)
+=item my $q = Web::Query->new($stuff, \%options )
 
 Create new instance of Web::Query. You can make the instance from URL(http, https, file scheme), HTML in string, URL in string, L<URI> object, and instance of L<HTML::Element>.
 
 This method throw the exception on unknown $stuff.
 
-This method returns undefined value on non successful response with URL.
+This method returns undefined value on non-successful response with URL.
+
+Currently, the only option valid option is I<indent>, which will be used as
+the indentation string if the object is printed.
 
 =item my $q = Web::Query->new_from_element($element: HTML::Element)
 
