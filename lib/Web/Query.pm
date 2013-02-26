@@ -365,6 +365,13 @@ Return the last matching element.
 
 This method constructs a new Web::Query object from the last matching element.
 
+=item $q->remove()
+
+Delete the elements associated with the object from the DOM.
+
+    # remove all <blink> tags from the document
+    $q->find('blink')->remove;
+
 =back
 
 =head1 HOW DO I CUSTOMIZE USER AGENT?
