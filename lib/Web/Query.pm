@@ -221,6 +221,32 @@ sub remove {
     return $_[0]
 }
 
+sub replace_with {
+    my ( $self, $replacement ) = @_;
+
+    my $i = 0;
+    for my $node ( @{ $self->{trees} } ) {
+        my $rep = $replacement;
+
+        if ( ref $rep eq 'CODE' ) {
+            local $_ = wq($node);
+            $rep = $rep->( $i++ => $_ ); 
+        }
+
+        $rep = Web::Query->new_from_html( $rep )
+            unless ref $rep;
+
+        my $r = $rep->{trees}->[0]->clone;
+        $r->parent( $node->parent ) if $node->parent;
+
+        $node->replace_with( $r );
+    }
+
+    $replacement->remove if ref $replacement eq 'Web::Query';
+
+    return $self;
+}
+
 sub DESTROY {
     if ($_[0]->{need_delete}) {
         $_->delete for @{$_[0]->{trees}}; # avoid memory leaks
@@ -386,6 +412,27 @@ Delete the elements associated with the object from the DOM.
 
     # remove all <blink> tags from the document
     $q->find('blink')->remove;
+
+=item $q->replace_with( $replacement );
+
+Replace the elements of the object with the provided replacement. 
+The replacement can be a string, a C<Web::Query> object or an 
+anonymous function. The anonymous function is passed the index of the current 
+node and the node itself (with is also localized as C<$_>).
+
+    my $q = wq( '<p><b>Abra</b><i>cada</i><u>bra</u></p>' );
+
+    $q->find('b')->replace_with('<a>Ocus</a>);
+        # <p><a>Ocus</a><i>cada</i><u>bra</u></p>
+
+    $q->find('u')->replace_with($q->find('b'));
+        # <p><i>cada</i><b>Abra</b></p>
+
+    $q->find('i')->replace_with(sub{ 
+        my $name = $_->text;
+        return "<$name></$name>";
+    });
+        # <p><b>Abra</b><cada></cada><u>bra</u></p>
 
 =back
 
