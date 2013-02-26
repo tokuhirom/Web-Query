@@ -52,7 +52,7 @@ sub _resolve_new {
 
     return $class->new_from_url($stuff) if $stuff =~ m{^(?:https?|file)://};
 
-    return $class->new_from_html($stuff) if $stuff =~ /<html/i;
+    return $class->new_from_html($stuff) if $stuff =~ /<.*?>/;
 
     return $class->new_from_file($stuff) if $stuff !~ /\n/ && -f $stuff;
 
@@ -83,7 +83,7 @@ sub new_from_html {
     my $tree = HTML::TreeBuilder::XPath->new();
     $tree->ignore_unknown(0);
     $tree->parse_content($html);
-    my $self = $class->new_from_element([$tree->elementify]);
+    my $self = $class->new_from_element([$tree->guts]);
     $self->{need_delete}++;
     return $self;
 }
