@@ -139,15 +139,17 @@ sub html {
     if (@_) {
         map { $_->delete_content; $_->push_content(HTML::TreeBuilder->new_from_content($_[0])->guts) } @{$self->{trees}};
         return $self;
-    } else {
-        my @html = map { $_->as_HTML( 
-                                q{&<>'"},
-                                $self->{indent},
-                                {}
-                            ) } 
-                       @{$self->{trees}};
-        return wantarray ? @html : $html[0];
+    } 
+
+    my @html;
+    for my $t ( @{$self->{trees}} ) {
+        push @html, join '', map { 
+            ref $_ ? $_->as_HTML( q{&<>'"}, $self->{indent}, {}) 
+                   : encode_entities($_)
+        } $t->content_list;
     }
+    
+    return wantarray ? @html : $html[0];
 }
 
 sub text {

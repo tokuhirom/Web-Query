@@ -4,11 +4,9 @@ use warnings;
 use Test::More tests => 2;
 use Web::Query;
 
-my $html = "<html><head></head><body><p>Hi there</p></body></html>";
+my $inner = "<head></head><body><p>Hi there</p></body>";
+my $html = "<html>$inner</html>";
 
-is( Web::Query->new($html)->html => $html, "no indent" );
+is( Web::Query->new($html)->html => $inner, "no indent" );
 
 like( Web::Query->new($html, { indent => "\t" } )->html => qr/\t/, "indented" );
-
-
-
