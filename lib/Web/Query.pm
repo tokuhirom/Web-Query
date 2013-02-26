@@ -133,6 +133,15 @@ sub find {
     return Web::Query->new_from_element(\@new, $self);
 }
 
+sub as_html {
+    my $self = shift;
+
+    my @html = map { $_->as_HTML( q{&<>'"}, $self->{indent}, {} ) }
+        @{$self->{trees}};
+
+    return wantarray ? @html : $html[0];
+}
+
 sub html {
     my $self = shift;
 
@@ -309,6 +318,12 @@ Create new instance of Web::Query from file name.
 =item $q->html('<p>foo</p>');
 
 Get/set the innerHTML.
+
+=item $q->as_html();
+
+Return the elements associated with the object as strings. 
+If called in a scalar context, only return the string representation
+of the first element.
 
 =item my @text = $q->text();
 
