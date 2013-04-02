@@ -14,7 +14,9 @@ our @EXPORT = qw/wq/;
 
 our $RESPONSE;
 
-sub wq { Web::Query->new(@_) }
+sub _base_class { __PACKAGE__ }
+
+sub wq { _base_class()->new(@_) }
 
 our $UserAgent = LWP::UserAgent->new();
 
@@ -110,17 +112,17 @@ sub parent {
     for my $tree (@{$self->{trees}}) {
         push @new, $tree->getParentNode();
     }
-    return Web::Query->new_from_element(\@new, $self);
+    return $self->_base_class->new_from_element(\@new, $self);
 }
 
 sub first {
     my $self = shift;
-    return Web::Query->new_from_element([$self->{trees}[0] || ()], $self);
+    return $self->_base_class->new_from_element([$self->{trees}[0] || ()], $self);
 }
 
 sub last {
     my $self = shift;
-    return Web::Query->new_from_element([$self->{trees}[-1] || ()], $self);
+    return $self->_base_class->new_from_element([$self->{trees}[-1] || ()], $self);
 }
 
 sub find {
@@ -130,7 +132,7 @@ sub find {
         $selector = selector_to_xpath($selector, root => './');
         push @new, $tree->findnodes($selector);
     }
-    return Web::Query->new_from_element(\@new, $self);
+    return $self->_base_class->new_from_element(\@new, $self);
 }
 
 sub as_html {
@@ -233,7 +235,7 @@ sub replace_with {
             $rep = $rep->( $i++ => $_ ); 
         }
 
-        $rep = Web::Query->new_from_html( $rep )
+        $rep = $self->_base_class->new_from_html( $rep )
             unless ref $rep;
 
         my $r = $rep->{trees}->[0]->clone;
@@ -242,7 +244,7 @@ sub replace_with {
         $node->replace_with( $r );
     }
 
-    $replacement->remove if ref $replacement eq 'Web::Query';
+    $replacement->remove if ref $replacement eq $self->_base_class;
 
     return $self;
 }
