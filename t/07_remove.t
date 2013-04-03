@@ -14,14 +14,14 @@ subtest "remove and size" => sub {
 subtest "remove and html" => sub {
     my $q = wq('t/data/foo.html');
     $q->find('.foo, .bar')->remove();
-    is $q->html, q{<html><head><title>test1</title></head><body></body></html>}, ".foo and .bar are removed and not showing in html";
+    is $q->html, q{<head><title>test1</title></head><body></body>}, ".foo and .bar are removed and not showing in html";
 };
 
 subtest "\$q->remove->end->html" => sub {
     my $q = wq('t/data/foo.html');
     is(
         $q->find('.foo, .bar')->remove->end->html,
-        q{<html><head><title>test1</title></head><body></body></html>},
+        q{<head><title>test1</title></head><body></body>},
         "The chainning works."
     );
 };

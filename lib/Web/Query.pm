@@ -24,26 +24,39 @@ sub __ua {
 }
 
 sub new {
-    my ($class, $stuff) = @_;
+    my ($class, $stuff, $options) = @_;
+
+    my $self = $class->_resolve_new($stuff);
+
+    $self->{indent} = $options->{indent} if $options->{indent};
+
+    return $self;
+}
+
+sub _resolve_new {
+    my( $class, $stuff ) = @_;
+
     if (blessed $stuff) {
         if ($stuff->isa('HTML::Element')) {
             return $class->new_from_element([$stuff]);
-        } elsif ($stuff->isa('URI')) {
+        } 
+        
+        if ($stuff->isa('URI')) {
             return $class->new_from_url($stuff->as_string);
-        } else {
-            die "Unknown source type: $stuff";
-        }
-    } elsif (ref $stuff eq 'ARRAY') {
-        return $class->new_from_element($stuff);
-    } if (!ref $stuff && $stuff =~ m{^(?:https?|file)://}) {
-        return $class->new_from_url($stuff);
-    } elsif (!ref $stuff && $stuff =~ /<html/i) {
-        return $class->new_from_html($stuff);
-    } elsif (!ref $stuff && $stuff !~ /\n/ && -f $stuff) {
-        return $class->new_from_file($stuff);
-    } else {
+        } 
+
         die "Unknown source type: $stuff";
     }
+
+    return $class->new_from_element($stuff) if ref $stuff eq 'ARRAY';
+
+    return $class->new_from_url($stuff) if $stuff =~ m{^(?:https?|file)://};
+
+    return $class->new_from_html($stuff) if $stuff =~ /<.*?>/;
+
+    return $class->new_from_file($stuff) if $stuff !~ /\n/ && -f $stuff;
+
+    die "Unknown source type: $stuff";
 }
 
 sub new_from_url {
@@ -70,7 +83,7 @@ sub new_from_html {
     my $tree = HTML::TreeBuilder::XPath->new();
     $tree->ignore_unknown(0);
     $tree->parse_content($html);
-    my $self = $class->new_from_element([$tree->elementify]);
+    my $self = $class->new_from_element([$tree->guts]);
     $self->{need_delete}++;
     return $self;
 }
@@ -97,17 +110,17 @@ sub parent {
     for my $tree (@{$self->{trees}}) {
         push @new, $tree->getParentNode();
     }
-    return Web::Query->new_from_element(\@new, $self);
+    return (ref $self || $self)->new_from_element(\@new, $self);
 }
 
 sub first {
     my $self = shift;
-    return Web::Query->new_from_element([$self->{trees}[0] || ()], $self);
+    return (ref $self || $self)->new_from_element([$self->{trees}[0] || ()], $self);
 }
 
 sub last {
     my $self = shift;
-    return Web::Query->new_from_element([$self->{trees}[-1] || ()], $self);
+    return (ref $self || $self)->new_from_element([$self->{trees}[-1] || ()], $self);
 }
 
 sub find {
@@ -117,7 +130,16 @@ sub find {
         $selector = selector_to_xpath($selector, root => './');
         push @new, $tree->findnodes($selector);
     }
-    return Web::Query->new_from_element(\@new, $self);
+    return (ref $self || $self)->new_from_element(\@new, $self);
+}
+
+sub as_html {
+    my $self = shift;
+
+    my @html = map { $_->as_HTML( q{&<>'"}, $self->{indent}, {} ) }
+        @{$self->{trees}};
+
+    return wantarray ? @html : $html[0];
 }
 
 sub html {
@@ -126,10 +148,17 @@ sub html {
     if (@_) {
         map { $_->delete_content; $_->push_content(HTML::TreeBuilder->new_from_content($_[0])->guts) } @{$self->{trees}};
         return $self;
-    } else {
-        my @html = map { $_->as_HTML(q{&<>'"}) } @{$self->{trees}};
-        return wantarray ? @html : $html[0];
+    } 
+
+    my @html;
+    for my $t ( @{$self->{trees}} ) {
+        push @html, join '', map { 
+            ref $_ ? $_->as_HTML( q{&<>'"}, $self->{indent}, {}) 
+                   : encode_entities($_)
+        } $t->content_list;
     }
+    
+    return wantarray ? @html : $html[0];
 }
 
 sub text {
@@ -153,7 +182,7 @@ sub each {
     my ($self, $code) = @_;
     my $i = 0;
     for my $tree (@{$self->{trees}}) {
-        local $_ = wq($tree);
+        local $_ = (ref $self || $self)->new($tree);
         $code->($i++, $_);
     }
     return $self;
@@ -164,7 +193,7 @@ sub map {
     my $i = 0; 
     return +[map {
         my $tree = $_;
-        local $_ = wq($tree);
+        local $_ = (ref $self || $self)->new($tree);
         $code->($i++, $_);
     } @{$self->{trees}}];
 }   
@@ -177,7 +206,7 @@ sub filter {
         my $i = 0; 
         $self->{trees} = +[grep {
             my $tree = $_;
-            local $_ = wq($tree);
+            local $_ = (ref $self || $self)->new($tree);
             $code->($i++, $_);
         } @{$self->{trees}}];
         return $self;
@@ -190,6 +219,32 @@ sub filter {
 sub remove {
     $_->delete for @{$_[0]->{trees}};
     return $_[0]
+}
+
+sub replace_with {
+    my ( $self, $replacement ) = @_;
+
+    my $i = 0;
+    for my $node ( @{ $self->{trees} } ) {
+        my $rep = $replacement;
+
+        if ( ref $rep eq 'CODE' ) {
+            local $_ = (ref $self || $self)->new($node);
+            $rep = $rep->( $i++ => $_ ); 
+        }
+
+        $rep = (ref $self || $self)->new_from_html( $rep )
+            unless ref $rep;
+
+        my $r = $rep->{trees}->[0]->clone;
+        $r->parent( $node->parent ) if $node->parent;
+
+        $node->replace_with( $r );
+    }
+
+    $replacement->remove if ref $replacement eq (ref $self || $self);
+
+    return $self;
 }
 
 sub DESTROY {
@@ -245,13 +300,16 @@ This is a shortcut for C<< Web::Query->new($stuff) >>. This function is exported
 
 =over 4
 
-=item my $q = Web::Query->new($stuff)
+=item my $q = Web::Query->new($stuff, \%options )
 
 Create new instance of Web::Query. You can make the instance from URL(http, https, file scheme), HTML in string, URL in string, L<URI> object, and instance of L<HTML::Element>.
 
 This method throw the exception on unknown $stuff.
 
-This method returns undefined value on non successful response with URL.
+This method returns undefined value on non-successful response with URL.
+
+Currently, the only option valid option is I<indent>, which will be used as
+the indentation string if the object is printed.
 
 =item my $q = Web::Query->new_from_element($element: HTML::Element)
 
@@ -286,6 +344,12 @@ Create new instance of Web::Query from file name.
 =item $q->html('<p>foo</p>');
 
 Get/set the innerHTML.
+
+=item $q->as_html();
+
+Return the elements associated with the object as strings. 
+If called in a scalar context, only return the string representation
+of the first element.
 
 =item my @text = $q->text();
 
@@ -341,6 +405,34 @@ This method constructs a new Web::Query object from the first matching element.
 Return the last matching element.
 
 This method constructs a new Web::Query object from the last matching element.
+
+=item $q->remove()
+
+Delete the elements associated with the object from the DOM.
+
+    # remove all <blink> tags from the document
+    $q->find('blink')->remove;
+
+=item $q->replace_with( $replacement );
+
+Replace the elements of the object with the provided replacement. 
+The replacement can be a string, a C<Web::Query> object or an 
+anonymous function. The anonymous function is passed the index of the current 
+node and the node itself (with is also localized as C<$_>).
+
+    my $q = wq( '<p><b>Abra</b><i>cada</i><u>bra</u></p>' );
+
+    $q->find('b')->replace_with('<a>Ocus</a>);
+        # <p><a>Ocus</a><i>cada</i><u>bra</u></p>
+
+    $q->find('u')->replace_with($q->find('b'));
+        # <p><i>cada</i><b>Abra</b></p>
+
+    $q->find('i')->replace_with(sub{ 
+        my $name = $_->text;
+        return "<$name></$name>";
+    });
+        # <p><b>Abra</b><cada></cada><u>bra</u></p>
 
 =back
 
