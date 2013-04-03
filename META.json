@@ -1,0 +1,81 @@
+{
+   "abstract" : "Yet another scraping library like jQuery",
+   "author" : [
+      "Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ GMAIL COM>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Minilla/v0.0.49, CPAN::Meta::Converter version 2.120921",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Web-Query",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt",
+         "inc",
+         "share",
+         "eg",
+         "examples"
+      ]
+   },
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "CPAN::Meta" : "0",
+            "CPAN::Meta::Prereqs" : "0",
+            "Module::Build" : "0.38"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Pod::Wordlist::hanekomu" : "0",
+            "Test::CPAN::Meta" : "0",
+            "Test::MinimumVersion" : "0.10108",
+            "Test::Pod" : "1.41",
+            "Test::Spelling" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "HTML::Entities" : "0",
+            "HTML::Selector::XPath" : "0.06",
+            "HTML::TreeBuilder::XPath" : "0.12",
+            "LWP::UserAgent" : "6",
+            "Scalar::Util" : "0",
+            "parent" : "0",
+            "perl" : "5.008001"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0.98"
+         }
+      }
+   },
+   "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/tokuhirom/Web-Query/issues"
+      },
+      "homepage" : "https://github.com/tokuhirom/Web-Query",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/tokuhirom/Web-Query.git",
+         "web" : "https://github.com/tokuhirom/Web-Query"
+      }
+   },
+   "version" : "0.11",
+   "x_contributors" : [
+      "Hiroki Honda <cside.story@gmail.com>",
+      "Oleg <verdrehung@gmail.com>",
+      "Kang-min Liu <gugod@gugod.org>",
+      "Yanick Champoux <yanick@babyl.dyndns.org>",
+      "Carlos Fernando Avila Gratz <cafe@q1software.com>",
+      "tokuhirom <tokuhirom@gmail.com>"
+   ]
+}
