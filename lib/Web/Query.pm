@@ -110,17 +110,17 @@ sub parent {
     for my $tree (@{$self->{trees}}) {
         push @new, $tree->getParentNode();
     }
-    return Web::Query->new_from_element(\@new, $self);
+    return (ref $self || $self)->new_from_element(\@new, $self);
 }
 
 sub first {
     my $self = shift;
-    return Web::Query->new_from_element([$self->{trees}[0] || ()], $self);
+    return (ref $self || $self)->new_from_element([$self->{trees}[0] || ()], $self);
 }
 
 sub last {
     my $self = shift;
-    return Web::Query->new_from_element([$self->{trees}[-1] || ()], $self);
+    return (ref $self || $self)->new_from_element([$self->{trees}[-1] || ()], $self);
 }
 
 sub find {
@@ -130,7 +130,7 @@ sub find {
         $selector = selector_to_xpath($selector, root => './');
         push @new, $tree->findnodes($selector);
     }
-    return Web::Query->new_from_element(\@new, $self);
+    return (ref $self || $self)->new_from_element(\@new, $self);
 }
 
 sub as_html {
@@ -182,7 +182,7 @@ sub each {
     my ($self, $code) = @_;
     my $i = 0;
     for my $tree (@{$self->{trees}}) {
-        local $_ = wq($tree);
+        local $_ = (ref $self || $self)->new($tree);
         $code->($i++, $_);
     }
     return $self;
@@ -193,7 +193,7 @@ sub map {
     my $i = 0; 
     return +[map {
         my $tree = $_;
-        local $_ = wq($tree);
+        local $_ = (ref $self || $self)->new($tree);
         $code->($i++, $_);
     } @{$self->{trees}}];
 }   
@@ -206,7 +206,7 @@ sub filter {
         my $i = 0; 
         $self->{trees} = +[grep {
             my $tree = $_;
-            local $_ = wq($tree);
+            local $_ = (ref $self || $self)->new($tree);
             $code->($i++, $_);
         } @{$self->{trees}}];
         return $self;
@@ -229,11 +229,11 @@ sub replace_with {
         my $rep = $replacement;
 
         if ( ref $rep eq 'CODE' ) {
-            local $_ = wq($node);
+            local $_ = (ref $self || $self)->new($node);
             $rep = $rep->( $i++ => $_ ); 
         }
 
-        $rep = Web::Query->new_from_html( $rep )
+        $rep = (ref $self || $self)->new_from_html( $rep )
             unless ref $rep;
 
         my $r = $rep->{trees}->[0]->clone;
@@ -242,7 +242,7 @@ sub replace_with {
         $node->replace_with( $r );
     }
 
-    $replacement->remove if ref $replacement eq 'Web::Query';
+    $replacement->remove if ref $replacement eq (ref $self || $self);
 
     return $self;
 }
