@@ -20,7 +20,7 @@ Web::Query is a yet another scraping framework, have a jQuery like interface.
 Yes, I know ingy's [pQuery](http://search.cpan.org/perldoc?pQuery). But it's just a alpha quality. It doesn't works.
 Web::Query built at top of the CPAN modules, [HTML::TreeBuilder::XPath](http://search.cpan.org/perldoc?HTML::TreeBuilder::XPath), [LWP::UserAgent](http://search.cpan.org/perldoc?LWP::UserAgent), and [HTML::Selector::XPath](http://search.cpan.org/perldoc?HTML::Selector::XPath).
 
-So, this module uses [HTML::Selector::XPath](http://search.cpan.org/perldoc?HTML::Selector::XPath) and only supports the CSS3
+So, this module uses [HTML::Selector::XPath](http://search.cpan.org/perldoc?HTML::Selector::XPath) and only supports the CSS 3
 selector supported by that module.
 Web::Query doesn't support jQuery's extended queries(yet?).
 
@@ -51,11 +51,11 @@ __THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE__.
 
 - my $q = Web::Query->new\_from\_html($html: Str)
 
-    Create new instance of Web::Query from html.
+    Create new instance of Web::Query from HTML.
 
 - my $q = Web::Query->new\_from\_url($url: Str)
 
-    Create new instance of Web::Query from url.
+    Create new instance of Web::Query from URL.
 
     If the response is not success(It means /^20\[0-9\]$/), this method returns undefined value.
 
@@ -75,7 +75,7 @@ __THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE__.
 - my $html = $q->html();
 - $q->html('<p>foo</p>');
 
-    Get/set the innerHTML.
+    Get/Set the innerHTML.
 
 - $q->as\_html();
 

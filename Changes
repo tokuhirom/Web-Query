@@ -2,6 +2,11 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.12 2013-04-03T20:24:49Z
+
+    - Make subclass friendly
+      (Carlos Fernando Avila Gratz)
+
 0.11
 
     - Implement a remove method that effects the html results.

@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use 5.008001;
 use parent qw/Exporter/;
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 use HTML::TreeBuilder::XPath;
 use LWP::UserAgent;
 use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
@@ -280,7 +280,7 @@ Web::Query is a yet another scraping framework, have a jQuery like interface.
 Yes, I know ingy's L<pQuery>. But it's just a alpha quality. It doesn't works.
 Web::Query built at top of the CPAN modules, L<HTML::TreeBuilder::XPath>, L<LWP::UserAgent>, and L<HTML::Selector::XPath>.
 
-So, this module uses L<HTML::Selector::XPath> and only supports the CSS3
+So, this module uses L<HTML::Selector::XPath> and only supports the CSS 3
 selector supported by that module.
 Web::Query doesn't support jQuery's extended queries(yet?).
 
@@ -317,11 +317,11 @@ Create new instance of Web::Query from instance of L<HTML::Element>.
 
 =item my $q = Web::Query->new_from_html($html: Str)
 
-Create new instance of Web::Query from html.
+Create new instance of Web::Query from HTML.
 
 =item my $q = Web::Query->new_from_url($url: Str)
 
-Create new instance of Web::Query from url.
+Create new instance of Web::Query from URL.
 
 If the response is not success(It means /^20[0-9]$/), this method returns undefined value.
 
@@ -343,7 +343,7 @@ Create new instance of Web::Query from file name.
 
 =item $q->html('<p>foo</p>');
 
-Get/set the innerHTML.
+Get/Set the innerHTML.
 
 =item $q->as_html();
 
