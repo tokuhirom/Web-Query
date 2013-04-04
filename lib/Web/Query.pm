@@ -127,9 +127,9 @@ sub last {
 
 sub find {
     my ($self, $selector) = @_;
+    $selector = selector_to_xpath($selector, root => './');
     my @new;
-    for my $tree (@{$self->{trees}}) {
-        $selector = selector_to_xpath($selector, root => './');
+    for my $tree (@{$self->{trees}}) {        
         push @new, $tree->findnodes($selector);
     }
     return $self->_base_class->new_from_element(\@new, $self);
