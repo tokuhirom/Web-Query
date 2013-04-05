@@ -2,6 +2,14 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.13 2013-04-05T06:37:27Z
+
+    - fixed find() bug
+      was calling selector_to_xpath() in the loop, breaking the selector after the second call.
+      (Carlos Fernando Avila Gratz)
+    - Search from '//' when the node was created from HTML.
+      (tokuhirom)
+
 0.12 2013-04-03T20:24:49Z
 
     - Make subclass friendly
