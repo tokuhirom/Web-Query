@@ -75,7 +75,6 @@ sub new_from_file {
     $tree->ignore_unknown(0);
     my $self = $class->new_from_element([$tree->elementify]);
     $self->{need_delete}++;
-    $self->{root} = '/';
     return $self;
 }
 
@@ -86,7 +85,6 @@ sub new_from_html {
     $tree->parse_content($html);
     my $self = $class->new_from_element([$tree->guts]);
     $self->{need_delete}++;
-    $self->{root} = '/';
     return $self;
 }
 
@@ -127,11 +125,11 @@ sub last {
 
 sub find {
     my ($self, $selector) = @_;
-    my $root = exists $self->{root} ? $self->{root} : './';
-    $selector = selector_to_xpath($selector, root => $root);
+
     my @new;
     for my $tree (@{$self->{trees}}) {        
-        push @new, $tree->findnodes($selector);
+        my $xpath = selector_to_xpath($selector, root => defined $tree->parent ? './' : '/');
+        push @new, $tree->findnodes($xpath);
     }
     return (ref $self || $self)->new_from_element(\@new, $self);
 }
