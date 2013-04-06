@@ -250,6 +250,137 @@ sub replace_with {
     return $self;
 }
 
+sub append {
+    my ($self, $stuff) = @_;
+    $stuff = (ref $self || $self)->new($stuff);
+    
+    foreach my $t (@{$self->{trees}}) {
+        $t->push_content($_) for ref($t)->clone_list(@{$stuff->{trees}});
+    }
+    
+    $self;    
+}
+
+sub prepend {
+    my ($self, $stuff) = @_;
+    $stuff = (ref $self || $self)->new($stuff);
+    
+    foreach my $t (@{$self->{trees}}) {
+        $t->unshift_content($_) for ref($t)->clone_list(@{$stuff->{trees}});
+    }
+    
+    $self;    
+}
+
+
+sub before {
+    my ($self, $stuff) = @_;
+    $stuff = (ref $self || $self)->new($stuff);
+        
+    foreach my $t (@{$self->{trees}}) {
+        $t->preinsert(ref($t)->clone_list(@{$stuff->{trees}}));
+    }
+    
+    $self;    
+}
+
+
+sub after {
+    my ($self, $stuff) = @_;
+    $stuff = (ref $self || $self)->new($stuff);
+        
+    foreach my $t (@{$self->{trees}}) {
+        $t->postinsert(ref($t)->clone_list(@{$stuff->{trees}}));
+    }
+    
+    $self;    
+}
+
+
+sub insert_before {
+    my ($self, $target) = @_;
+        
+    foreach my $t (@{$target->{trees}}) {
+        $t->preinsert(ref($t)->clone_list(@{$self->{trees}}));
+    }
+    
+    $self;    
+}
+
+sub insert_after {
+    my ($self, $target) = @_;
+        
+    foreach my $t (@{$target->{trees}}) {
+        $t->postinsert(ref($t)->clone_list(@{$self->{trees}}));
+    }
+    
+    $self;    
+}
+
+sub detach {
+    my ($self) = @_;
+    $_->detach for @{$self->{trees}};
+    $self;    
+}
+
+sub add_class {
+    my ($self, $class) = @_;    
+            
+    for (my $i = 0; $i < @{$self->{trees}}; $i++) {
+        my $t = $self->{trees}->[$i];        
+        my $current_class = $t->attr('class');
+        
+        my $classes = ref $class eq 'CODE' ? $class->($i, $current_class, $t) : $class;
+        my @classes = split /\s+/, $classes;
+        
+        foreach (@classes) {            
+            $current_class .= " $_" unless $current_class =~ /(?:^|\s)$_(?:\s|$)/;     
+        }
+                        
+        $current_class =~ s/(?:^\s*|\s*$)//g;
+        $current_class =~ s/\s\s+/ /g;
+        
+        $t->attr('class', $current_class);
+    }
+    
+    $self;    
+}
+
+
+sub remove_class {
+    my ($self, $class) = @_;
+
+    for (my $i = 0; $i < @{$self->{trees}}; $i++) {
+        my $t = $self->{trees}->[$i];        
+        my $current_class = $t->attr('class');
+        next unless defined $current_class;        
+        
+        my $classes = ref $class eq 'CODE' ? $class->($i, $current_class, $t) : $class;
+        my @remove_classes = split /\s+/, $classes;
+        my @final = grep {
+            my $existing_class = $_;     
+            not grep { $existing_class eq $_} @remove_classes;
+        } split /\s+/, $current_class;
+        
+        $t->attr('class', join ' ', @final);
+    }
+    
+    $self; 
+    
+}
+
+
+sub has_class {
+    my ($self, $class) = @_;
+    
+    foreach my $t (@{$self->{trees}}) {
+        return 1 if $t->attr('class') =~ /(?:^|\s)$class(?:\s|$)/;
+    }
+    
+    return;   
+}
+
+
 sub DESTROY {
     if ($_[0]->{need_delete}) {
         $_->delete for @{$_[0]->{trees}}; # avoid memory leaks
