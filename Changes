@@ -2,6 +2,21 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.14 2013-04-07T02:22:25Z
+
+    - new jQuery compatible methods, and related tests
+        * append
+        * prepend
+        * before
+        * after
+        * insert_before
+        * insert_after
+        * detach
+        * add_class
+        * remove_class
+        * has_class
+      (Carlos Fernando Avila Gratz)
+
 0.13 2013-04-05T06:37:27Z
 
     - fixed find() bug
