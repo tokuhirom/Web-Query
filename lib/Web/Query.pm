@@ -382,7 +382,7 @@ sub has_class {
 
 sub clone {
     my ($self) = @_;
-    my @clones = HTML::Element->clone_list(@{$self->{trees}});
+    my @clones = map { $_->clone } @{$self->{trees}};
     return (ref $self || $self)->new_from_element(\@clones);
 }
 
