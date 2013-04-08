@@ -26,5 +26,27 @@ subtest "\$q->remove->end->html" => sub {
     );
 };
 
+subtest "remove root elements" => sub {
+    my $q = wq('t/data/foo.html');
+    $q->remove;
+    is $q->size, 0, "size 0 after remove";
+    is join('', $q->as_html), '', "html '' after remove"; # not '<></>'
+};
+
+subtest "remove root elements after find" => sub {
+    my $q = wq('t/data/foo.html');
+    $q->find('html')->remove;
+    is $q->size, 0, "size 0 after remove";
+    is join('', $q->as_html), '', "html '' after remove"; # not '<></>'
+};
+
+subtest "remove root elements via each()" => sub {
+    my $q = wq('t/data/foo.html');
+    $q->find('html')->each(sub{ $_->remove });
+    is $q->size, 0, "size 0 after remove";
+    is join('', $q->as_html), '', "html '' after remove"; # not '<></>'
+};
+
+
 
 done_testing;
