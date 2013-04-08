@@ -149,9 +149,18 @@ sub as_html {
 
 sub html {
     my $self = shift;
-
+    my $builder = HTML::TreeBuilder->new;
+    $builder->store_comments(1);
+    
     if (@_) {
-        map { $_->delete_content; $_->push_content(HTML::TreeBuilder->new_from_content($_[0])->guts) } @{$self->{trees}};
+        map { 
+            $_->delete_content; 
+            my $tree = HTML::TreeBuilder->new;
+            $tree->ignore_unknown(0);
+            $tree->store_comments(1);
+            $tree->parse_content($_[0]);
+            $_->push_content($tree->guts);
+        } @{$self->{trees}};
         return $self;
     } 
 
