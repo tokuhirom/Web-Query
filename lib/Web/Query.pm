@@ -7,7 +7,7 @@ our $VERSION = '0.14';
 use HTML::TreeBuilder::XPath;
 use LWP::UserAgent;
 use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
-use Scalar::Util qw/blessed/;
+use Scalar::Util qw/blessed refaddr/;
 use HTML::Entities qw/encode_entities/;
 
 our @EXPORT = qw/wq/;
@@ -185,7 +185,7 @@ sub each {
     my ($self, $code) = @_;
     my $i = 0;
     for my $tree (@{$self->{trees}}) {
-        local $_ = (ref $self || $self)->new($tree);
+        local $_ = (ref $self || $self)->new_from_element([$tree], $self);
         $code->($i++, $_);
     }
     return $self;
@@ -220,8 +220,22 @@ sub filter {
 }
 
 sub remove {
-    $_->delete for @{$_[0]->{trees}};
-    return $_[0]
+    my $self = shift;
+    my $before = $self->end;
+    
+    while (defined $before) {
+        @{$before->{trees}} = grep {
+            my $el = $_;            
+            not grep { refaddr($el) == refaddr($_) } @{$self->{trees}};            
+        } @{$before->{trees}};
+
+        $before = $before->end;
+    }
+    
+    $_->delete for @{$self->{trees}};
+    @{$self->{trees}} = ();
+    
+    $self;
 }
 
 sub replace_with {
