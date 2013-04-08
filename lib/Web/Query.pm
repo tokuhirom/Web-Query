@@ -73,6 +73,7 @@ sub new_from_file {
     my ($class, $fname) = @_;
     my $tree = HTML::TreeBuilder::XPath->new_from_file($fname);
     $tree->ignore_unknown(0);
+    $tree->store_comments(1);
     my $self = $class->new_from_element([$tree->elementify]);
     $self->{need_delete}++;
     return $self;
@@ -82,6 +83,7 @@ sub new_from_html {
     my ($class, $html) = @_;
     my $tree = HTML::TreeBuilder::XPath->new();
     $tree->ignore_unknown(0);
+    $tree->store_comments(1);
     $tree->parse_content($html);
     my $self = $class->new_from_element([$tree->guts]);
     $self->{need_delete}++;
@@ -147,9 +149,18 @@ sub as_html {
 
 sub html {
     my $self = shift;
-
+    my $builder = HTML::TreeBuilder->new;
+    $builder->store_comments(1);
+    
     if (@_) {
-        map { $_->delete_content; $_->push_content(HTML::TreeBuilder->new_from_content($_[0])->guts) } @{$self->{trees}};
+        map { 
+            $_->delete_content; 
+            my $tree = HTML::TreeBuilder->new;
+            $tree->ignore_unknown(0);
+            $tree->store_comments(1);
+            $tree->parse_content($_[0]);
+            $_->push_content($tree->guts);
+        } @{$self->{trees}};
         return $self;
     } 
 
