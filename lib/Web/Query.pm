@@ -380,6 +380,11 @@ sub has_class {
     return;   
 }
 
+sub clone {
+    my ($self) = @_;
+    my @clones = map { $_->clone } @{$self->{trees}};
+    return (ref $self || $self)->new_from_element(\@clones);
+}
 
 sub DESTROY {
     if ($_[0]->{need_delete}) {
