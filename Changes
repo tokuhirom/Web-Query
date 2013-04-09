@@ -2,6 +2,17 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.15 2013-04-09T00:29:48Z
+
+    - added clone() method
+      (Carlos Fernando Avila Gratz)
+    - now storing comments from parsed html
+      (Carlos Fernando Avila Gratz)
+    - fixed remove() to get rid of removed element refs
+      removes from $self and from all $self->{before}.
+      Also modified how each() instantiates the objects, so $_->end works in the callback, which is needed for $_->remove() to work in the callback.
+      (Carlos Fernando Avila Gratz)
+
 0.14 2013-04-07T02:22:25Z
 
     - new jQuery compatible methods, and related tests
