@@ -7,7 +7,7 @@ our $VERSION = '0.14';
 use HTML::TreeBuilder::XPath;
 use LWP::UserAgent;
 use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
-use Scalar::Util qw/blessed/;
+use Scalar::Util qw/blessed refaddr/;
 use HTML::Entities qw/encode_entities/;
 
 our @EXPORT = qw/wq/;
@@ -73,6 +73,7 @@ sub new_from_file {
     my ($class, $fname) = @_;
     my $tree = HTML::TreeBuilder::XPath->new_from_file($fname);
     $tree->ignore_unknown(0);
+    $tree->store_comments(1);
     my $self = $class->new_from_element([$tree->elementify]);
     $self->{need_delete}++;
     return $self;
@@ -82,6 +83,7 @@ sub new_from_html {
     my ($class, $html) = @_;
     my $tree = HTML::TreeBuilder::XPath->new();
     $tree->ignore_unknown(0);
+    $tree->store_comments(1);
     $tree->parse_content($html);
     my $self = $class->new_from_element([$tree->guts]);
     $self->{need_delete}++;
@@ -147,9 +149,18 @@ sub as_html {
 
 sub html {
     my $self = shift;
-
+    my $builder = HTML::TreeBuilder->new;
+    $builder->store_comments(1);
+    
     if (@_) {
-        map { $_->delete_content; $_->push_content(HTML::TreeBuilder->new_from_content($_[0])->guts) } @{$self->{trees}};
+        map { 
+            $_->delete_content; 
+            my $tree = HTML::TreeBuilder->new;
+            $tree->ignore_unknown(0);
+            $tree->store_comments(1);
+            $tree->parse_content($_[0]);
+            $_->push_content($tree->guts);
+        } @{$self->{trees}};
         return $self;
     } 
 
@@ -185,7 +196,7 @@ sub each {
     my ($self, $code) = @_;
     my $i = 0;
     for my $tree (@{$self->{trees}}) {
-        local $_ = (ref $self || $self)->new($tree);
+        local $_ = (ref $self || $self)->new_from_element([$tree], $self);
         $code->($i++, $_);
     }
     return $self;
@@ -220,8 +231,22 @@ sub filter {
 }
 
 sub remove {
-    $_->delete for @{$_[0]->{trees}};
-    return $_[0]
+    my $self = shift;
+    my $before = $self->end;
+    
+    while (defined $before) {
+        @{$before->{trees}} = grep {
+            my $el = $_;            
+            not grep { refaddr($el) == refaddr($_) } @{$self->{trees}};            
+        } @{$before->{trees}};
+
+        $before = $before->end;
+    }
+    
+    $_->delete for @{$self->{trees}};
+    @{$self->{trees}} = ();
+    
+    $self;
 }
 
 sub replace_with {
@@ -380,6 +405,11 @@ sub has_class {
     return;   
 }
 
+sub clone {
+    my ($self) = @_;
+    my @clones = map { $_->clone } @{$self->{trees}};
+    return (ref $self || $self)->new_from_element(\@clones);
+}
 
 sub DESTROY {
     if ($_[0]->{need_delete}) {
