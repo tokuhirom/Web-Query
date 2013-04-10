@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 3;
+use Test::More tests => 4;
 use FindBin;
 use lib 'lib';
 use lib "$FindBin::Bin/lib";
@@ -17,4 +17,4 @@ $query->each(sub{
     isa_ok $_[1], 'My::Web::Query', 'object from each()';    
 });
 
-
+isa_ok $query->_build_tree, 'My::TreeBuilder', '_build_tree()';
