@@ -23,6 +23,14 @@ sub __ua {
     $UserAgent;
 }
 
+sub _build_tree {
+    my ($self, $content) = @_;    
+    my $tree = HTML::TreeBuilder::XPath->new();
+    $tree->ignore_unknown(0);
+    $tree->store_comments(1);
+    $tree;    
+}
+
 sub new {
     my ($class, $stuff, $options) = @_;
 
@@ -71,9 +79,8 @@ sub new_from_url {
 
 sub new_from_file {
     my ($class, $fname) = @_;
-    my $tree = HTML::TreeBuilder::XPath->new_from_file($fname);
-    $tree->ignore_unknown(0);
-    $tree->store_comments(1);
+    my $tree = $class->_build_tree;
+    $tree->parse_file($fname);
     my $self = $class->new_from_element([$tree->elementify]);
     $self->{need_delete}++;
     return $self;
@@ -81,9 +88,7 @@ sub new_from_file {
 
 sub new_from_html {
     my ($class, $html) = @_;
-    my $tree = HTML::TreeBuilder::XPath->new();
-    $tree->ignore_unknown(0);
-    $tree->store_comments(1);
+    my $tree = $class->_build_tree;
     $tree->parse_content($html);
     my $self = $class->new_from_element([$tree->guts]);
     $self->{need_delete}++;
