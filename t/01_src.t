@@ -41,6 +41,9 @@ if (eval "require URI; 1;") {
     };
 }
 
+my $wq = wq('file://' . Cwd::abs_path('t/data/html5_snippet.html'));
+is scalar(grep { not ref $_ } @{$wq->{trees}}), 0, 'new_from_element skips non blessed';
+
 done_testing;
 
 sub test {
