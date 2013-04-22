@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use 5.008001;
 use parent qw/Exporter/;
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 use HTML::TreeBuilder::XPath;
 use LWP::UserAgent;
 use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
@@ -446,7 +446,7 @@ Web::Query - Yet another scraping library like jQuery
 
 Web::Query is a yet another scraping framework, have a jQuery like interface.
 
-Yes, I know ingy's L<pQuery>. But it's just a alpha quality. It doesn't works.
+Yes, I know Ingy's L<pQuery>. But it's just a alpha quality. It doesn't works.
 Web::Query built at top of the CPAN modules, L<HTML::TreeBuilder::XPath>, L<LWP::UserAgent>, and L<HTML::Selector::XPath>.
 
 So, this module uses L<HTML::Selector::XPath> and only supports the CSS 3
@@ -459,7 +459,7 @@ B<THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE>.
 
 =over 4
 
-=item wq($stuff)
+=item C<< wq($stuff) >>
 
 This is a shortcut for C<< Web::Query->new($stuff) >>. This function is exported by default.
 

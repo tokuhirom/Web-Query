@@ -2,6 +2,14 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.16 2013-04-22T14:26:44Z
+
+    - modified new_from_element() to ignore non-blessed items
+      (Carlos Fernando Avila Gratz)
+    - created _build_tree() method
+      (Carlos Fernando Avila Gratz)
+
+
 0.15 2013-04-09T00:29:48Z
 
     - added clone() method

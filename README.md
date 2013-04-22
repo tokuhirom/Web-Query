@@ -17,7 +17,7 @@ Web::Query - Yet another scraping library like jQuery
 
 Web::Query is a yet another scraping framework, have a jQuery like interface.
 
-Yes, I know ingy's [pQuery](http://search.cpan.org/perldoc?pQuery). But it's just a alpha quality. It doesn't works.
+Yes, I know Ingy's [pQuery](http://search.cpan.org/perldoc?pQuery). But it's just a alpha quality. It doesn't works.
 Web::Query built at top of the CPAN modules, [HTML::TreeBuilder::XPath](http://search.cpan.org/perldoc?HTML::TreeBuilder::XPath), [LWP::UserAgent](http://search.cpan.org/perldoc?LWP::UserAgent), and [HTML::Selector::XPath](http://search.cpan.org/perldoc?HTML::Selector::XPath).
 
 So, this module uses [HTML::Selector::XPath](http://search.cpan.org/perldoc?HTML::Selector::XPath) and only supports the CSS 3
@@ -28,7 +28,7 @@ __THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE__.
 
 # FUNCTIONS
 
-- wq($stuff)
+- `wq($stuff)`
 
     This is a shortcut for `Web::Query->new($stuff)`. This function is exported by default.
 
