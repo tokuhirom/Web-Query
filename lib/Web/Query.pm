@@ -98,7 +98,7 @@ sub new_from_html {
 sub new_from_element {
     my $class = shift;
     my $trees = ref $_[0] eq 'ARRAY' ? $_[0] : +[$_[0]];
-    return bless { trees => $trees, before => $_[1] }, $class;
+    return bless { trees => +[ grep { blessed $_ } @$trees ], before => $_[1] }, $class;
 }
 
 sub end {
