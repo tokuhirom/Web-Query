@@ -49,7 +49,7 @@ __THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE__.
 
     Create new instance of Web::Query from instance of [HTML::Element](http://search.cpan.org/perldoc?HTML::Element).
 
-- my $q = Web::Query->new\_from\_html($html: Str)
+- `my $q = Web::Query->new_from_html($html: Str)`
 
     Create new instance of Web::Query from HTML.
 
@@ -90,7 +90,7 @@ __THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE__.
     Get/Set the inner text.
 
 - my $attr = $q->attr($name);
-- $q->attr($name, $val);
+- `$q->attr($name, $val);`
 
     Get/Set the attribute value in element.
 

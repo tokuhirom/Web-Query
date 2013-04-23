@@ -484,7 +484,7 @@ the indentation string if the object is printed.
 
 Create new instance of Web::Query from instance of L<HTML::Element>.
 
-=item my $q = Web::Query->new_from_html($html: Str)
+=item C<< my $q = Web::Query->new_from_html($html: Str) >>
 
 Create new instance of Web::Query from HTML.
 
@@ -530,7 +530,7 @@ Get/Set the inner text.
 
 =item my $attr = $q->attr($name);
 
-=item $q->attr($name, $val);
+=item C<< $q->attr($name, $val); >>
 
 Get/Set the attribute value in element.
 
