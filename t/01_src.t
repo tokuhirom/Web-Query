@@ -10,6 +10,8 @@ subtest 'from file' => sub {
     test(wq('t/data/foo.html'));
 };
 
+is wq('t/data/html5_snippet.html')->size, 3, 'snippet from file';
+
 subtest 'from url' => sub {
     plan tests => 5;
     test(wq('file://' . Cwd::abs_path('t/data/foo.html')));
