@@ -2,6 +2,13 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.17 2013-05-08T01:18:36Z
+
+    - new_from_file() now calling guts() instead of elementify()
+      So the file can contain a document fragment (multiple root nodes) instead of a full document (single root).
+      Also, now all new_from_* methods behave the same.
+      (Carlos Fernando Avila Gratz)
+
 0.16 2013-04-22T14:26:44Z
 
     - modified new_from_element() to ignore non-blessed items
