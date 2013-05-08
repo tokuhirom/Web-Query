@@ -23,9 +23,9 @@ my %args = (
         'Module::Build' => 0.38,
     },
 
-    no_index    => { 'directory' => [ 'inc' ] },
-    name        => 'Web-Query',
-    module_name => 'Web::Query',
+    name            => 'Web-Query',
+    module_name     => 'Web::Query',
+    allow_pure_perl => 0,
 
     script_files => [glob('script/*'), glob('bin/*')],
 
