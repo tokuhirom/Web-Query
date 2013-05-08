@@ -81,7 +81,7 @@ sub new_from_file {
     my ($class, $fname) = @_;
     my $tree = $class->_build_tree;
     $tree->parse_file($fname);
-    my $self = $class->new_from_element([$tree->elementify]);
+    my $self = $class->new_from_element([$tree->guts]);
     $self->{need_delete}++;
     return $self;
 }
