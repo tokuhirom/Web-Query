@@ -154,15 +154,11 @@ sub as_html {
 
 sub html {
     my $self = shift;
-    my $builder = HTML::TreeBuilder->new;
-    $builder->store_comments(1);
     
     if (@_) {
         map { 
             $_->delete_content; 
-            my $tree = HTML::TreeBuilder->new;
-            $tree->ignore_unknown(0);
-            $tree->store_comments(1);
+            my $tree = $self->_build_tree;
             $tree->parse_content($_[0]);
             $_->push_content($tree->guts);
         } @{$self->{trees}};
