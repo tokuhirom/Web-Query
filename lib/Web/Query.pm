@@ -81,7 +81,7 @@ sub new_from_file {
     my ($class, $fname) = @_;
     my $tree = $class->_build_tree;
     $tree->parse_file($fname);
-    my $self = $class->new_from_element([$tree->guts]);
+    my $self = $class->new_from_element([$tree->disembowel]);
     $self->{need_delete}++;
     return $self;
 }
@@ -90,7 +90,7 @@ sub new_from_html {
     my ($class, $html) = @_;
     my $tree = $class->_build_tree;
     $tree->parse_content($html);
-    my $self = $class->new_from_element([$tree->guts]);
+    my $self = $class->new_from_element([$tree->disembowel]);
     $self->{need_delete}++;
     return $self;
 }
@@ -160,7 +160,7 @@ sub html {
             $_->delete_content; 
             my $tree = $self->_build_tree;
             $tree->parse_content($_[0]);
-            $_->push_content($tree->guts);
+            $_->push_content($tree->disembowel);
         } @{$self->{trees}};
         return $self;
     } 
