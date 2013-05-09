@@ -115,7 +115,7 @@ sub parent {
     my $self = shift;
     my @new;
     for my $tree (@{$self->{trees}}) {
-        push @new, $tree->getParentNode();
+        push @new, $tree->parent();
     }
     return (ref $self || $self)->new_from_element(\@new, $self);
 }
