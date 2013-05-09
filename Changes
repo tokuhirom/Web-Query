@@ -2,6 +2,15 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.18 2013-05-09T19:40:40Z
+
+    - fixed html() method, now using $self->_build_tree
+    - calling parent() instead of undocumented getParentNode()
+    - calling disembowel() instead of guts()
+      Need for Web::Query::LibXML, so nodes get detached from old document and returned each as root of a new document.
+      (Carlos Fernando Avila Gratz)
+      
+
 0.17 2013-05-08T01:18:36Z
 
     - new_from_file() now calling guts() instead of elementify()

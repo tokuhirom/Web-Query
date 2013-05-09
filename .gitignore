@@ -24,3 +24,5 @@ Web-Query-*/
 !Build/
 !META.json
 !LICENSE
+/.project
+/.includepath

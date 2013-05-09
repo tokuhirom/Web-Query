@@ -69,13 +69,14 @@
          "web" : "https://github.com/tokuhirom/Web-Query"
       }
    },
-   "version" : "0.17",
+   "version" : "0.18",
    "x_contributors" : [
       "Hiroki Honda <cside.story@gmail.com>",
       "Oleg <verdrehung@gmail.com>",
       "Kang-min Liu <gugod@gugod.org>",
       "Yanick Champoux <yanick@babyl.dyndns.org>",
+      "Tokuhiro Matsuno <tokuhirom@gmail.com>",
       "Carlos Fernando Avila Gratz <cafe@q1software.com>",
-      "tokuhirom <tokuhirom@gmail.com>"
+      "Carlos Fernando Avila Gratz <cafe01@gmail.com>"
    ]
 }
