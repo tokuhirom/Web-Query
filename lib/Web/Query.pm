@@ -143,6 +143,19 @@ sub find {
     return (ref $self || $self)->new_from_element(\@new, $self);
 }
 
+sub contents {
+    my ($self, $selector) = @_;
+    
+    my @new = map { $_->content_list } @{$self->{trees}};
+    
+    if ($selector) {
+        my $xpath = selector_to_xpath($selector);
+        @new = grep { $_->matches($xpath) } @new;        
+    }
+    
+    return (ref $self || $self)->new_from_element(\@new, $self);    
+}
+
 sub as_html {
     my $self = shift;
 
