@@ -36,6 +36,12 @@ subtest 'from html' => sub {
     test(wq($html));
 };
 
+subtest 'from Web::Query object' => sub {
+    plan tests => 5;
+    my $tree = HTML::TreeBuilder::XPath->new_from_file('t/data/foo.html');
+    test(wq(wq($tree)));
+};
+
 if (eval "require URI; 1;") {
     subtest 'from URI' => sub {
         plan tests => 5;

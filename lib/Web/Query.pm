@@ -52,6 +52,10 @@ sub _resolve_new {
         if ($stuff->isa('URI')) {
             return $class->new_from_url($stuff->as_string);
         } 
+        
+        if ($stuff->isa($class)) {
+            return $class->new_from_element($stuff->{trees});
+        } 
 
         die "Unknown source type: $stuff";
     }
