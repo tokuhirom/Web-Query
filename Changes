@@ -2,6 +2,12 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.19 2013-05-12T18:19:57Z
+
+    - implemented contents() jQuery-compatible method
+    - new() now accepts another Web::Query object
+      (cafe01)      
+
 0.18 2013-05-09T19:40:40Z
 
     - fixed html() method, now using $self->_build_tree
