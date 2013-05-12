@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 4;
+use Test::More;
 use Web::Query;
 
 my $html = "<div><p>foo</p></div><div><p>bar</p></div><div><span>baz</span></div>";
@@ -12,3 +12,4 @@ is join('|', wq($html)->contents('p')->as_html), '<p>foo</p>|<p>bar</p>', 'conte
 
 
 
+done_testing;
