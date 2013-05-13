@@ -2,6 +2,14 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.20 2013-05-13T22:51:02Z
+
+    - improved documentation
+    - fixed find() to match only descendant elements
+      This is the correct jQuery compatible implementation, which I have changed in 0.14 to also match root nodes, my bad.
+    - fixed tests that relied on that wrong find() behavior.
+      (cafe01)
+
 0.19 2013-05-12T18:19:57Z
 
     - implemented contents() jQuery-compatible method
