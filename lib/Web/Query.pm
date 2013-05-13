@@ -240,7 +240,9 @@ sub filter {
         return $self;
 
     } else {
-        return $self->find($_[0])
+        my $xpath = selector_to_xpath($_[0]);
+        my @new = grep { $_->matches($xpath) } @{$self->{trees}};        
+        return (ref $self || $self)->new_from_element(\@new, $self);
     }
 }
 
