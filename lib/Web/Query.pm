@@ -480,6 +480,8 @@ This is a shortcut for C<< Web::Query->new($stuff) >>. This function is exported
 
 =head1 METHODS
 
+=head2 CONSTRUCTORS
+
 =over 4
 
 =item my $q = Web::Query->new($stuff, \%options )
@@ -497,7 +499,7 @@ the indentation string if the object is printed.
 
 Create new instance of Web::Query from instance of L<HTML::Element>.
 
-=item C<< my $q = Web::Query->new_from_html($html: Str) >>
+=item my $q = Web::Query->new_from_html($html: Str)
 
 Create new instance of Web::Query from HTML.
 
@@ -519,83 +521,158 @@ Here is a best practical code:
 
 Create new instance of Web::Query from file name.
 
-=item my @html = $q->html();
+=back
 
-=item my $html = $q->html();
+=head2 TRAVERSING
 
-=item $q->html('<p>foo</p>');
+=head3 contents
 
-Get/Set the innerHTML.
+Get the immediate children of each element in the set of matched elements, including text and comment nodes.
 
-=item $q->as_html();
-
-Return the elements associated with the object as strings. 
-If called in a scalar context, only return the string representation
-of the first element.
-
-=item my @text = $q->text();
-
-=item my $text = $q->text();
-
-=item $q->text('text');
-
-Get/Set the inner text.
-
-=item my $attr = $q->attr($name);
-
-=item C<< $q->attr($name, $val); >>
-
-Get/Set the attribute value in element.
-
-=item $q = $q->find($selector)
-
-This method find nodes by $selector from $q. $selector is a CSS3 selector.
-
-=item $q->each(sub { my ($i, $elem) = @_; ... })
+=head3 each
 
 Visit each nodes. C<< $i >> is a counter value, 0 origin. C<< $elem >> is iteration item.
 C<< $_ >> is localized by C<< $elem >>.
 
-=item $q->map(sub { my ($i, $elem) = @_; ... })
+    $q->each(sub { my ($i, $elem) = @_; ... })
 
-Creates a new array with the results of calling a provided function on every element.
-
-=item $q->filter(sub { my ($i, $elem) = @_; ... })
-
-Reduce the elements to those that pass the function's test.
-
-=item $q->end()
+=head3 end
 
 Back to the before context like jQuery.
 
-=item my $size = $q->size() : Int
+=head3 filter
 
-Return the number of DOM elements matched by the Web::Query object.
+Reduce the elements to those that pass the function's test.
 
-=item my $parent = $q->parent() : Web::Query
+    $q->filter(sub { my ($i, $elem) = @_; ... })
 
-Return the parent node from C<< $q >>.
+=head3 find
 
-=item my $first = $q->first()
+Get the descendants of each element in the current set of matched elements, filtered by a selector.
+
+    my $q2 = $q->find($selector); # $selector is a CSS3 selector.
+
+=head3 first
 
 Return the first matching element.
 
 This method constructs a new Web::Query object from the first matching element.
 
-=item my $last = $q->last()
+=head3 last
 
 Return the last matching element.
 
 This method constructs a new Web::Query object from the last matching element.
 
-=item $q->remove()
+=head3 map
+
+Creates a new array with the results of calling a provided function on every element.
+
+    $q->map(sub { my ($i, $elem) = @_; ... })
+
+=head3 parent
+
+Get the parent of each element in the current set of matched elements.
+
+=head2 MANIPULATION
+
+=head3 add_class
+
+Adds the specified class(es) to each of the set of matched elements.
+
+    # add class 'foo' to <p> elements
+    wq('<div><p>foo</p><p>bar</p></div>')->find('p')->add_class('foo'); 
+
+=head3 after
+
+Insert content, specified by the parameter, after each element in the set of matched elements.
+
+    wq('<div><p>foo</p></div>')->find('p')
+                               ->after('<b>bar</b>')
+                               ->end
+                               ->as_html; # <div><p>foo</p><b>bar</b></div>
+    
+The content can be anything accepted by L<new>.
+
+=head3 append
+
+Insert content, specified by the parameter, to the end of each element in the set of matched elements.
+
+    wq('<div></div>')->append('<p>foo</p>')->as_html; # <div><p>foo</p></div>
+    
+The content can be anything accepted by L<new>.
+
+=head3 as_html
+
+Return the elements associated with the object as strings. 
+If called in a scalar context, only return the string representation
+of the first element.
+
+=head3 attr
+
+Get/Set the attribute value in element.
+
+    my $attr = $q->attr($name);
+
+    $q->attr($name, $val);
+
+=head3 before
+
+Insert content, specified by the parameter, before each element in the set of matched elements.
+
+    wq('<div><p>foo</p></div>')->find('p')
+                               ->before('<b>bar</b>')
+                               ->end
+                               ->as_html; # <div><b>bar</b><p>foo</p></div>
+    
+The content can be anything accepted by L<new>.
+
+=head3 clone
+
+Create a deep copy of the set of matched elements.
+
+=head3 detach
+
+Remove the set of matched elements from the DOM.
+
+=head3 has_class
+
+Determine whether any of the matched elements are assigned the given class.
+
+=head3 html
+
+Get/Set the innerHTML.
+
+    my @html = $q->html();
+
+    my $html = $q->html(); # 1st matching element only
+
+    $q->html('<p>foo</p>');
+
+=head3 insert_before
+
+Insert every element in the set of matched elements before the target.
+
+=head3 insert_after
+
+Insert every element in the set of matched elements after the target.
+
+=head3 prepend
+
+Insert content, specified by the parameter, to the beginning of each element in the set of matched elements. 
+
+=head3 remove
 
 Delete the elements associated with the object from the DOM.
 
     # remove all <blink> tags from the document
     $q->find('blink')->remove;
 
-=item $q->replace_with( $replacement );
+=head3 remove_class
+
+Remove a single class, multiple classes, or all classes from each element in the set of matched elements.
+
+=head3 replace_with
 
 Replace the elements of the object with the provided replacement. 
 The replacement can be a string, a C<Web::Query> object or an 
@@ -616,7 +693,24 @@ node and the node itself (with is also localized as C<$_>).
     });
         # <p><b>Abra</b><cada></cada><u>bra</u></p>
 
-=back
+=head3 size
+
+Return the number of elements in the Web::Query object.
+
+    wq('<div><p>foo</p><p>bar</p></div>')->find('p')->size; # 2
+
+=head3 text
+
+Get/Set the text.
+
+    my @text = $q->text();
+
+    my $text = $q->text(); # 1st matching element only
+
+    $q->text('text');
+    
+If called in a scalar context, only return the string representation
+of the first element
 
 =head1 HOW DO I CUSTOMIZE USER AGENT?
 
