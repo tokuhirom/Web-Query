@@ -37,8 +37,8 @@ subtest 'map' => sub {
     is_deeply wq($html)->find('div')->map(sub {$_->attr('id')}), [qw/foo bar baz/];
 };
 subtest 'filter' => sub {
-    is wq($html)->filter('div')->size,                                          3;
-    is wq($html)->filter('body')->size,                                         1;
+    is wq($html)->filter('div')->size,                                          0;
+    is wq($html)->filter('body')->size,                                         0;
     is wq($html)->filter('li')->size,                                           0;
     is wq($html)->find('div')->filter(sub {$_->attr('id') =~ /ba/})->size,      2;
     is wq($html)->find('div')->filter(sub {my $i = shift; $i % 2 == 0})->size,  2;
