@@ -7,14 +7,14 @@ use Web::Query;
 
 my $wq = wq(<<HTML);
 <div class="container">
-  <div class="inner">Hello</div>
-  <div class="inner">Goodbye</div>
+  <div class="inner"><p>Hello</p></div>
+  <div class="inner"><p>Goodbye</p></div>
 </div>
 HTML
 
 my $detached = $wq->find('.inner')->detach;
-is join('', $detached->as_html), '<div class="inner">Hello</div><div class="inner">Goodbye</div>', 'detach - retval';
+is join('', $detached->as_html), '<div class="inner"><p>Hello</p></div><div class="inner"><p>Goodbye</p></div>', 'detach - retval';
 is $wq->as_html, '<div class="container"></div>', 'detach - original object modified';
-is $detached->find('.inner')->size, 2, 'detached can find() root elements';
+is $detached->find('p')->size, 2, 'find() works on detached elements';
 
 done_testing;

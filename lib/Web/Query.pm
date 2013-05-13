@@ -136,13 +136,9 @@ sub last {
 
 sub find {
     my ($self, $selector) = @_;
-    my $xpath_rootless = selector_to_xpath($selector);
     
-    my @new;
-    for my $tree (@{$self->{trees}}) {
-        push @new, $tree if defined $tree->parent && $tree->matches($xpath_rootless);
-        push @new, $tree->findnodes(selector_to_xpath($selector, root => defined $tree->parent ? './' : '/'));
-    }
+    my $xpath = selector_to_xpath($selector, root => './');    
+    my @new = map { $_->findnodes($xpath) } @{$self->{trees}};
     
     return (ref $self || $self)->new_from_element(\@new, $self);
 }

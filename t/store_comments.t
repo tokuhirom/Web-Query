@@ -3,7 +3,7 @@ use warnings;
 use Test::More;
 use Web::Query;
 
-my $source = '<!-- header --><header></header>';
+my $source = '<div><!-- header --><header></header></div>';
 
 is join('', wq($source)->as_html), $source, 'constructor stores comments';
 

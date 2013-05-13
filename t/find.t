@@ -19,6 +19,6 @@ HTML
 
 is $wq->find('.inner')->size, 2, 'find() on multiple tree object';
 
-is wq('<html>1</html>')->find('html')->size, 1, 'find() includes root elements';
-is(wq('<div>foo</div><div>bar</div>')->find('div')->size, 2);
+is wq('<html>1</html>')->find('html')->size, 0, 'find() includes root elements';
+is(wq('<div>foo</div><div>bar</div>')->find('div')->size, 0);
 
