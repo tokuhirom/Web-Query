@@ -2,6 +2,12 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.21 2013-05-15T14:36:11Z
+
+    - new jQuery-compatible method: add()
+    - fixed filter() that relied on wrong find() behavior
+    - fixed two t/03_traverse.t tests that was expecting wrong behavior from filter()    
+
 0.20 2013-05-13T22:51:02Z
 
     - improved documentation

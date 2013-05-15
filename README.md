@@ -75,6 +75,28 @@ __THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE__.
 
 ## TRAVERSING
 
+### add
+
+Add elements to the set of matched elements.
+
+- add($html)
+
+    An HTML fragment to add to the set of matched elements.
+
+- add(@elements)
+
+    One or more @elements to add to the set of matched elements.
+
+- add($wq)
+
+    An existing Web::Query object to add to the set of matched elements.
+
+- add($selector, $context)
+
+    $selector is a string representing a selector expression to find additional elements to add to the set of matched elements.
+
+    $context is the point in the document at which the selector should begin matching
+
 ### contents
 
 Get the immediate children of each element in the set of matched elements, including text and comment nodes.
