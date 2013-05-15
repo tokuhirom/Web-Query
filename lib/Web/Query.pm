@@ -427,6 +427,27 @@ sub clone {
     return (ref $self || $self)->new_from_element(\@clones);
 }
 
+sub add {
+    my ($self, @stuff) = @_;
+    my @nodes;
+    
+    # add(selector, context)
+    if (@stuff == 2 && !ref $stuff[0] && $stuff[1]->isa('HTML::Element')) {
+        push @nodes, $stuff[1]->findnodes(selector_to_xpath($stuff[0]), root => './');        
+    }
+    else {
+        # handle any combination of html string, element object and web::query object
+        push @nodes, map { 
+            $self->{need_delete} = 1 if $_->{need_delete};
+            delete $_->{need_delete};
+            @{$_->{trees}}; 
+        } map { (ref $self || $self)->new($_) } @stuff;                
+    }
+    
+    push @{$self->{trees}}, @nodes;
+    $self;
+}
+
 sub DESTROY {
     if ($_[0]->{need_delete}) {
         $_->delete for @{$_[0]->{trees}}; # avoid memory leaks
@@ -522,6 +543,32 @@ Create new instance of Web::Query from file name.
 =back
 
 =head2 TRAVERSING
+
+=head3 add
+
+Add elements to the set of matched elements.
+
+=over 4
+
+=item add($html)
+
+An HTML fragment to add to the set of matched elements.
+
+=item add(@elements)
+
+One or more @elements to add to the set of matched elements.
+
+=item add($wq)
+
+An existing Web::Query object to add to the set of matched elements.
+
+=item add($selector, $context)
+
+$selector is a string representing a selector expression to find additional elements to add to the set of matched elements.
+
+$context is the point in the document at which the selector should begin matching
+
+=back
 
 =head3 contents
 
