@@ -2,6 +2,11 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.22 2013-05-15T23:36:38Z
+
+    - added new module: Web::Query::LibXML
+    - modified test files to also test Web::Query::LibXML (if it loads).
+
 0.21 2013-05-15T14:36:11Z
 
     - new jQuery-compatible method: add()
