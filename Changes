@@ -2,6 +2,14 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.23 2013-05-30T16:09:03Z
+
+    - improved find() documentation
+    - fixed cpanfile min perl version
+    - modified tests to use the expression form of eval to try to load Web::Query::LibXML
+      - the block form of eval is not working as expected on some perl versions on i386-freebsd
+      (cafe01)
+      
 0.22 2013-05-15T23:36:38Z
 
     - added new module: Web::Query::LibXML
