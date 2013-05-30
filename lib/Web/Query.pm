@@ -369,7 +369,7 @@ sub add_class {
             
     for (my $i = 0; $i < @{$self->{trees}}; $i++) {
         my $t = $self->{trees}->[$i];        
-        my $current_class = $t->attr('class');
+        my $current_class = $t->attr('class') || '';
         
         my $classes = ref $class eq 'CODE' ? $class->($i, $current_class, $t) : $class;
         my @classes = split /\s+/, $classes;
@@ -596,6 +596,15 @@ Reduce the elements to those that pass the function's test.
 Get the descendants of each element in the current set of matched elements, filtered by a selector.
 
     my $q2 = $q->find($selector); # $selector is a CSS3 selector.
+    
+B<NOTE> If you want to match the element itself, use L</filter>.
+
+B<INCOMPATIBLE CHANGE> 
+From v0.14 to v0.19 (inclusive) find() also matched the element itself, which is not jQuery compatible.
+You can achieve that result using C<filter()>, C<add()> and C<find()>:
+
+    my $wq = wq('<div class="foo"><p class="foo">bar</p></div>'); # needed because we don't have a global document like jQuery does
+    print $wq->filter('.foo')->add($wq->find('.foo'))->as_html; # <div class="foo"><p class="foo">bar</p></div><p class="foo">bar</p>
 
 =head3 first
 
@@ -637,7 +646,7 @@ Insert content, specified by the parameter, after each element in the set of mat
                                ->end
                                ->as_html; # <div><p>foo</p><b>bar</b></div>
     
-The content can be anything accepted by L<new>.
+The content can be anything accepted by L</new>.
 
 =head3 append
 
@@ -645,7 +654,7 @@ Insert content, specified by the parameter, to the end of each element in the se
 
     wq('<div></div>')->append('<p>foo</p>')->as_html; # <div><p>foo</p></div>
     
-The content can be anything accepted by L<new>.
+The content can be anything accepted by L</new>.
 
 =head3 as_html
 
@@ -670,7 +679,7 @@ Insert content, specified by the parameter, before each element in the set of ma
                                ->end
                                ->as_html; # <div><b>bar</b><p>foo</p></div>
     
-The content can be anything accepted by L<new>.
+The content can be anything accepted by L</new>.
 
 =head3 clone
 
