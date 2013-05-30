@@ -4,7 +4,7 @@ use Test::More;
 use Web::Query;
 
 test('Web::Query');
-test('Web::Query::LibXML') if eval { require Web::Query::LibXML; 1 };
+test('Web::Query::LibXML') if eval "require Web::Query::LibXML; 1";
 
 done_testing;
 
