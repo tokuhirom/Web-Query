@@ -13,7 +13,7 @@ our @EXPORT = qw/wq/;
 sub wq { Web::Query::LibXML->new(@_) }
 
 sub _build_tree {
-    my ($self, $content) = @_;    
+    my $self = shift;
     my $tree = HTML::TreeBuilder::LibXML->new();
     $tree->ignore_unknown(0);
     $tree->store_comments(1);
