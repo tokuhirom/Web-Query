@@ -126,12 +126,22 @@ sub parent {
 
 sub first {
     my $self = shift;
-    return (ref $self || $self)->new_from_element([$self->{trees}[0] || ()], $self);
+    return $self->eq(0);
 }
 
 sub last {
     my $self = shift;
-    return (ref $self || $self)->new_from_element([$self->{trees}[-1] || ()], $self);
+    return $self->eq(-1);
+}
+
+sub get {
+    my ($self, $index) = @_;
+    return $self->{trees}[$index];
+}
+
+sub eq {
+    my ($self, $index) = @_;
+    return (ref $self || $self)->new_from_element([$self->{trees}[$index] || ()], $self);
 }
 
 sub find {
