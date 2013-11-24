@@ -471,7 +471,7 @@ Web::Query - Yet another scraping library like jQuery
           ->find('h2')
           ->each(sub {
                 my $i = shift;
-                printf("%d) %s\n", $i+1, $_->text
+                printf("%d %s\n", $i+1, $_->text);
           });
 
 =head1 DESCRIPTION
