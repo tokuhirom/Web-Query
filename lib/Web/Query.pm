@@ -467,12 +467,12 @@ Web::Query - Yet another scraping library like jQuery
 
     use Web::Query;
 
-    wq('http://google.com/search?q=foobar')
-          ->find('h2')
-          ->each(sub {
-                my $i = shift;
-                printf("%d) %s\n", $i+1, $_->text
-          });
+    wq('http://www.w3.org/TR/html401/')
+        ->find('div.head dt')
+        ->each(sub {
+            my $i = shift;
+            printf("%d %s\n", $i+1, $_->text);
+        });
 
 =head1 DESCRIPTION
 
