@@ -24,7 +24,7 @@ sub __ua {
 }
 
 sub _build_tree {
-    my ($self, $content) = @_;    
+    my $class = shift;
     my $tree = HTML::TreeBuilder::XPath->new();
     $tree->ignore_unknown(0);
     $tree->store_comments(1);
