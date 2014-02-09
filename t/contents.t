@@ -20,4 +20,6 @@ sub test {
     
     is join('|', wq($html)->contents->as_html), '<p>foo</p>|<p>bar</p>|<span>baz</span>', 'contents()';    
     is join('|', wq($html)->contents('p')->as_html), '<p>foo</p>|<p>bar</p>', 'contents("p")';
+
+    is wq('<p>foo</p>')->contents->as_html => 'foo';
 }
