@@ -101,8 +101,8 @@ sub new_from_html {
 
 sub new_from_element {
     my $class = shift;
-    my $trees = ref $_[0] eq 'ARRAY' ? $_[0] : +[$_[0]];
-    return bless { trees => +[ grep { blessed $_ } @$trees ], before => $_[1] }, $class;
+    my $trees = ref $_[0] eq 'ARRAY' ? $_[0] : [$_[0]];
+    return bless { trees => [ @$trees ], before => $_[1] }, $class;
 }
 
 sub end {
@@ -169,7 +169,9 @@ sub contents {
 sub as_html {
     my $self = shift;
 
-    my @html = map { $_->as_HTML( q{&<>'"}, $self->{indent}, {} ) }
+    my @html = map { 
+        ref $_ ? $_->as_HTML( q{&<>'"}, $self->{indent}, {} ) 
+               : $_ }
         @{$self->{trees}};
 
     return wantarray ? @html : $html[0];
@@ -290,8 +292,11 @@ sub replace_with {
         $rep = (ref $self || $self)->new_from_html( $rep )
             unless ref $rep;
 
-        my $r = $rep->{trees}->[0]->clone;
-        $r->parent( $node->parent ) if $node->parent;
+
+            
+        my $r = $rep->{trees}->[0];
+        $r = $r->clone if ref $r;
+        $r->parent( $node->parent ) if ref $r and $node->parent;
 
         $node->replace_with( $r );
     }
@@ -459,9 +464,10 @@ sub add {
 }
 
 sub DESTROY {
-    if ($_[0]->{need_delete}) {
-        $_->delete for @{$_[0]->{trees}}; # avoid memory leaks
-    }
+    return unless $_[0]->{need_delete};
+
+    # avoid memory leaks
+    $_->delete for grep { ref $_ } @{$_[0]->{trees}};
 }
 
 1;

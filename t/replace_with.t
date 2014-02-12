@@ -1,18 +1,19 @@
 use strict;
 use warnings;
 use Test::More;
-use Web::Query;
 
-test('Web::Query');
-test('Web::Query::LibXML') if eval "require Web::Query::LibXML; 1";
+my @modules = qw/ Web::Query Web::Query::LibXML /;
 
-done_testing;
-    
-    
+plan tests => scalar @modules;
+
+subtest $_ => sub { test($_) } for @modules;
+
 sub test {
-    my $class = shift;    
-    diag "testing $class";
-        
+    my $class = shift;
+
+    eval "require $class; 1" 
+        or plan skip_all => "couldn't load $class";
+
     no warnings 'redefine';
     *wq = \&{$class . "::wq" };
     
@@ -33,6 +34,8 @@ sub test {
     
     is wq($html)->find('*')->replace_with( '<blink />' )->end->as_html
         => '<p><blink></blink><blink></blink><blink></blink></p>';    
+
+    is wq('<p><span>foo</span></p>')->find('span')
+        ->replace_with(sub { $_->contents })
+        ->end->as_html => '<p>foo</p>';
 }
-
-
