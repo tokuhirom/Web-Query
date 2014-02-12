@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ GMAIL COM>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.4.4, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Minilla/v0.11.0, CPAN::Meta::Converter version 2.133380",
    "license" : [
       "perl_5"
    ],
@@ -21,7 +21,8 @@
          "share",
          "eg",
          "examples",
-         "author"
+         "author",
+         "builder"
       ]
    },
    "prereqs" : {
@@ -69,14 +70,15 @@
          "web" : "https://github.com/tokuhirom/Web-Query"
       }
    },
-   "version" : "0.23",
+   "version" : "0.24",
    "x_contributors" : [
       "Hiroki Honda <cside.story@gmail.com>",
       "Oleg <verdrehung@gmail.com>",
       "Kang-min Liu <gugod@gugod.org>",
-      "Yanick Champoux <yanick@babyl.dyndns.org>",
-      "Tokuhiro Matsuno <tokuhirom@gmail.com>",
       "Carlos Fernando Avila Gratz <cafe01@gmail.com>",
-      "Carlos Fernando Avila Gratz <cafe@q1software.com>"
+      "DQNEO <dqneoo@gmail.com>",
+      "Carlos Fernando Avila Gratz <cafe@q1software.com>",
+      "Yanick Champoux <yanick@babyl.dyndns.org>",
+      "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ]
 }

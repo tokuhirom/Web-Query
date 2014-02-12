@@ -6,21 +6,21 @@ Web::Query - Yet another scraping library like jQuery
 
     use Web::Query;
 
-    wq('http://google.com/search?q=foobar')
-          ->find('h2')
-          ->each(sub {
-                my $i = shift;
-                printf("%d) %s\n", $i+1, $_->text
-          });
+    wq('http://www.w3.org/TR/html401/')
+        ->find('div.head dt')
+        ->each(sub {
+            my $i = shift;
+            printf("%d %s\n", $i+1, $_->text);
+        });
 
 # DESCRIPTION
 
 Web::Query is a yet another scraping framework, have a jQuery like interface.
 
-Yes, I know Ingy's [pQuery](http://search.cpan.org/perldoc?pQuery). But it's just a alpha quality. It doesn't works.
-Web::Query built at top of the CPAN modules, [HTML::TreeBuilder::XPath](http://search.cpan.org/perldoc?HTML::TreeBuilder::XPath), [LWP::UserAgent](http://search.cpan.org/perldoc?LWP::UserAgent), and [HTML::Selector::XPath](http://search.cpan.org/perldoc?HTML::Selector::XPath).
+Yes, I know Ingy's [pQuery](https://metacpan.org/pod/pQuery). But it's just a alpha quality. It doesn't works.
+Web::Query built at top of the CPAN modules, [HTML::TreeBuilder::XPath](https://metacpan.org/pod/HTML::TreeBuilder::XPath), [LWP::UserAgent](https://metacpan.org/pod/LWP::UserAgent), and [HTML::Selector::XPath](https://metacpan.org/pod/HTML::Selector::XPath).
 
-So, this module uses [HTML::Selector::XPath](http://search.cpan.org/perldoc?HTML::Selector::XPath) and only supports the CSS 3
+So, this module uses [HTML::Selector::XPath](https://metacpan.org/pod/HTML::Selector::XPath) and only supports the CSS 3
 selector supported by that module.
 Web::Query doesn't support jQuery's extended queries(yet?).
 
@@ -38,7 +38,7 @@ __THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE__.
 
 - my $q = Web::Query->new($stuff, \\%options )
 
-    Create new instance of Web::Query. You can make the instance from URL(http, https, file scheme), HTML in string, URL in string, [URI](http://search.cpan.org/perldoc?URI) object, and instance of [HTML::Element](http://search.cpan.org/perldoc?HTML::Element).
+    Create new instance of Web::Query. You can make the instance from URL(http, https, file scheme), HTML in string, URL in string, [URI](https://metacpan.org/pod/URI) object, and instance of [HTML::Element](https://metacpan.org/pod/HTML::Element).
 
     This method throw the exception on unknown $stuff.
 
@@ -49,7 +49,7 @@ __THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE__.
 
 - my $q = Web::Query->new\_from\_element($element: HTML::Element)
 
-    Create new instance of Web::Query from instance of [HTML::Element](http://search.cpan.org/perldoc?HTML::Element).
+    Create new instance of Web::Query from instance of [HTML::Element](https://metacpan.org/pod/HTML::Element).
 
 - my $q = Web::Query->new\_from\_html($html: Str)
 
@@ -300,7 +300,7 @@ of the first element
 
 # HOW DO I CUSTOMIZE USER AGENT?
 
-You can specify your own instance of [LWP::UserAgent](http://search.cpan.org/perldoc?LWP::UserAgent).
+You can specify your own instance of [LWP::UserAgent](https://metacpan.org/pod/LWP::UserAgent).
 
     $Web::Query::UserAgent = LWP::UserAgent->new( agent => 'Mozilla/5.0' );
 
@@ -316,7 +316,7 @@ Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ GMAIL COM>
 
 # SEE ALSO
 
-[pQuery](http://search.cpan.org/perldoc?pQuery)
+[pQuery](https://metacpan.org/pod/pQuery)
 
 # LICENSE
 
