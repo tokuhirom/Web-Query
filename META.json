@@ -70,7 +70,7 @@
          "web" : "https://github.com/tokuhirom/Web-Query"
       }
    },
-   "version" : "0.24",
+   "version" : "0.25",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "Hiroki Honda <cside.story@gmail.com>",

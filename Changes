@@ -2,6 +2,10 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.25 2014-02-13T01:26:42Z
+
+    - re-packaging(no feature changes)
+
 0.24 2014-02-12T05:34:09Z
 
     - replace_with: Can't call method "clone" on an undefined value #24
