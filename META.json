@@ -71,6 +71,7 @@
       }
    },
    "version" : "0.24",
+   "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "Hiroki Honda <cside.story@gmail.com>",
       "Oleg <verdrehung@gmail.com>",
