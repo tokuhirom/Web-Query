@@ -40,8 +40,23 @@ sub remove {
     $self;
 }
 
+sub prev {
+    my $self = shift;
+    my @new;
+    for my $tree (@{$self->{trees}}) {
+        push @new, $tree->left;
+    }
+    return (ref $self || $self)->new_from_element(\@new, $self);
+}
 
-
+sub next {
+    my $self = shift;
+    my @new;
+    for my $tree (@{$self->{trees}}) {
+        push @new, $tree->right;
+    }
+    return (ref $self || $self)->new_from_element(\@new, $self);
+}
 
 1;
 __END__
