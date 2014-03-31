@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use 5.008001;
 use parent qw/Exporter/;
-our $VERSION = '0.25';
+our $VERSION = '0.26';
 use HTML::TreeBuilder::XPath;
 use LWP::UserAgent;
 use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
@@ -493,6 +493,8 @@ __END__
 
 =encoding utf8
 
+=for stopwords prev
+
 =head1 NAME
 
 Web::Query - Yet another scraping library like jQuery
@@ -552,7 +554,7 @@ the indentation string if the object is printed.
 
 Create new instance of Web::Query from instance of L<HTML::Element>.
 
-=item my $q = Web::Query->new_from_html($html: Str)
+=item C<< my $q = Web::Query->new_from_html($html: Str) >>
 
 Create new instance of Web::Query from HTML.
 
@@ -670,7 +672,7 @@ Get the previous node of each element in the current set of matched elements.
 
 =head3 next
 
-Get the next nede of each element in the current set of matched elements.
+Get the next node of each element in the current set of matched elements.
 
    my $next = $q->next;
 
@@ -708,7 +710,7 @@ Return the elements associated with the object as strings.
 If called in a scalar context, only return the string representation
 of the first element.
 
-=head3 attr
+=head3 C< attr >
 
 Get/Set the attribute value in element.
 
@@ -739,7 +741,7 @@ Remove the set of matched elements from the DOM.
 
 Determine whether any of the matched elements are assigned the given class.
 
-=head3 html
+=head3 C< html >
 
 Get/Set the innerHTML.
 
@@ -757,7 +759,7 @@ Insert every element in the set of matched elements before the target.
 
 Insert every element in the set of matched elements after the target.
 
-=head3 prepend
+=head3 C< prepend >
 
 Insert content, specified by the parameter, to the beginning of each element in the set of matched elements. 
 

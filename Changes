@@ -2,6 +2,11 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.26 2014-03-31T08:23:34Z
+
+    - impl prev() and next() method #31
+      (xaicron)
+
 0.25 2014-02-13T01:26:42Z
 
     - re-packaging(no feature changes)
