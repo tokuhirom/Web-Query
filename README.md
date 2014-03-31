@@ -156,6 +156,18 @@ Creates a new array with the results of calling a provided function on every ele
 
 Get the parent of each element in the current set of matched elements.
 
+### prev
+
+Get the previous node of each element in the current set of matched elements.
+
+    my $prev = $q->prev;
+
+### next
+
+Get the next nede of each element in the current set of matched elements.
+
+    my $next = $q->next;
+
 ## MANIPULATION
 
 ### add\_class
@@ -306,7 +318,7 @@ You can specify your own instance of [LWP::UserAgent](https://metacpan.org/pod/L
 
 # INCOMPATIBLE CHANGES
 
-0. 10
+- 0.10
 
     new\_from\_url() is no longer throws exception on bad response from HTTP server.
 

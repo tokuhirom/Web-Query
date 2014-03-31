@@ -463,6 +463,24 @@ sub add {
     $self;
 }
 
+sub prev {
+    my $self = shift;
+    my @new;
+    for my $tree (@{$self->{trees}}) {
+        push @new, $tree->getPreviousSibling;
+    }
+    return (ref $self || $self)->new_from_element(\@new, $self);
+}
+
+sub next {
+    my $self = shift;
+    my @new;
+    for my $tree (@{$self->{trees}}) {
+        push @new, $tree->getNextSibling;
+    }
+    return (ref $self || $self)->new_from_element(\@new, $self);
+}
+
 sub DESTROY {
     return unless $_[0]->{need_delete};
 
@@ -643,6 +661,18 @@ Creates a new array with the results of calling a provided function on every ele
 =head3 parent
 
 Get the parent of each element in the current set of matched elements.
+
+=head3 prev
+
+Get the previous node of each element in the current set of matched elements.
+
+    my $prev = $q->prev;
+
+=head3 next
+
+Get the next nede of each element in the current set of matched elements.
+
+   my $next = $q->next;
 
 =head2 MANIPULATION
 
