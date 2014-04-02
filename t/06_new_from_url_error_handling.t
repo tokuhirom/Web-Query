@@ -19,14 +19,14 @@ $ua->add_handler(request_send => sub {
 subtest 'bad status code' => sub {
     my $q = wq('http://bad.com/');
     is($q, undef);
-    isa_ok($Web::Query::RESPONSE, 'HTTP::Response');
-    is($Web::Query::RESPONSE->code, 500);
+    isa_ok(Web::Query->last_response, 'HTTP::Response');
+    is(Web::Query->last_response->code, 500);
 };
 subtest 'good status code' => sub {
     my $q = wq('http://good.com/');
     ok($q);
-    isa_ok($Web::Query::RESPONSE, 'HTTP::Response');
-    is($Web::Query::RESPONSE->code, 200);
+    isa_ok(Web::Query->last_response, 'HTTP::Response');
+    is(Web::Query->last_response->code, 200);
 };
 
 done_testing;
