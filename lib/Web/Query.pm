@@ -229,7 +229,7 @@ sub attr {
 
 sub tagname {
     my $self = shift;
-    my @retval = map { $_->tagname(@_) } @{$self->{trees}};
+    my @retval = map { $_->tag(@_) } @{$self->{trees}};
     return wantarray ? @retval : $retval[0];
 }
 
