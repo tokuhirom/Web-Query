@@ -24,78 +24,86 @@ sub __ua {
 }
 
 sub _build_tree {
-    my $class = shift;
-    my $tree = HTML::TreeBuilder::XPath->new();
+    my( $self, $options ) = @_;
+
+    my $no_space_compacting = ref $self ? $self->{no_space_compacting} 
+    : ref $options eq 'HASH' ? $options->{no_space_compacting} : 0;
+
+    my $tree = HTML::TreeBuilder::XPath->new( 
+        no_space_compacting => $no_space_compacting
+    );
     $tree->ignore_unknown(0);
     $tree->store_comments(1);
-    $tree;    
+    $tree;
 }
 
 sub new {
     my ($class, $stuff, $options) = @_;
 
-    my $self = $class->_resolve_new($stuff)
+    my $self = $class->_resolve_new($stuff,$options);
         or return undef;
 
     $self->{indent} = $options->{indent} if $options->{indent};
+
+    $self->{no_space_compacting} = $options->{no_space_compacting};
 
     return $self;
 }
 
 sub _resolve_new {
-    my( $class, $stuff ) = @_;
+    my( $class, $stuff, $options) = @_;
 
     if (blessed $stuff) {
         if ($stuff->isa('HTML::Element')) {
-            return $class->new_from_element([$stuff]);
+            return $class->new_from_element([$stuff],$options);
         } 
         
         if ($stuff->isa('URI')) {
-            return $class->new_from_url($stuff->as_string);
+            return $class->new_from_url($stuff->as_string,$options);
         } 
         
         if ($stuff->isa($class)) {
-            return $class->new_from_element($stuff->{trees});
+            return $class->new_from_element($stuff->{trees}, $options);
         } 
 
         die "Unknown source type: $stuff";
     }
 
-    return $class->new_from_element($stuff) if ref $stuff eq 'ARRAY';
+    return $class->new_from_element($stuff,$options) if ref $stuff eq 'ARRAY';
 
-    return $class->new_from_url($stuff) if $stuff =~ m{^(?:https?|file)://};
+    return $class->new_from_url($stuff,$options) if $stuff =~ m{^(?:https?|file)://};
 
-    return $class->new_from_html($stuff) if $stuff =~ /<.*?>/;
+    return $class->new_from_html($stuff,$options) if $stuff =~ /<.*?>/;
 
-    return $class->new_from_file($stuff) if $stuff !~ /\n/ && -f $stuff;
+    return $class->new_from_file($stuff,$options) if $stuff !~ /\n/ && -f $stuff;
 
     die "Unknown source type: $stuff";
 }
 
 sub new_from_url {
-    my ($class, $url) = @_;
+    my ($class, $url,$options) = @_;
     $RESPONSE = __ua()->get($url);
     if ($RESPONSE->is_success) {
-        return $class->new_from_html($RESPONSE->decoded_content);
+        return $class->new_from_html($RESPONSE->decoded_content,$options);
     } else {
         return undef;
     }
 }
 
 sub new_from_file {
-    my ($class, $fname) = @_;
-    my $tree = $class->_build_tree;
+    my ($class, $fname, $options) = @_;
+    my $tree = $class->_build_tree($options);
     $tree->parse_file($fname);
-    my $self = $class->new_from_element([$tree->disembowel]);
+    my $self = $class->new_from_element([$tree->disembowel],$options);
     $self->{need_delete}++;
     return $self;
 }
 
 sub new_from_html {
-    my ($class, $html) = @_;
-    my $tree = $class->_build_tree;
+    my ($class, $html,$options) = @_;
+    my $tree = $class->_build_tree($options);
     $tree->parse_content($html);
-    my $self = $class->new_from_element([$tree->disembowel]);
+    my $self = $class->new_from_element([$tree->disembowel],$options);
     $self->{need_delete}++;
     return $self;
 }
@@ -553,8 +561,9 @@ This method throw the exception on unknown $stuff.
 
 This method returns undefined value on non-successful response with URL.
 
-Currently, the only option valid option is I<indent>, which will be used as
-the indentation string if the object is printed.
+Currently, the only two valid options are I<indent>, which will be used as
+the indentation string if the object is printed, and I<no_space_compacting>, 
+which will prevent the compaction of whitespace characters in text blocks.
 
 =item my $q = Web::Query->new_from_element($element: HTML::Element)
 
