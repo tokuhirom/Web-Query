@@ -156,7 +156,7 @@ sub eq {
 sub find {
     my ($self, $selector) = @_;
     
-    my $xpath = selector_to_xpath($selector, root => './');    
+    my $xpath = ref $selector ? $$selector : selector_to_xpath($selector, root => './');
     my @new = map { $_->findnodes($xpath) } @{$self->{trees}};
     
     return (ref $self || $self)->new_from_element(\@new, $self);
@@ -168,7 +168,7 @@ sub contents {
     my @new = map { $_->content_list } @{$self->{trees}};
     
     if ($selector) {
-        my $xpath = selector_to_xpath($selector);
+        my $xpath = ref $selector ? $$selector : selector_to_xpath($selector);
         @new = grep { $_->matches($xpath) } @new;        
     }
     
@@ -267,7 +267,7 @@ sub filter {
         return $self;
 
     } else {
-        my $xpath = selector_to_xpath($_[0]);
+        my $xpath = ref $_[0] ? ${$_[0]} : selector_to_xpath($_[0]);
         my @new = grep { $_->matches($xpath) } @{$self->{trees}};        
         return (ref $self || $self)->new_from_element(\@new, $self);
     }
@@ -463,7 +463,8 @@ sub add {
     
     # add(selector, context)
     if (@stuff == 2 && !ref $stuff[0] && $stuff[1]->isa('HTML::Element')) {
-        push @nodes, $stuff[1]->findnodes(selector_to_xpath($stuff[0]), root => './');        
+        my $xpath = ref $stuff[0] ? ${$stuff[0]} : selector_to_xpath($stuff[0]);
+        push @nodes, $stuff[1]->findnodes( $xpath, root => './');
     }
     else {
         # handle any combination of html string, element object and web::query object
@@ -539,7 +540,12 @@ Web::Query built at top of the CPAN modules, L<HTML::TreeBuilder::XPath>, L<LWP:
 
 So, this module uses L<HTML::Selector::XPath> and only supports the CSS 3
 selector supported by that module.
-Web::Query doesn't support jQuery's extended queries(yet?).
+Web::Query doesn't support jQuery's extended queries(yet?). If a selector is 
+passed as a scalar ref, it'll be taken as a straight XPath expression.
+
+    $wq( '<div><p>hello</p><p>there</p></div>' )->find( 'p' );       # css selector
+    $wq( '<div><p>hello</p><p>there</p></div>' )->find( \'/div/p' ); # xpath selector
+
 
 B<THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE>.
 
