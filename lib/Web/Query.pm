@@ -34,7 +34,8 @@ sub _build_tree {
 sub new {
     my ($class, $stuff, $options) = @_;
 
-    my $self = $class->_resolve_new($stuff);
+    my $self = $class->_resolve_new($stuff)
+        or return undef;
 
     $self->{indent} = $options->{indent} if $options->{indent};
 
