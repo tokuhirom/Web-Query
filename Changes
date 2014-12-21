@@ -5,6 +5,7 @@ Revision history for Perl extension Web::Query
     - new() with a bad url wasn't returning 'undef'
         when options were given.
     - Add 'no_space_compacting' option. #33
+    - Add 'tagname' to query/modify tag names. #34
 
 0.26 2014-03-31T08:23:34Z
 
