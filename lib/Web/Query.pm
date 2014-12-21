@@ -227,6 +227,12 @@ sub attr {
     return wantarray ? @retval : $retval[0];
 }
 
+sub tagname {
+    my $self = shift;
+    my @retval = map { $_->tag(@_) } @{$self->{trees}};
+    return wantarray ? @retval : $retval[0];
+}
+
 sub each {
     my ($self, $code) = @_;
     my $i = 0;
@@ -732,6 +738,14 @@ Get/Set the attribute value in element.
     my $attr = $q->attr($name);
 
     $q->attr($name, $val);
+
+=head3 tagname
+
+Get/Set the tag name of elements.
+
+    my $name = $q->tagname;
+
+    $q->tagname($new_name);
 
 =head3 before
 
