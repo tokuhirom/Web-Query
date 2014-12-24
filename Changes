@@ -2,6 +2,8 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
 
+0.27 2014-12-24T00:52:33Z
+
     - new() with a bad url wasn't returning 'undef'
         when options were given. (yanick)
     - Add 'no_space_compacting' option. #33 (yanick)
