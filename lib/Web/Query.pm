@@ -54,17 +54,14 @@ sub _resolve_new {
     my( $class, $stuff, $options) = @_;
 
     if (blessed $stuff) {
-        if ($stuff->isa('HTML::Element')) {
-            return $class->new_from_element([$stuff],$options);
-        } 
-        
-        if ($stuff->isa('URI')) {
-            return $class->new_from_url($stuff->as_string,$options);
-        } 
-        
-        if ($stuff->isa($class)) {
-            return $class->new_from_element($stuff->{trees}, $options);
-        } 
+        return $class->new_from_element([$stuff],$options)
+            if $stuff->isa('HTML::Element');
+
+        return $class->new_from_url($stuff->as_string,$options)
+            if $stuff->isa('URI');
+
+        return $class->new_from_element($stuff->{trees}, $options);
+            if $stuff->isa($class);
 
         die "Unknown source type: $stuff";
     }
