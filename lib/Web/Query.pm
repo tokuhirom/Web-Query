@@ -54,19 +54,19 @@ sub _resolve_new {
     my( $class, $stuff, $options) = @_;
 
     if (blessed $stuff) {
-        return $class->new_from_element([$stuff],$options)
+        return $class->new_from_element([$stuff],undef,$options)
             if $stuff->isa('HTML::Element');
 
         return $class->new_from_url($stuff->as_string,$options)
             if $stuff->isa('URI');
 
-        return $class->new_from_element($stuff->{trees}, $options);
+        return $class->new_from_element($stuff->{trees}, undef, $options)
             if $stuff->isa($class);
 
         die "Unknown source type: $stuff";
     }
 
-    return $class->new_from_element($stuff,$options) if ref $stuff eq 'ARRAY';
+    return $class->new_from_element($stuff,undef,$options) if ref $stuff eq 'ARRAY';
 
     return $class->new_from_url($stuff,$options) if $stuff =~ m{^(?:https?|file)://};
 
@@ -79,19 +79,19 @@ sub _resolve_new {
 
 sub new_from_url {
     my ($class, $url,$options) = @_;
+
     $RESPONSE = __ua()->get($url);
-    if ($RESPONSE->is_success) {
-        return $class->new_from_html($RESPONSE->decoded_content,$options);
-    } else {
-        return undef;
-    }
+
+    return undef unless $RESPONSE->is_success;
+
+    return $class->new_from_html($RESPONSE->decoded_content,$options);
 }
 
 sub new_from_file {
     my ($class, $fname, $options) = @_;
     my $tree = $class->_build_tree($options);
     $tree->parse_file($fname);
-    my $self = $class->new_from_element([$tree->disembowel],$options);
+    my $self = $class->new_from_element([$tree->disembowel],undef,$options);
     $self->{need_delete}++;
     return $self;
 }
@@ -100,7 +100,7 @@ sub new_from_html {
     my ($class, $html,$options) = @_;
     my $tree = $class->_build_tree($options);
     $tree->parse_content($html);
-    my $self = $class->new_from_element([$tree->disembowel],$options);
+    my $self = $class->new_from_element([$tree->disembowel],undef,$options);
     $self->{need_delete}++;
     return $self;
 }
@@ -123,10 +123,9 @@ sub size {
 
 sub parent {
     my $self = shift;
-    my @new;
-    for my $tree (@{$self->{trees}}) {
-        push @new, $tree->parent();
-    }
+
+    my @new = map { $_->parent } @{$self->{trees}};
+
     return (ref $self || $self)->new_from_element(\@new, $self);
 }
 
@@ -161,22 +160,22 @@ sub find {
 
 sub contents {
     my ($self, $selector) = @_;
-    
+
     my @new = map { $_->content_list } @{$self->{trees}};
-    
+
     if ($selector) {
         my $xpath = ref $selector ? $$selector : selector_to_xpath($selector);
-        @new = grep { $_->matches($xpath) } @new;        
+        @new = grep { $_->matches($xpath) } @new;
     }
-    
-    return (ref $self || $self)->new_from_element(\@new, $self);    
+
+    return (ref $self || $self)->new_from_element(\@new, $self);
 }
 
 sub as_html {
     my $self = shift;
 
-    my @html = map { 
-        ref $_ ? $_->as_HTML( q{&<>'"}, $self->{indent}, {} ) 
+    my @html = map {
+        ref $_ ? $_->as_HTML( q{&<>'"}, $self->{indent}, {} )
                : $_ }
         @{$self->{trees}};
 
@@ -185,16 +184,16 @@ sub as_html {
 
 sub html {
     my $self = shift;
-    
+
     if (@_) {
-        map { 
-            $_->delete_content; 
+        map {
+            $_->delete_content;
             my $tree = $self->_build_tree;
             $tree->parse_content($_[0]);
             $_->push_content($tree->disembowel);
         } @{$self->{trees}};
         return $self;
-    } 
+    }
 
     my @html;
     for my $t ( @{$self->{trees}} ) {
@@ -209,13 +208,14 @@ sub html {
 
 sub text {
     my $self = shift;
+
     if (@_) {
         map { $_->delete_content; $_->push_content($_[0]) } @{$self->{trees}};
         return $self;
-    } else {
-        my @html = map { $_->as_text } @{$self->{trees}};
-        return wantarray ? @html : $html[0];
     }
+
+    my @html = map { $_->as_text } @{$self->{trees}};
+    return wantarray ? @html : $html[0];
 }
 
 sub attr {
@@ -261,13 +261,13 @@ sub filter {
             local $_ = (ref $self || $self)->new($tree);
             $code->($i++, $_);
         } @{$self->{trees}}];
-        return $self;
 
-    } else {
-        my $xpath = ref $_[0] ? ${$_[0]} : selector_to_xpath($_[0]);
-        my @new = grep { $_->matches($xpath) } @{$self->{trees}};        
-        return (ref $self || $self)->new_from_element(\@new, $self);
+        return $self;
     }
+
+    my $xpath = ref $_[0] ? ${$_[0]} : selector_to_xpath($_[0]);
+    my @new = grep { $_->matches($xpath) } @{$self->{trees}};        
+    return (ref $self || $self)->new_from_element(\@new, $self);
 }
 
 sub remove {
@@ -307,7 +307,9 @@ sub replace_with {
 
             
         my $r = $rep->{trees}->[0];
-        $r = $r->clone if ref $r;
+        { no warnings;
+            $r = $r->clone if ref $r;
+        }
         $r->parent( $node->parent ) if ref $r and $node->parent;
 
         $node->replace_with( $r );
@@ -321,12 +323,12 @@ sub replace_with {
 sub append {
     my ($self, $stuff) = @_;
     $stuff = (ref $self || $self)->new($stuff);
-    
+
     foreach my $t (@{$self->{trees}}) {
         $t->push_content($_) for ref($t)->clone_list(@{$stuff->{trees}});
     }
-    
-    $self;    
+
+    $self;
 }
 
 sub prepend {
@@ -487,10 +489,9 @@ sub prev {
 
 sub next {
     my $self = shift;
-    my @new;
-    for my $tree (@{$self->{trees}}) {
-        push @new, $tree->getNextSibling;
-    }
+
+    my @new = map { $_->getNextSibling } @{ $self->{trees} };
+
     return (ref $self || $self)->new_from_element(\@new, $self);
 }
 

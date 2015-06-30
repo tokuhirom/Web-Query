@@ -1,6 +1,7 @@
 Revision history for Perl extension Web::Query
 
 {{$NEXT}}
+    - new_from_html with options was breaking 'end()'. (yanick)
 
 0.27 2014-12-24T00:52:33Z
 
