@@ -524,6 +524,24 @@ sub and_back {
     $self->add( $self->end );
 }
 
+sub next_until {
+    my( $self, $selector ) = @_;
+
+    my $class = ref $self;
+    my $collection = $class->new_from_element([],$self);
+
+    my $next = $self->next->not($selector);
+    while( $next->size ) {
+       $collection = $collection->add($next);
+       $next = $next->next->not( $selector );
+    }
+
+    # hide the loop from the outside world
+    $collection->{before} = $self;
+
+    return $collection;
+}
+
 sub last_response {
     my ($class) = @_;
     return $RESPONSE;
@@ -749,6 +767,10 @@ Get the previous node of each element in the current set of matched elements.
 Get the next node of each element in the current set of matched elements.
 
    my $next = $q->next;
+
+=head3 next_until( $selector )
+
+Get all subsequent siblings, up to (but not including) the next node matched C<$selector>.
 
 =head2 MANIPULATION
 
