@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ GMAIL COM>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.3.0, CPAN::Meta::Converter version 2.142690",
+   "generated_by" : "Minilla/v2.4.1, CPAN::Meta::Converter version 2.150001",
    "license" : [
       "perl_5"
    ],
@@ -69,7 +69,7 @@
          "web" : "https://github.com/tokuhirom/Web-Query"
       }
    },
-   "version" : "0.27",
+   "version" : "0.28",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "Hiroki Honda <cside.story@gmail.com>",

@@ -82,7 +82,7 @@ passed as a scalar ref, it'll be taken as a straight XPath expression.
 
 ### add
 
-Add elements to the set of matched elements.
+Returns a new object augmented with the new element(s).
 
 - add($html)
 
@@ -90,7 +90,13 @@ Add elements to the set of matched elements.
 
 - add(@elements)
 
-    One or more @elements to add to the set of matched elements.
+    One or more @elements to add to the set of matched elements. 
+
+    @elements that already are part of the set are not added a second time.
+
+        my $group = $wq->find('#foo');         # collection has 1 element
+        $group = $group->add( '#bar', $wq );   # 2 elements
+        $group->add( '#foo', $wq );            # still 2 elements
 
 - add($wq)
 
@@ -151,6 +157,20 @@ Return the last matching element.
 
 This method constructs a new Web::Query object from the last matching element.
 
+### not($selector)
+
+Return all the elements not matching the `$selector`.
+
+    # $do_for_love will be every thing, except #that
+    my $do_for_love = $wq->find('thing')->not('#that');
+
+### and\_back
+
+Add the previous set of elements to the current one.
+
+    # get the h1 plus everything until the next h1
+    $wq->find('h1')->next_until('h1')->and_back;
+
 ### map
 
 Creates a new array with the results of calling a provided function on every element.
@@ -172,6 +192,10 @@ Get the previous node of each element in the current set of matched elements.
 Get the next node of each element in the current set of matched elements.
 
     my $next = $q->next;
+
+### next\_until( $selector )
+
+Get all subsequent siblings, up to (but not including) the next node matched `$selector`.
 
 ## MANIPULATION
 
