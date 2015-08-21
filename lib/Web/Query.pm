@@ -10,6 +10,7 @@ use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
 use Scalar::Util qw/blessed refaddr/;
 use HTML::Entities qw/encode_entities/;
 
+use Scalar::Util qw/ refaddr /;
 our @EXPORT = qw/wq/;
 
 our $RESPONSE;
@@ -473,9 +474,17 @@ sub add {
             @{$_->{trees}}; 
         } map { (ref $self || $self)->new($_) } @stuff;                
     }
-    
-    push @{$self->{trees}}, @nodes;
-    $self;
+
+    my %ids = map { $self->_node_id($_) => 1 } @{ $self->{trees} };
+
+    ( ref $self )->new_from_element( [ 
+        @{$self->{trees}}, grep { ! $ids{ $self->_node_id($_) } } @nodes  
+    ], $self );
+}
+
+sub _node_id {
+    my( undef, $node ) = @_;
+    refaddr $node;
 }
 
 sub prev {
@@ -607,7 +616,7 @@ Create new instance of Web::Query from file name.
 
 =head3 add
 
-Add elements to the set of matched elements.
+Returns a new object augmented with the new element(s).
 
 =over 4
 
@@ -617,7 +626,13 @@ An HTML fragment to add to the set of matched elements.
 
 =item add(@elements)
 
-One or more @elements to add to the set of matched elements.
+One or more @elements to add to the set of matched elements. 
+
+@elements that already are part of the set are not added a second time.
+
+    my $group = $wq->find('#foo');         # collection has 1 element
+    $group = $group->add( '#bar', $wq );   # 2 elements
+    $group->add( '#foo', $wq );            # still 2 elements
 
 =item add($wq)
 

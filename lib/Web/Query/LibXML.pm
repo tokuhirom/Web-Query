@@ -66,6 +66,7 @@ sub tagname {
     return wantarray ? @retval : $retval[0];
 }
 
+sub _node_id { $_[1]{node}->unique_key }
 1;
 __END__
 

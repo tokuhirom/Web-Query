@@ -1,7 +1,6 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use lib 'lib';
 use Test::More;
 use Web::Query;
 
@@ -41,4 +40,19 @@ HTML
     # add($selector, $xpath_context)
     is join('|', wq($html)->find('.foo')->add('.bar', wq($html)->{trees}->[0] )->as_html)
         => '<div class="foo">Foo</div>|<div class="bar">Bar</div>', 'add($selector, $xpath_context)';
+
+    subtest  "add() create new object" => sub {
+        my $wq = wq($html);
+        my $x = $wq->find('.foo');
+        my $y = $x->add( $wq->find('.bar') );
+
+        is $x->size => 1, "original object";
+        is $y->size => 2, "new object";
+    };
+
+    subtest "add() doesn't add the same node twice" => sub {
+        my $wq = wq($html);
+        my $x = $wq->find('.foo')->add( $wq->find('.foo') );
+        is $x->size => 1, "only one node";
+    };
 }
