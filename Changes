@@ -1,10 +1,13 @@
 Revision history for Perl extension Web::Query
 
-{{$NEXT}}
+0.29  2015-08-21
     - add() now returns a new element (instead of modifying $self). [yanick]
     - added 'not()'. [yanick]
     - added 'and_back'. [yanick]
     - added 'next_until()'. [yanick]
+
+0.28  2015-06-30
+
     - new_from_html with options was breaking 'end()'. (yanick)
 
 0.27 2014-12-24T00:52:33Z
