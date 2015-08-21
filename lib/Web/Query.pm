@@ -504,7 +504,7 @@ sub prev {
 sub next {
     my $self = shift;
 
-    my @new = map { $_->getNextSibling } @{ $self->{trees} };
+    my @new = grep { $_ } map { $_->getNextSibling } @{ $self->{trees} };
 
     return (ref $self || $self)->new_from_element(\@new, $self);
 }

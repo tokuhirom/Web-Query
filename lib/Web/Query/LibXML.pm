@@ -53,7 +53,7 @@ sub next {
     my $self = shift;
     my @new;
     for my $tree (@{$self->{trees}}) {
-        push @new, $tree->right;
+        push @new, grep { $_ } $tree->right;
     }
     return (ref $self || $self)->new_from_element(\@new, $self);
 }

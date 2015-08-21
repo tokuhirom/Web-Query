@@ -30,4 +30,29 @@ HTML
     my $elem = $wq->find('.d1')->next;
     is $elem->size, 2;
     is $elem->attr('class'), 'd2', 'next';
+
+    subtest 'next->as_html' => sub {
+        plan tests => 6;
+
+        $wq = wq( q{
+            <div>
+                <b>one</b>
+                two
+                <i>three</i></div>
+        } );
+
+        my @expected = (
+            [ b       => qr/one/ ],
+            [ '#text' => qr/two/ ],
+            [ 'i'     => qr/three/ ],
+        );
+
+        my $next = $wq->find('b');
+        while( $next->size ) {
+            my $exp = shift @expected;
+            is $next->tagname => $exp->[0], 'tagname';
+            like $next->as_html => $exp->[1], 'as_html';
+            $next = $next->next;
+        };
+    };
 }
