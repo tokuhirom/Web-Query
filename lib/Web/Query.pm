@@ -176,9 +176,11 @@ sub as_html {
     my $self = shift;
 
     my @html = map {
-        ref $_ ? $_->as_HTML( q{&<>'"}, $self->{indent}, {} )
-               : $_ }
-        @{$self->{trees}};
+        ref $_ ? $_->isa('HTML::TreeBuilder::XPath::TextNode') 
+                        ? $_->getValue 
+                        : $_->as_HTML( q{&<>'"}, $self->{indent}, {} )
+               : $_ 
+    } @{$self->{trees}};
 
     return wantarray ? @html : $html[0];
 }
@@ -227,7 +229,10 @@ sub attr {
 
 sub tagname {
     my $self = shift;
-    my @retval = map { $_->tag(@_) } @{$self->{trees}};
+    my @retval = map { ref $_ eq 'HTML::TreeBuilder::XPath::TextNode' 
+                            ? '#text' 
+                            : $_->tag(@_) 
+                } @{$self->{trees}};
     return wantarray ? @retval : $retval[0];
 }
 
