@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 10;
+use Test::More;
 
 use Test::More;
 use Web::Query;
@@ -37,10 +37,4 @@ sub test {
 
     is $wq->find('h1')->next_until('h1')->size => 4;
     is $wq->find('h1')->next_until('foo')->size => 5;
-
-
-
 }
-
-
-
