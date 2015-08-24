@@ -6,7 +6,7 @@ use parent qw/Web::Query Exporter/;
 use HTML::TreeBuilder::LibXML;
 
 
-our $VERSION = "0.29";
+our $VERSION = "0.30";
 
 our @EXPORT = qw/wq/;
 
