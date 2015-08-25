@@ -5,7 +5,7 @@ use warnings;
 
 use Test::More;
 
-sub test {
+sub test(&) {
     my $code = shift;
 
     plan tests => 3;
