@@ -239,7 +239,12 @@ sub tagname {
 sub each {
     my ($self, $code) = @_;
     my $i = 0;
-    for my $tree (@{$self->{trees}}) {
+
+    # make a copy such that if we modify the list via 'delete',
+    # it won't change from under our feet (see t/each-and-delete.t 
+    # for a case where it can)
+    my @trees = @{ $self->{trees} };
+    for my $tree ( @trees ) { 
         local $_ = (ref $self || $self)->new_from_element([$tree], $self);
         $code->($i++, $_);
     }
