@@ -2,6 +2,7 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
     - each() would skip nodes if its subref was calling remove(). [yanick]
+    - remove duplicate code for duplicate(). [yanick]
 
 0.30 2015-08-23
     - next_until.t was failing if XML::LibXML isn't installed. [yanick]

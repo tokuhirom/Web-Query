@@ -20,24 +20,8 @@ sub _build_tree {
     $tree;    
 }
 
-# TODO use Web::Query remove
-sub remove {
-    my $self = shift;
-    my $before = $self->end;
-    
-    while (defined $before) {
-        @{$before->{trees}} = grep {
-            my $el = $_;            
-            not grep { $el->{node}->isSameNode($_->{node}) } @{$self->{trees}};            
-        } @{$before->{trees}};
-
-        $before = $before->end;
-    }
-    
-    $_->delete for @{$self->{trees}};
-    @{$self->{trees}} = ();
-
-    $self;
+sub _is_same_node {
+    $_[1]->{node}->isSameNode($_[2]->{node});
 }
 
 sub prev {

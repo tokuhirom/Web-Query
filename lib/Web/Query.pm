@@ -281,6 +281,10 @@ sub filter {
     return (ref $self || $self)->new_from_element(\@new, $self);
 }
 
+sub _is_same_node {
+    refaddr($_[1]) == refaddr($_[2]);
+}
+
 sub remove {
     my $self = shift;
     my $before = $self->end;
@@ -288,7 +292,7 @@ sub remove {
     while (defined $before) {
         @{$before->{trees}} = grep {
             my $el = $_;            
-            not grep { refaddr($el) == refaddr($_) } @{$self->{trees}};            
+            not grep { $self->_is_same_node( $el, $_ ) } @{$self->{trees}};            
         } @{$before->{trees}};
 
         $before = $before->end;
