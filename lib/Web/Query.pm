@@ -1,9 +1,10 @@
 package Web::Query;
+# ABSTRACT: Yet another scraping library like jQuery
+
 use strict;
 use warnings;
 use 5.008001;
 use parent qw/Exporter/;
-our $VERSION = '0.30';
 use HTML::TreeBuilder::XPath;
 use LWP::UserAgent;
 use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
@@ -20,7 +21,7 @@ sub wq { Web::Query->new(@_) }
 our $UserAgent = LWP::UserAgent->new();
 
 sub __ua {
-    $UserAgent ||= LWP::UserAgent->new( agent => __PACKAGE__ . "/" . $VERSION );
+    $UserAgent ||= LWP::UserAgent->new( agent => __PACKAGE__ . "/" . __PACKAGE__->VERSION );
     $UserAgent;
 }
 
@@ -569,9 +570,6 @@ __END__
 
 =for stopwords prev
 
-=head1 NAME
-
-Web::Query - Yet another scraping library like jQuery
 
 =head1 SYNOPSIS
 
