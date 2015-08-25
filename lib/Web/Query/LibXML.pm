@@ -1,12 +1,12 @@
 package Web::Query::LibXML;
+# ABSTRACT: fast, drop-in replacement for Web::Query
+
+
 use 5.008005;
 use strict;
 use warnings;
 use parent qw/Web::Query Exporter/;
 use HTML::TreeBuilder::LibXML;
-
-
-our $VERSION = "0.30";
 
 our @EXPORT = qw/wq/;
 
@@ -54,10 +54,6 @@ sub _node_id { $_[1]{node}->unique_key }
 __END__
 
 =encoding utf-8
-
-=head1 NAME
-
-Web::Query::LibXML - fast, drop-in replacement for Web::Query
 
 =head1 SYNOPSIS
 
