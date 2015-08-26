@@ -1,189 +1,144 @@
 Revision history for Perl extension Web::Query
 
-{{$NEXT}}
-    - each() would skip nodes if its subref was calling remove(). [yanick]
-    - remove duplicate code for duplicate(). [yanick]
+0.31 2015-08-25
+  - each() would skip nodes if its subref was calling remove(). [yanick]
+  - remove duplicate code for duplicate(). [yanick]
+
+  [ STATISTICS ]
+    - code churn: 5 files changed, 46 insertions(+), 25 deletions(-)
 
 0.30 2015-08-23
-    - next_until.t was failing if XML::LibXML isn't installed. [yanick]
+  - next_until.t was failing if XML::LibXML isn't installed. [yanick]
 
-0.29  2015-08-21
-    - add() now returns a new element (instead of modifying $self). [yanick]
-    - added 'not()'. [yanick]
-    - added 'and_back'. [yanick]
-    - added 'next_until()'. [yanick]
+0.29 2015-08-21
+  - add() now returns a new element (instead of modifying $self). [yanick]
+  - added 'not()'. [yanick]
+  - added 'and_back'. [yanick]
+  - added 'next_until()'. [yanick]
 
-0.28  2015-06-30
-
-    - new_from_html with options was breaking 'end()'. (yanick)
+0.28 2015-06-30
+  - new_from_html with options was breaking 'end()'. (yanick)
 
 0.27 2014-12-24T00:52:33Z
-
-    - new() with a bad url wasn't returning 'undef'
-        when options were given. (yanick)
-    - Add 'no_space_compacting' option. #33 (yanick)
-    - Add 'tagname' to query/modify tag names. #34 (yanick)
-    - XPath expressions can now be used as well. #35 (yanick)
+  - new() with a bad url wasn't returning 'undef' when options were given.
+    (yanick)
+  - Add 'no_space_compacting' option. #33 (yanick)
+  - Add 'tagname' to query/modify tag names. #34 (yanick)
+  - XPath expressions can now be used as well. #35 (yanick)
 
 0.26 2014-03-31T08:23:34Z
-
-    - impl prev() and next() method #31
-      (xaicron)
+  - impl prev() and next() method #31 (xaicron)
 
 0.25 2014-02-13T01:26:42Z
-
-    - re-packaging(no feature changes)
+  - re-packaging(no feature changes)
 
 0.24 2014-02-12T05:34:09Z
-
-    - replace_with: Can't call method "clone" on an undefined value #24
-      (Reported by @daxim++, Fixed by @yanick++)
+  - replace_with: Can't call method "clone" on an undefined value #24
+    (Reported by @daxim++, Fixed by @yanick++)
 
 0.23 2013-05-30T16:09:03Z
+  - improved find() documentation
+  - fixed cpanfile min perl version
+  - modified tests to use the expression form of eval to try to load
+    Web::Query::LibXML - the block form of eval is not working as expected
+    on some perl versions on i386-freebsd (cafe01)
 
-    - improved find() documentation
-    - fixed cpanfile min perl version
-    - modified tests to use the expression form of eval to try to load Web::Query::LibXML
-      - the block form of eval is not working as expected on some perl versions on i386-freebsd
-      (cafe01)
-      
 0.22 2013-05-15T23:36:38Z
-
-    - added new module: Web::Query::LibXML
-    - modified test files to also test Web::Query::LibXML (if it loads).
+  - added new module: Web::Query::LibXML
+  - modified test files to also test Web::Query::LibXML (if it loads).
 
 0.21 2013-05-15T14:36:11Z
-
-    - new jQuery-compatible method: add()
-    - fixed filter() that relied on wrong find() behavior
-    - fixed two t/03_traverse.t tests that was expecting wrong behavior from filter()    
+  - new jQuery-compatible method: add()
+  - fixed filter() that relied on wrong find() behavior
+  - fixed two t/03_traverse.t tests that was expecting wrong behavior from
+    filter() 
 
 0.20 2013-05-13T22:51:02Z
-
-    - improved documentation
-    - fixed find() to match only descendant elements
-      This is the correct jQuery compatible implementation, which I have changed in 0.14 to also match root nodes, my bad.
-    - fixed tests that relied on that wrong find() behavior.
-      (cafe01)
+  - improved documentation
+  - fixed find() to match only descendant elements This is the correct
+    jQuery compatible implementation, which I have changed in 0.14 to also
+    match root nodes, my bad.
+  - fixed tests that relied on that wrong find() behavior. (cafe01)
 
 0.19 2013-05-12T18:19:57Z
-
-    - implemented contents() jQuery-compatible method
-    - new() now accepts another Web::Query object
-      (cafe01)      
+  - implemented contents() jQuery-compatible method
+  - new() now accepts another Web::Query object (cafe01)      
 
 0.18 2013-05-09T19:40:40Z
-
-    - fixed html() method, now using $self->_build_tree
-    - calling parent() instead of undocumented getParentNode()
-    - calling disembowel() instead of guts()
-      Need for Web::Query::LibXML, so nodes get detached from old document and returned each as root of a new document.
-      (Carlos Fernando Avila Gratz)
-      
+  - fixed html() method, now using $self->_build_tree
+  - calling parent() instead of undocumented getParentNode()
+  - calling disembowel() instead of guts() Need for Web::Query::LibXML, so
+    nodes get detached from old document and returned each as root of a new
+    document. (Carlos Fernando Avila Gratz)
 
 0.17 2013-05-08T01:18:36Z
-
-    - new_from_file() now calling guts() instead of elementify()
-      So the file can contain a document fragment (multiple root nodes) instead of a full document (single root).
-      Also, now all new_from_* methods behave the same.
-      (Carlos Fernando Avila Gratz)
+  - new_from_file() now calling guts() instead of elementify() So the file
+    can contain a document fragment (multiple root nodes) instead of a full
+    document (single root). Also, now all new_from_* methods behave the
+    same. (Carlos Fernando Avila Gratz)
 
 0.16 2013-04-22T14:26:44Z
-
-    - modified new_from_element() to ignore non-blessed items
-      (Carlos Fernando Avila Gratz)
-    - created _build_tree() method
-      (Carlos Fernando Avila Gratz)
-
+  - modified new_from_element() to ignore non-blessed items (Carlos
+    Fernando Avila Gratz)
+  - created _build_tree() method (Carlos Fernando Avila Gratz)
 
 0.15 2013-04-09T00:29:48Z
-
-    - added clone() method
-      (Carlos Fernando Avila Gratz)
-    - now storing comments from parsed html
-      (Carlos Fernando Avila Gratz)
-    - fixed remove() to get rid of removed element refs
-      removes from $self and from all $self->{before}.
-      Also modified how each() instantiates the objects, so $_->end works in the callback, which is needed for $_->remove() to work in the callback.
-      (Carlos Fernando Avila Gratz)
+  - added clone() method (Carlos Fernando Avila Gratz)
+  - now storing comments from parsed html (Carlos Fernando Avila Gratz)
+  - fixed remove() to get rid of removed element refs removes from $self
+    and from all $self->{before}. Also modified how each() instantiates the
+    objects, so $_->end works in the callback, which is needed for
+    $_->remove() to work in the callback. (Carlos Fernando Avila Gratz)
 
 0.14 2013-04-07T02:22:25Z
-
-    - new jQuery compatible methods, and related tests
-        * append
-        * prepend
-        * before
-        * after
-        * insert_before
-        * insert_after
-        * detach
-        * add_class
-        * remove_class
-        * has_class
-      (Carlos Fernando Avila Gratz)
+  - new jQuery compatible methods, and related tests * append * prepend *
+    before * after * insert_before * insert_after * detach * add_class *
+    remove_class * has_class (Carlos Fernando Avila Gratz)
 
 0.13 2013-04-05T06:37:27Z
-
-    - fixed find() bug
-      was calling selector_to_xpath() in the loop, breaking the selector after the second call.
-      (Carlos Fernando Avila Gratz)
-    - Search from '//' when the node was created from HTML.
-      (tokuhirom)
+  - fixed find() bug was calling selector_to_xpath() in the loop, breaking
+    the selector after the second call. (Carlos Fernando Avila Gratz)
+  - Search from '//' when the node was created from HTML. (tokuhirom)
 
 0.12 2013-04-03T20:24:49Z
-
-    - Make subclass friendly
-      (Carlos Fernando Avila Gratz)
+  - Make subclass friendly (Carlos Fernando Avila Gratz)
 
 0.11
-
-    - Implement a remove method that effects the html results.
-      (gugod++)
+  - Implement a remove method that effects the html results. (gugod++)
 
 0.10
-
-    [INCOMPATIBLE CHANGES]
-    - new_from_url() is no longer throws exception on bad response from HTTP server.
-      https://rt.cpan.org/Ticket/Display.html?id=76187
+  [ INCOMPATIBLE CHANGES ]
+    - new_from_url() is no longer throws exception on bad response from
+      HTTP server. https://rt.cpan.org/Ticket/Display.html?id=76187
       (oleg++)
 
 0.09
-
-    - Switch to Module::Build
-    - first() and last() should construct new object, but not modify self
-      (Oleg++)
+  - Switch to Module::Build
+  - first() and last() should construct new object, but not modify self
+    (Oleg++)
 
 0.08
-
-    - added ->map and ->filter methods
-      (Hiroki Honda)
-    - fixed as (empty)->first->size and (empty)->last->size return 0
-      (Hiroki Honda)
+  - added ->map and ->filter methods (Hiroki Honda)
+  - fixed as (empty)->first->size and (empty)->last->size return 0 (Hiroki
+    Honda)
 
 0.07
-
-    - HTML5 support
+  - HTML5 support
 
 0.06
-
-    - added first, last methods(akiym)
+  - added first, last methods(akiym)
 
 0.05
-
-    - added docs for 'how do i customize useragent'.
+  - added docs for 'how do i customize useragent'.
 
 0.04
-
-    - added ->size and ->parent method.
+  - added ->size and ->parent method.
 
 0.03
-
-    - fix fucking win32 new line issue.
-      (it may works, i hope.)
+  - fix fucking win32 new line issue. (it may works, i hope.)
 
 0.02
+  - added docs for find method(reported by kan++).
 
-    - added docs for find method(reported by kan++).
-
-0.01    Sat Feb 19 10:38:22 2011
-        - original version
+0.01 2011-02-19T10:38:22Z
+  - original version
