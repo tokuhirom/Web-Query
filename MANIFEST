@@ -59,6 +59,5 @@ t/replace_with.t
 t/store_comments.t
 t/tagname.t
 t/xpath.t
-xt/02_perlcritic.t
 xt/live/01_simple.t
 xt/release/unused-vars.t
