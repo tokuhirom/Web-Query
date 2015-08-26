@@ -552,7 +552,6 @@ sub next_until {
 }
 
 sub last_response {
-    my ($class) = @_;
     return $RESPONSE;
 }
 
