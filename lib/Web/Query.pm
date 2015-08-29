@@ -223,8 +223,48 @@ sub text {
 
 sub attr {
     my $self = shift;
-    my @retval = map { $_->attr(@_) } @{$self->{trees}};
-    return wantarray ? @retval : $retval[0];
+
+    if ( @_ == 1 ) { # getter 
+        return wantarray 
+            ? map { $_->attr(@_) } @{$self->{trees}}
+            : eval { $self->{trees}[0]->attr(@_) }
+            ;
+    }
+
+    $_->attr(@_) for @{$self->{trees}};
+
+    return $self;
+}
+
+sub id {
+    my $self = shift;
+
+    if ( @_ ) {  # setter
+        my $new_id = shift;
+
+        return $self if $self->size == 0;
+
+        return $self->each(sub{
+            $_->attr( id => $new_id->(@_) )
+        }) if ref $new_id eq 'CODE';
+
+        if ( $self->size == 1 ) {
+            $self->attr( id => $new_id );
+        }
+        else {
+            return $self->first->attr( id => $new_id );
+        }
+    }
+    else { # getter
+
+        # the eval is there in case there is no tree
+        return wantarray 
+            ? map { $_->attr('id') } @{$self->{trees}}
+            : eval { $self->{trees}[0]->attr('id') }
+            ;
+    }
+
+
 }
 
 sub tagname {
@@ -816,11 +856,38 @@ of the first element.
 
 =head3 C< attr >
 
-Get/Set the attribute value in element.
+Get/set the attribute value in element.
 
-    my $attr = $q->attr($name);
+In getter mode, it'll return either the values of the attribute
+for all elements of the set, or only the first one depending of the calling context.
 
-    $q->attr($name, $val);
+    my @values = $q->attr('style');      # style of all elements
+    my $first_value = $q->attr('style'); # style of first element
+
+In setter mode, it'll set the attribute value for all elements, and return back
+the original object for easy chaining.
+
+    $q->attr( 'alt' => 'a picture' )->find( ... );
+
+=head3 C< id >
+
+Get/set the elements's id attribute.
+
+In getter mode, it behaves just like C<attr()>.
+
+In setter mode, it behaves like C<attr()>, but with the following exceptions.
+
+If the attribute value is a scalar, it'll be only assigned to
+the first element of the set (as ids are supposed to be unique), and the returned object will only contain
+that first element.
+
+    my $first_element = $q->id('the_one');
+
+It's possible to set the ids of all the elements by passing a sub to C<id()>. The sub is given the same arguments as for
+C<each()>, and its return value is taken to be the new id of the elements.
+
+    $q->id( sub { my $i = shift;  'foo_' . $i } );
+    
 
 =head3 tagname
 
