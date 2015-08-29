@@ -10,6 +10,7 @@ use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
 use Scalar::Util qw/blessed refaddr/;
 use HTML::Entities qw/encode_entities/;
 
+use List::MoreUtils qw/ uniq /;
 use Scalar::Util qw/ refaddr /;
 our @EXPORT = qw/wq/;
 
@@ -503,15 +504,28 @@ sub remove_class {
     
 }
 
+sub toggle_class {
+    my $self = shift;
+    
+    my @classes = uniq @_;
+
+    $self->each(sub{
+        for my $class ( @classes ) {
+            my $method = $_->has_class($class) ? 'remove_class' : 'add_class';
+            $_->$method($class);
+        }
+    });
+}
 
 sub has_class {
     my ($self, $class) = @_;
     
     foreach my $t (@{$self->{trees}}) {
+        no warnings 'uninitialized';
         return 1 if $t->attr('class') =~ /(?:^|\s)$class(?:\s|$)/;
     }
     
-    return;   
+    return undef;   
 }
 
 sub clone {
@@ -837,6 +851,24 @@ Adds the specified class(es) to each of the set of matched elements.
 
     # add class 'foo' to <p> elements
     wq('<div><p>foo</p><p>bar</p></div>')->find('p')->add_class('foo'); 
+
+=head3 toggle_class( @classes )
+
+Toggles the given class or classes on each of the element. I.e., if the element had the class, it'll be removed,
+and if it hadn't, it'll be added.
+
+Classes are toggled once, no matter how many times they appear in the argument list.
+
+    $q->toggle_class( 'foo', 'foo', 'bar' );
+
+    # equivalent to
+    
+    $q->toggle_class('foo')->toggle_class('bar');
+
+    # and not
+
+    $q->toggle_class('foo')->toggle_class('foo')->toggle_class('bar');
+
 
 =head3 after
 
