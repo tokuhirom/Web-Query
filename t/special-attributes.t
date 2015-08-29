@@ -10,11 +10,33 @@ use WQTest;
 WQTest::test {
     my $class = shift;
 
+    subtest 'data()' => sub { test_data($class) };
+
     subtest 'name()' => sub { test_name($class) };
 
     subtest 'id()' => sub { test_id($class) };
 
 };
+
+sub test_data {
+    my $class = shift;
+
+    my $wq = $class->new_from_html(q{
+        <div>
+            <a></a>
+        </div>
+    });
+
+    subtest setter => sub {
+        $wq->find('a')->data( foo => 'bar' );
+        pass;
+    };
+
+    subtest 'getter' => sub {
+       is $wq->find('a')->data('foo') => 'bar';
+    };
+
+}
 
 sub test_name {
     my $class = shift;
