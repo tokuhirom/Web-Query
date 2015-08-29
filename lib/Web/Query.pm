@@ -263,8 +263,11 @@ sub id {
             : eval { $self->{trees}[0]->attr('id') }
             ;
     }
+}
 
-
+sub name {
+    my $self = shift;
+    $self->attr( 'name', @_ );
 }
 
 sub tagname {
@@ -887,6 +890,13 @@ It's possible to set the ids of all the elements by passing a sub to C<id()>. Th
 C<each()>, and its return value is taken to be the new id of the elements.
 
     $q->id( sub { my $i = shift;  'foo_' . $i } );
+
+=head3 C< name >
+
+Get/set the elements's 'name' attribute.
+
+    my $name = $q->name;  # equivalent to $q->attr( 'name' );
+    $q->name( 'foo' );    # equivalent to $q->attr( name => 'foo' );
     
 
 =head3 tagname

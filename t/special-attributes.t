@@ -10,9 +10,33 @@ use WQTest;
 WQTest::test {
     my $class = shift;
 
+    subtest 'name()' => sub { test_name($class) };
+
     subtest 'id()' => sub { test_id($class) };
 
 };
+
+sub test_name {
+    my $class = shift;
+
+    my $wq = $class->new_from_html(q{
+        <div>
+            <a name="foo"></a>
+            <b></b>
+            <c name="bar" />
+        </div>
+    });
+
+    subtest 'getter' => sub {
+        is_deeply [ $wq->find('a,b,c')->name ], [ 'foo', undef, 'bar' ], "getter, list context";
+        is scalar $wq->find('a,b,c')->name, 'foo', "getter, scalar context";
+    };
+
+    subtest setter => sub {
+        $wq->find('a,b,c')->name( 'quux' );
+        is $wq->find($_)->name => 'quux' for 'a'..'c';
+    }
+}
 
 
 sub test_id { 
