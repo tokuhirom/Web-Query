@@ -1,21 +1,14 @@
 Revision history for Perl extension Web::Query
 
-{{$NEXT}}
-  [ API CHANGES ]
-
-  [ BUG FIXES ]
-
-  [ DOCUMENTATION ]
-
+0.32 2015-08-29
   [ ENHANCEMENTS ]
-  - add id() as a shortcut method for `->attr('id')`. [GH#38]
-  - add 'name()' as a shortcut method for `->attr('name')`. [GH#39]
-  - add 'data()' as a shortcut method for `->attr('data-*foo*')`. [GH#40]
-  - add `toggle_class()` method. [GH#41]
-
-  [ NEW FEATURES ]
+    - add id() as a shortcut method for `->attr('id')`. [GH#38]
+    - add 'name()' as a shortcut method for `->attr('name')`. [GH#39]
+    - add 'data()' as a shortcut method for `->attr('data-*foo*')`. [GH#40]
+    - add `toggle_class()` method. [GH#41]
 
   [ STATISTICS ]
+    - code churn: 5 files changed, 394 insertions(+), 172 deletions(-)
 
 0.31 2015-08-25
   - each() would skip nodes if its subref was calling remove(). [yanick]
