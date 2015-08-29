@@ -29,11 +29,11 @@ t/09_as_html.t
 t/10_subclass.t
 t/11_get_eq.t
 t/add.t
-t/add_class.t
 t/after.t
 t/append.t
 t/bad-url-with-options.t
 t/before.t
+t/class.t
 t/clone.t
 t/contents.t
 t/data/foo.html
@@ -56,6 +56,7 @@ t/prev.t
 t/remove.t
 t/remove_class.t
 t/replace_with.t
+t/special-attributes.t
 t/store_comments.t
 t/tagname.t
 t/xpath.t
