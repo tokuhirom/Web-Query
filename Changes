@@ -8,6 +8,7 @@ Revision history for Perl extension Web::Query
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - add id() as a shortcut method for `->attr('id')`. [GH#38]
 
   [ NEW FEATURES ]
 
