@@ -270,6 +270,12 @@ sub name {
     $self->attr( 'name', @_ );
 }
 
+sub data {
+    my $self = shift;
+    my $name = shift;
+    $self->attr( join( '-', 'data', $name ), @_ );
+}
+
 sub tagname {
     my $self = shift;
     my @retval = map { ref $_ eq 'HTML::TreeBuilder::XPath::TextNode' 
@@ -896,7 +902,16 @@ C<each()>, and its return value is taken to be the new id of the elements.
 Get/set the elements's 'name' attribute.
 
     my $name = $q->name;  # equivalent to $q->attr( 'name' );
+
     $q->name( 'foo' );    # equivalent to $q->attr( name => 'foo' );
+
+=head3 C< data >
+
+Get/set the elements's 'data-*name*' attributes.
+
+    my $data = $q->data('foo');  # equivalent to $q->attr( 'data-foo' );
+
+    $q->data( 'foo' => 'bar' );  # equivalent to $q->attr( 'data-foo' => 'bar' );
     
 
 =head3 tagname
