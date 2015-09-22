@@ -8,6 +8,9 @@ use warnings;
 use parent qw/Web::Query Exporter/;
 use HTML::TreeBuilder::LibXML;
 
+# version required for unique_key
+use XML::LibXML 2.0107;
+
 our @EXPORT = qw/wq/;
 
 sub wq { Web::Query::LibXML->new(@_) }

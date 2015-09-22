@@ -4,6 +4,7 @@ Revision history for Perl extension Web::Query
   [ API CHANGES ]
 
   [ BUG FIXES ]
+  - Make sure we use XML::LibXML > 2.0107 for `unique_keys`. [GH#43]
 
   [ DOCUMENTATION ]
 
