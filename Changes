@@ -5,6 +5,7 @@ Revision history for Perl extension Web::Query
 
   [ BUG FIXES ]
   - Make sure we use XML::LibXML > 2.0107 for `unique_keys`. [GH#43]
+  - 'filter' with coderef was not generating a sub-WQ object.
 
   [ DOCUMENTATION ]
 

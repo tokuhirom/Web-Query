@@ -315,20 +315,22 @@ sub map {
 sub filter {
     my $self = shift;
 
+    my @new;
+
     if (ref($_[0]) eq 'CODE') {
         my $code = $_[0];
         my $i = 0; 
-        $self->{trees} = +[grep {
+        @new = grep {
             my $tree = $_;
-            local $_ = (ref $self || $self)->new($tree);
+            local $_ = (ref $self || $self)->new_from_element($tree);
             $code->($i++, $_);
-        } @{$self->{trees}}];
-
-        return $self;
+        } @{$self->{trees}};
+    }
+    else {
+        my $xpath = ref $_[0] ? ${$_[0]} : selector_to_xpath($_[0]);
+        @new = grep { $_->matches($xpath) } @{$self->{trees}};        
     }
 
-    my $xpath = ref $_[0] ? ${$_[0]} : selector_to_xpath($_[0]);
-    my @new = grep { $_->matches($xpath) } @{$self->{trees}};        
     return (ref $self || $self)->new_from_element(\@new, $self);
 }
 
