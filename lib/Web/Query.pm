@@ -336,7 +336,7 @@ sub filter {
     }
     else {
         my $xpath = ref $_[0] ? ${$_[0]} : selector_to_xpath($_[0]);
-        @new = grep { $_->matches($xpath) } @{$self->{trees}};        
+        @new = grep { eval { $_->matches($xpath) } } @{$self->{trees}};        
     }
 
     return (ref $self || $self)->new_from_element(\@new, $self);
