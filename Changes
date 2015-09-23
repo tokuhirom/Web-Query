@@ -10,6 +10,7 @@ Revision history for Perl extension Web::Query
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+    - Be more resilient to #text nodes. (GH#42)
 
   [ NEW FEATURES ]
 
