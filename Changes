@@ -1,20 +1,15 @@
 Revision history for Perl extension Web::Query
 
-{{$NEXT}}
-  [ API CHANGES ]
-
+0.33 2015-09-23
   [ BUG FIXES ]
-  - Make sure we use XML::LibXML > 2.0107 for `unique_keys`. [GH#43]
-  - 'filter' with coderef was not generating a sub-WQ object.
-
-  [ DOCUMENTATION ]
+    - Make sure we use XML::LibXML > 2.0107 for `unique_keys`. [GH#43]
+    - 'filter' with coderef was not generating a sub-WQ object.
 
   [ ENHANCEMENTS ]
     - Be more resilient to #text nodes. (GH#42)
 
-  [ NEW FEATURES ]
-
   [ STATISTICS ]
+    - code churn: 6 files changed, 101 insertions(+), 34 deletions(-)
 
 0.32 2015-08-29
   [ ENHANCEMENTS ]
