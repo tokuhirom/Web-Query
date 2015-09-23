@@ -1,18 +1,11 @@
 Revision history for Perl extension Web::Query
 
-{{$NEXT}}
-  [ API CHANGES ]
-
+0.34 2015-09-23
   [ BUG FIXES ]
-  - 'filter' was exploding on text nodes. [GH#44]
-
-  [ DOCUMENTATION ]
-
-  [ ENHANCEMENTS ]
-
-  [ NEW FEATURES ]
+    - 'filter' was exploding on text nodes. [GH#44]
 
   [ STATISTICS ]
+    - code churn: 4 files changed, 24 insertions(+), 4 deletions(-)
 
 0.33 2015-09-23
   [ BUG FIXES ]
