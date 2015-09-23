@@ -4,6 +4,7 @@ Revision history for Perl extension Web::Query
   [ API CHANGES ]
 
   [ BUG FIXES ]
+  - 'filter' was exploding on text nodes. [GH#44]
 
   [ DOCUMENTATION ]
 

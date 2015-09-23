@@ -2,6 +2,7 @@ use strict;
 use warnings;
 
 use Test::More;
+use Test::Exception;
 
 use lib 't/lib';
 
@@ -37,4 +38,13 @@ HTML
         is $q->size, 2, 'still two elements';
     };
 
+    subtest on_text => sub { on_text($class) };
+};
+
+sub on_text {
+    my $class = shift;
+
+    my $wq = $class->new('<div class="foo"><p class="foo">bar</p></div>Standalone Text');
+
+    lives_ok { $wq->filter('.foo') }, "doesn't explode on text nodes";
 }
