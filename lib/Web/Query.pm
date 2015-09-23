@@ -103,7 +103,11 @@ sub new_from_html {
     my ($class, $html,$options) = @_;
     my $tree = $class->_build_tree($options);
     $tree->parse_content($html);
-    my $self = $class->new_from_element([$tree->disembowel],undef,$options);
+    my $self = $class->new_from_element([
+            map {
+                ref $_ ? $_ : bless { _content => $_ }, 'HTML::TreeBuilder::XPath::TextNode'
+            } $tree->disembowel
+    ],undef,$options);
     $self->{need_delete}++;
     return $self;
 }
@@ -156,7 +160,7 @@ sub find {
     my ($self, $selector) = @_;
     
     my $xpath = ref $selector ? $$selector : selector_to_xpath($selector, root => './');
-    my @new = map { $_->findnodes($xpath) } @{$self->{trees}};
+    my @new = map { eval{ $_->findnodes($xpath) } } @{$self->{trees}};
     
     return (ref $self || $self)->new_from_element(\@new, $self);
 }
@@ -178,7 +182,7 @@ sub as_html {
     my $self = shift;
 
     my @html = map {
-        ref $_ ? $_->isa('HTML::TreeBuilder::XPath::TextNode') 
+        ref $_ ? ( $_->isa('HTML::TreeBuilder::XPath::TextNode') || $_->isa('HTML::TreeBuilder::XPath::CommentNode' ) )
                         ? $_->getValue 
                         : $_->as_HTML( q{&<>'"}, $self->{indent}, {} )
                : $_ 
@@ -194,6 +198,7 @@ sub html {
         map {
             $_->delete_content;
             my $tree = $self->_build_tree;
+            
             $tree->parse_content($_[0]);
             $_->push_content($tree->disembowel);
         } @{$self->{trees}};
@@ -205,7 +210,7 @@ sub html {
         push @html, join '', map { 
             ref $_ ? $_->as_HTML( q{&<>'"}, $self->{indent}, {}) 
                    : encode_entities($_)
-        } $t->content_list;
+        } eval { $t->content_list };
     }
     
     return wantarray ? @html : $html[0];
@@ -280,9 +285,12 @@ sub data {
 
 sub tagname {
     my $self = shift;
-    my @retval = map { ref $_ eq 'HTML::TreeBuilder::XPath::TextNode' 
-                            ? '#text' 
-                            : $_->tag(@_) 
+    my @retval = map { $_ eq '~comment' ? '#comment' : $_ } 
+                 map { ref $_ eq 'HTML::TreeBuilder::XPath::TextNode'    ? '#text' 
+                     : ref $_ eq 'HTML::TreeBuilder::XPath::CommentNode' ? '#comment'
+                     : ref $_ ? $_->tag(@_)
+                     : '#text'
+                     ;
                 } @{$self->{trees}};
     return wantarray ? @retval : $retval[0];
 }
@@ -625,7 +633,7 @@ sub DESTROY {
     return unless $_[0]->{need_delete};
 
     # avoid memory leaks
-    $_->delete for grep { ref $_ } @{$_[0]->{trees}};
+    eval { $_->delete } for @{$_[0]->{trees}};
 }
 
 1;
