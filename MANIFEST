@@ -50,6 +50,7 @@ t/lib/WQTest.pm
 t/next.t
 t/next_until.t
 t/no_space_compacting.t
+t/node-types.t
 t/not.t
 t/prepend.t
 t/prev.t
