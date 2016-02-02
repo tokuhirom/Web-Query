@@ -1074,6 +1074,30 @@ You can specify your own instance of L<LWP::UserAgent>.
 
     $Web::Query::UserAgent = LWP::UserAgent->new( agent => 'Mozilla/5.0' );
 
+=head1 TROUBLESHOOTING
+
+=head2 Can't get the content of script elements
+
+The <script> tag is treated differently by L<HTML::TreeBuilder>, the 
+parser used by Web::Query. To retrieve the content, you can use either
+the method C<html()> (with the caveat that the content will be escaped),
+or use L<Web::Query::LibXML>, which parse the 'script' element differently.
+
+    my $node = "<script>var x = '<p>foo</p>';</script>";
+
+    say Web::Query::wq( $node )->text;  
+        # nothing is printed!
+        
+    say Web::Query::wq( $node )->html;  
+        # var x = &#39;&lt;p&gt;foo&lt;/p&gt;&#39;;
+
+    say Web::Query::LibXML::wq( $node )->text;
+        # var x = '<p>foo</p>';
+        
+    say Web::Query::LibXML::wq( $node )->html;
+        # var x = '&lt;p&gt;foo&lt;/p&gt;';
+
+
 =head1 INCOMPATIBLE CHANGES
 
 =over 4
