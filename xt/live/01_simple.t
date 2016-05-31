@@ -8,7 +8,7 @@ binmode Test::More->builder->$_, ":utf8" for qw/output failure_output todo_outpu
 
 my @res;
 wq('http://64p.org/')
-  ->find('.description')
+  ->find('div')
   ->each(sub {
         my $i = shift;
         push @res, $_->text;
