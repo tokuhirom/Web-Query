@@ -238,7 +238,20 @@ sub attr {
             ;
     }
 
-    $_->attr(@_) for @{$self->{trees}};
+    while( my( $attr, $value ) = splice @_, 0, 2 ) {
+        my $code = ref $value eq 'CODE' ? $value : undef;
+
+        for my $t ( @{$self->{trees}} ) {
+            if ( $code ) {
+                no warnings 'uninitialized';
+                my $orig = $_ = $t->attr($attr);
+                $code->();
+                next if $orig eq $_;
+                $value = $_;
+            }
+            $t->attr($attr => $value);
+        }
+    }
 
     return $self;
 }
@@ -905,7 +918,7 @@ of the first element.
 
 =head3 C< attr >
 
-Get/set the attribute value in element.
+Get/set attribute values.
 
 In getter mode, it'll return either the values of the attribute
 for all elements of the set, or only the first one depending of the calling context.
@@ -913,10 +926,19 @@ for all elements of the set, or only the first one depending of the calling cont
     my @values = $q->attr('style');      # style of all elements
     my $first_value = $q->attr('style'); # style of first element
 
-In setter mode, it'll set the attribute value for all elements, and return back
+In setter mode, it'll set attributes value for all elements, and return back
 the original object for easy chaining.
 
     $q->attr( 'alt' => 'a picture' )->find( ... );
+
+    # can pass more than 1 element too
+    $q->attr( alt => 'a picture', src => 'file:///...' );
+
+The value passed for an attribute can be a code ref. In that case,
+the code will be called with C<$_> set to the current attribute value.
+If the code modifies C<$_>, the attribute will be updated with the new value.
+
+    $q->attr( alt => sub { $_ ||= 'A picture' } );
 
 =head3 C< id >
 
