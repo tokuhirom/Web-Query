@@ -10,6 +10,7 @@ Revision history for Perl extension Web::Query
   - Add troubleshooting entry for 'script' elements. [GH#8]
 
   [ ENHANCEMENTS ]
+  - 'attr' method now accept many attributes and code refs in setter mode.
 
   [ NEW FEATURES ]
 
