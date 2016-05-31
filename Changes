@@ -1,19 +1,15 @@
 Revision history for Perl extension Web::Query
 
-{{$NEXT}}
-  [ API CHANGES ]
-
-  [ BUG FIXES ]
-
+0.35 2016-05-31
   [ DOCUMENTATION ]
-  - Add troubleshooting entry for 'script' elements. [GH#8]
+    - Add troubleshooting entry for 'script' elements. [GH#8]
 
   [ ENHANCEMENTS ]
-  - 'attr' method now accept many attributes and code refs in setter mode.
-
-  [ NEW FEATURES ]
+    - 'attr' method now accept many attributes and code refs in setter
+      mode.
 
   [ STATISTICS ]
+    - code churn: 6 files changed, 104 insertions(+), 33 deletions(-)
 
 0.34 2015-09-23
   [ BUG FIXES ]
