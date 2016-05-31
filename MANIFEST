@@ -31,6 +31,7 @@ t/11_get_eq.t
 t/add.t
 t/after.t
 t/append.t
+t/attr.t
 t/bad-url-with-options.t
 t/before.t
 t/class.t
@@ -62,4 +63,5 @@ t/store_comments.t
 t/tagname.t
 t/xpath.t
 xt/live/01_simple.t
+xt/release/pause-permissions.t
 xt/release/unused-vars.t
