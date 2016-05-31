@@ -4,7 +4,6 @@ Revision history for Perl extension Web::Query
   [ API CHANGES ]
 
   [ BUG FIXES ]
-  - 'filter' was exploding on text nodes. [GH#44]
 
   [ DOCUMENTATION ]
   - Add troubleshooting entry for 'script' elements. [GH#8]
@@ -15,6 +14,13 @@ Revision history for Perl extension Web::Query
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+0.34 2015-09-23
+  [ BUG FIXES ]
+    - 'filter' was exploding on text nodes. [GH#44]
+
+  [ STATISTICS ]
+    - code churn: 4 files changed, 24 insertions(+), 4 deletions(-)
 
 0.33 2015-09-23
   [ BUG FIXES ]
