@@ -185,6 +185,7 @@ sub contents {
 
 sub as_html {
     my $self = shift;
+    my %args = @_;
 
     my @html = map {
         ref $_ ? ( $_->isa('HTML::TreeBuilder::XPath::TextNode') || $_->isa('HTML::TreeBuilder::XPath::CommentNode' ) )
@@ -192,6 +193,8 @@ sub as_html {
                         : $_->as_HTML( q{&<>'"}, $self->{indent}, {} )
                : $_ 
     } @{$self->{trees}};
+
+    return join $args{join}, @html if defined $args{join};
 
     return wantarray ? @html : $html[0];
 }
@@ -923,9 +926,16 @@ The content can be anything accepted by L</new>.
 
 =head3 as_html
 
-Return the elements associated with the object as strings. 
-If called in a scalar context, only return the string representation
-of the first element.
+Returns the string representations of either the first or all elements,
+depending if called in list or scalar context.
+
+If given an argument C<join>, the string representations of the elements
+will be concatenated with the given string.
+
+    wq( '<div><p>foo</p><p>bar</p></div>' )
+        ->find('p')
+        ->as_html( join => '!' );
+    # <p>foo</p>!<p>bar</p>
 
 =head3 C< attr >
 
