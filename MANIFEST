@@ -48,6 +48,7 @@ t/insert_before.t
 t/lib/My/TreeBuilder.pm
 t/lib/My/Web/Query.pm
 t/lib/WQTest.pm
+t/new.t
 t/next.t
 t/next_until.t
 t/no_space_compacting.t

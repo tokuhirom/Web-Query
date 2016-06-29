@@ -56,6 +56,8 @@ sub new {
 sub _resolve_new {
     my( $class, $stuff, $options) = @_;
 
+    return $class->new_from_element([],undef,$options) unless defined $stuff;
+
     if (blessed $stuff) {
         return $class->new_from_element([$stuff],undef,$options)
             if $stuff->isa('HTML::Element');
@@ -113,9 +115,12 @@ sub new_from_html {
 }
 
 sub new_from_element {
-    my $class = shift;
+    my $self_or_class = shift;
+
     my $trees = ref $_[0] eq 'ARRAY' ? $_[0] : [$_[0]];
-    return bless { trees => [ @$trees ], before => $_[1] }, $class;
+
+    return bless { trees => [ @$trees ], before => $_[1] }, 
+        ref $self_or_class || $self_or_class;
 }
 
 sub end {
@@ -578,7 +583,7 @@ sub add {
 
     my %ids = map { $self->_node_id($_) => 1 } @{ $self->{trees} };
 
-    ( ref $self )->new_from_element( [ 
+    $self->new_from_element( [ 
         @{$self->{trees}}, grep { ! $ids{ $self->_node_id($_) } } @nodes  
     ], $self );
 }
@@ -704,7 +709,13 @@ This is a shortcut for C<< Web::Query->new($stuff) >>. This function is exported
 
 =item my $q = Web::Query->new($stuff, \%options )
 
-Create new instance of Web::Query. You can make the instance from URL(http, https, file scheme), HTML in string, URL in string, L<URI> object, and instance of L<HTML::Element>.
+Create new instance of Web::Query. You can make the instance from URL(http, https, file scheme), HTML in string, URL in string, L<URI> object, C<undef>, and either one 
+L<HTML::Element> object or an array ref of them.
+
+    # all valid creators
+    $q = Web::Query->new( 'http://techblog.babyl.ca' );
+    $q = Web::Query->new( '<p>foo</p>' );
+    $q = Web::Query->new( undef );
 
 This method throw the exception on unknown $stuff.
 

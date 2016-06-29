@@ -8,6 +8,7 @@ Revision history for Perl extension Web::Query
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - `wq()` can now create an empty document.
 
   [ NEW FEATURES ]
 
