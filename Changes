@@ -10,6 +10,7 @@ Revision history for Perl extension Web::Query
   [ ENHANCEMENTS ]
   - `wq()` can now create an empty document.
   - Add 'join' argument to `as_html`.
+  - Add 'match' function.
 
   [ NEW FEATURES ]
 

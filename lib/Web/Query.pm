@@ -613,6 +613,15 @@ sub next {
     return (ref $self || $self)->new_from_element(\@new, $self);
 }
 
+sub match {
+    my( $self, $selector ) = @_;
+
+    my $class = ref $self;
+
+    my $xpath = ref $selector ? $$selector : selector_to_xpath($selector);
+    $self->filter(sub { grep { $_->matches($xpath) } grep { ref $_ } $class->new($_)->{trees}[0] } );
+}
+
 sub not {
     my( $self, $selector ) = @_;
 
@@ -838,9 +847,16 @@ Return the last matching element.
 
 This method constructs a new Web::Query object from the last matching element.
 
+=head3 match($selector)
+
+Returns all the elements matching the C<$selector>.
+
+    # $do_for_love will be $that thing
+    my $do_for_love = $wq->find('thing')->match('#that');
+
 =head3 not($selector)
 
-Return all the elements not matching the C<$selector>.
+Returns all the elements not matching the C<$selector>.
 
     # $do_for_love will be every thing, except #that
     my $do_for_love = $wq->find('thing')->not('#that');
