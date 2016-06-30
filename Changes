@@ -4,6 +4,7 @@ Revision history for Perl extension Web::Query
   [ API CHANGES ]
 
   [ BUG FIXES ]
+  - `->text()` doesn't break on text nodes. (GH#47, reported by Gabor Szabo)
 
   [ DOCUMENTATION ]
 

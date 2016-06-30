@@ -233,7 +233,9 @@ sub text {
         return $self;
     }
 
-    my @html = map { $_->as_text } @{$self->{trees}};
+    my @html = map { 
+        ref $_ ? $_->as_text : $_
+    } @{$self->{trees}};
     return wantarray ? @html : $html[0];
 }
 
