@@ -1179,7 +1179,20 @@ You can specify your own instance of L<LWP::UserAgent>.
 
     $Web::Query::UserAgent = LWP::UserAgent->new( agent => 'Mozilla/5.0' );
 
-=head1 TROUBLESHOOTING
+=head1 FAQ AND TROUBLESHOOTING
+
+=head2 How to find XML processing instructions in a document?
+
+It's possible with L<Web::Query::LibXML> and by using an xpath expression
+with C<find()>:
+
+    # find <?xml-stylesheet ... ?>
+    $q->find(\"//processing-instruction('xml-stylesheet')");
+
+However, note that the support for processing instructions 
+in L<HTML::TreeBuilder::LibXML::Node> is sketchy, so there
+are methods like C<attr()> that won't work.
+
 
 =head2 Can't get the content of script elements
 

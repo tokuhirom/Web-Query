@@ -7,6 +7,7 @@ Revision history for Perl extension Web::Query
   - `->text()` doesn't break on text nodes. (GH#47, reported by Gabor Szabo)
 
   [ DOCUMENTATION ]
+  - Add mention of a way to get PIs of XML documents (GH#49).
 
   [ ENHANCEMENTS ]
   - `wq()` can now create an empty document.
