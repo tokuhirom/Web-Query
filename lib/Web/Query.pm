@@ -11,8 +11,9 @@ use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
 use Scalar::Util qw/blessed refaddr/;
 use HTML::Entities qw/encode_entities/;
 
-use List::MoreUtils qw/ uniq /;
+use List::Util qw/ reduce uniq /;
 use Scalar::Util qw/ refaddr /;
+
 our @EXPORT = qw/wq/;
 
 our $RESPONSE;
@@ -55,6 +56,8 @@ sub new {
 
 sub _resolve_new {
     my( $class, $stuff, $options) = @_;
+
+    return $class->new_from_element([],undef,$options) unless defined $stuff;
 
     if (blessed $stuff) {
         return $class->new_from_element([$stuff],undef,$options)
@@ -113,9 +116,12 @@ sub new_from_html {
 }
 
 sub new_from_element {
-    my $class = shift;
+    my $self_or_class = shift;
+
     my $trees = ref $_[0] eq 'ARRAY' ? $_[0] : [$_[0]];
-    return bless { trees => [ @$trees ], before => $_[1] }, $class;
+
+    return bless { trees => [ @$trees ], before => $_[1] }, 
+        ref $self_or_class || $self_or_class;
 }
 
 sub end {
@@ -180,6 +186,7 @@ sub contents {
 
 sub as_html {
     my $self = shift;
+    my %args = @_;
 
     my @html = map {
         ref $_ ? ( $_->isa('HTML::TreeBuilder::XPath::TextNode') || $_->isa('HTML::TreeBuilder::XPath::CommentNode' ) )
@@ -187,6 +194,8 @@ sub as_html {
                         : $_->as_HTML( q{&<>'"}, $self->{indent}, {} )
                : $_ 
     } @{$self->{trees}};
+
+    return join $args{join}, @html if defined $args{join};
 
     return wantarray ? @html : $html[0];
 }
@@ -224,7 +233,9 @@ sub text {
         return $self;
     }
 
-    my @html = map { $_->as_text } @{$self->{trees}};
+    my @html = map { 
+        ref $_ ? $_->as_text : $_
+    } @{$self->{trees}};
     return wantarray ? @html : $html[0];
 }
 
@@ -578,7 +589,7 @@ sub add {
 
     my %ids = map { $self->_node_id($_) => 1 } @{ $self->{trees} };
 
-    ( ref $self )->new_from_element( [ 
+    $self->new_from_element( [ 
         @{$self->{trees}}, grep { ! $ids{ $self->_node_id($_) } } @nodes  
     ], $self );
 }
@@ -603,6 +614,22 @@ sub next {
     my @new = grep { $_ } map { $_->getNextSibling } @{ $self->{trees} };
 
     return (ref $self || $self)->new_from_element(\@new, $self);
+}
+
+sub match {
+    my( $self, $selector ) = @_;
+
+    my $class = ref $self;
+
+    my $xpath = ref $selector ? $$selector : selector_to_xpath($selector);
+
+    my $results = $self->map(sub{
+            my(undef,$e) = @_;
+        return 0 unless ref $e;  # it's a string
+        return !!$e->get(0)->matches($xpath);
+    });
+
+    return wantarray ? @$results : $results->[0];
 }
 
 sub not {
@@ -636,6 +663,41 @@ sub next_until {
     $collection->{before} = $self;
 
     return $collection;
+}
+
+sub split {
+    my( $self, $selector, %args ) = @_;
+
+    my @current;
+    my @list;
+
+    $self->contents->each(sub{
+            my(undef,$e)=@_;
+
+            if( $e->match($selector) ) {
+                push @list, [ @current ];
+                @current = ( $e );
+            }
+            else {
+                if ( $current[1] ) {
+                    $current[1] = $current[1]->add($e);
+                }
+                else {
+                    $current[1] = $e;
+                }
+            }
+    });
+    push @list, [ @current ];
+
+    if( $args{skip_leading} ) {
+        @list = grep { $_->[0] } @list;
+    }
+
+    unless ( $args{pairs} ) {
+        @list = map { reduce { $a->add($b) } grep { $_ } @$_ } @list;
+    }
+
+    return @list;
 }
 
 sub last_response {
@@ -704,7 +766,13 @@ This is a shortcut for C<< Web::Query->new($stuff) >>. This function is exported
 
 =item my $q = Web::Query->new($stuff, \%options )
 
-Create new instance of Web::Query. You can make the instance from URL(http, https, file scheme), HTML in string, URL in string, L<URI> object, and instance of L<HTML::Element>.
+Create new instance of Web::Query. You can make the instance from URL(http, https, file scheme), HTML in string, URL in string, L<URI> object, C<undef>, and either one 
+L<HTML::Element> object or an array ref of them.
+
+    # all valid creators
+    $q = Web::Query->new( 'http://techblog.babyl.ca' );
+    $q = Web::Query->new( '<p>foo</p>' );
+    $q = Web::Query->new( undef );
 
 This method throw the exception on unknown $stuff.
 
@@ -824,9 +892,17 @@ Return the last matching element.
 
 This method constructs a new Web::Query object from the last matching element.
 
+=head3 match($selector)
+
+Returns a boolean indicating if the elements match the C<$selector>. 
+
+In scalar context returns only the boolean for the first element.
+
+For the reverse of C<not()>, see C<filter()>.
+
 =head3 not($selector)
 
-Return all the elements not matching the C<$selector>.
+Returns all the elements not matching the C<$selector>.
 
     # $do_for_love will be every thing, except #that
     my $do_for_love = $wq->find('thing')->not('#that');
@@ -912,9 +988,16 @@ The content can be anything accepted by L</new>.
 
 =head3 as_html
 
-Return the elements associated with the object as strings. 
-If called in a scalar context, only return the string representation
-of the first element.
+Returns the string representations of either the first or all elements,
+depending if called in list or scalar context.
+
+If given an argument C<join>, the string representations of the elements
+will be concatenated with the given string.
+
+    wq( '<div><p>foo</p><p>bar</p></div>' )
+        ->find('p')
+        ->as_html( join => '!' );
+    # <p>foo</p>!<p>bar</p>
 
 =head3 C< attr >
 

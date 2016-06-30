@@ -31,6 +31,11 @@ sub test {
     is_deeply \@array => [ '<p>Hi there</p>', q{<p>How is life?</p>} ],
         'called in list context';
 
+    subtest 'join' => sub {
+        is $q->find('p')->as_html(join => '!')
+            => '<p>Hi there</p>!<p>How is life?</p>';
+    };
+
 }
 
 
