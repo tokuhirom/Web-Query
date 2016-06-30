@@ -1,23 +1,21 @@
 Revision history for Perl extension Web::Query
 
-{{$NEXT}}
-  [ API CHANGES ]
-
+0.36 2016-06-30
   [ BUG FIXES ]
-  - `->text()` doesn't break on text nodes. (GH#47, reported by Gabor Szabo)
+    - `->text()` doesn't break on text nodes. (GH#47, reported by Gabor
+      Szabo)
 
   [ DOCUMENTATION ]
-  - Add mention of a way to get PIs of XML documents (GH#49).
+    - Add mention of a way to get PIs of XML documents (GH#49).
 
   [ ENHANCEMENTS ]
-  - `wq()` can now create an empty document.
-  - Add 'join' argument to `as_html`.
-  - Add 'match' function.
-  - Add 'split' function. (GH#45)
-
-  [ NEW FEATURES ]
+    - `wq()` can now create an empty document.
+    - Add 'join' argument to `as_html`.
+    - Add 'match' function.
+    - Add 'split' function. (GH#45)
 
   [ STATISTICS ]
+    - code churn: 11 files changed, 322 insertions(+), 46 deletions(-)
 
 0.35 2016-05-31
   [ DOCUMENTATION ]
