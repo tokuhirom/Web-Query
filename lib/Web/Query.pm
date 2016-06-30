@@ -619,8 +619,6 @@ sub next {
 sub match {
     my( $self, $selector ) = @_;
 
-    my $class = ref $self;
-
     my $xpath = ref $selector ? $$selector : selector_to_xpath($selector);
 
     my $results = $self->map(sub{
