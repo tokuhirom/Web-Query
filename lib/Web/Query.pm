@@ -1232,7 +1232,13 @@ Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>
 
 =head1 SEE ALSO
 
-L<pQuery>
+=over
+
+=item L<pQuery>
+
+=item L<XML::LibXML::jQuery>
+
+=back
 
 =head1 LICENSE
 
