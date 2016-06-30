@@ -11,8 +11,9 @@ use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
 use Scalar::Util qw/blessed refaddr/;
 use HTML::Entities qw/encode_entities/;
 
-use List::MoreUtils qw/ uniq /;
+use List::Util qw/ reduce uniq /;
 use Scalar::Util qw/ refaddr /;
+
 our @EXPORT = qw/wq/;
 
 our $RESPONSE;
@@ -619,7 +620,14 @@ sub match {
     my $class = ref $self;
 
     my $xpath = ref $selector ? $$selector : selector_to_xpath($selector);
-    $self->filter(sub { grep { $_->matches($xpath) } grep { ref $_ } $class->new($_)->{trees}[0] } );
+
+    my $results = $self->map(sub{
+            my(undef,$e) = @_;
+        return 0 unless ref $e;  # it's a string
+        return !!$e->get(0)->matches($xpath);
+    });
+
+    return wantarray ? @$results : $results->[0];
 }
 
 sub not {
@@ -653,6 +661,41 @@ sub next_until {
     $collection->{before} = $self;
 
     return $collection;
+}
+
+sub split {
+    my( $self, $selector, %args ) = @_;
+
+    my @current;
+    my @list;
+
+    $self->contents->each(sub{
+            my(undef,$e)=@_;
+
+            if( $e->match($selector) ) {
+                push @list, [ @current ];
+                @current = ( $e );
+            }
+            else {
+                if ( $current[1] ) {
+                    $current[1] = $current[1]->add($e);
+                }
+                else {
+                    $current[1] = $e;
+                }
+            }
+    });
+    push @list, [ @current ];
+
+    if( $args{skip_leading} ) {
+        @list = grep { $_->[0] } @list;
+    }
+
+    unless ( $args{pairs} ) {
+        @list = map { reduce { $a->add($b) } grep { $_ } @$_ } @list;
+    }
+
+    return @list;
 }
 
 sub last_response {
@@ -849,10 +892,11 @@ This method constructs a new Web::Query object from the last matching element.
 
 =head3 match($selector)
 
-Returns all the elements matching the C<$selector>.
+Returns a boolean indicating if the elements match the C<$selector>. 
 
-    # $do_for_love will be $that thing
-    my $do_for_love = $wq->find('thing')->match('#that');
+In scalar context returns only the boolean for the first element.
+
+For the reverse of C<not()>, see C<filter()>.
 
 =head3 not($selector)
 
