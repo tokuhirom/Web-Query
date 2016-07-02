@@ -11,7 +11,7 @@ use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
 use Scalar::Util qw/blessed refaddr/;
 use HTML::Entities qw/encode_entities/;
 
-use List::Util qw/ reduce uniq /;
+use List::Util 1.44 qw/ reduce uniq /;
 use Scalar::Util qw/ refaddr /;
 
 our @EXPORT = qw/wq/;
