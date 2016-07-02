@@ -4,7 +4,6 @@ Revision history for Perl extension Web::Query
   [ API CHANGES ]
 
   [ BUG FIXES ]
-  - Require List::Util 1.44+ (for 'uniq')
 
   [ DOCUMENTATION ]
 
@@ -13,6 +12,13 @@ Revision history for Perl extension Web::Query
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+0.37 2016-07-02
+  [ BUG FIXES ]
+    - Require List::Util 1.44+ (for 'uniq')
+
+  [ STATISTICS ]
+    - code churn: 2 files changed, 19 insertions(+), 7 deletions(-)
 
 0.36 2016-06-30
   [ BUG FIXES ]
