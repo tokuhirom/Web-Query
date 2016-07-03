@@ -1,0 +1,50 @@
+do { my $x = {
+       'configure' => {
+                        'requires' => {
+                                        'ExtUtils::MakeMaker' => '0'
+                                      }
+                      },
+       'develop' => {
+                      'requires' => {
+                                      'Test::More' => '0.96',
+                                      'Test::PAUSE::Permissions' => '0',
+                                      'Test::Vars' => '0',
+                                      'utf8' => '0'
+                                    }
+                    },
+       'runtime' => {
+                      'requires' => {
+                                      'Exporter' => '0',
+                                      'HTML::Entities' => '0',
+                                      'HTML::Selector::XPath' => '0.20',
+                                      'HTML::TreeBuilder::LibXML' => '0',
+                                      'HTML::TreeBuilder::XPath' => '0',
+                                      'LWP::UserAgent' => '0',
+                                      'List::Util' => '1.44',
+                                      'Scalar::Util' => '0',
+                                      'parent' => '0',
+                                      'perl' => '5.008005',
+                                      'strict' => '0',
+                                      'warnings' => '0'
+                                    }
+                    },
+       'test' => {
+                   'recommends' => {
+                                     'CPAN::Meta' => '2.120900'
+                                   },
+                   'requires' => {
+                                   'Cwd' => '0',
+                                   'ExtUtils::MakeMaker' => '0',
+                                   'File::Spec' => '0',
+                                   'FindBin' => '0',
+                                   'IO::Handle' => '0',
+                                   'IPC::Open3' => '0',
+                                   'Test::Exception' => '0',
+                                   'Test::More' => '0',
+                                   'lib' => '0',
+                                   'utf8' => '0'
+                                 }
+                 }
+     };
+  $x;
+ }

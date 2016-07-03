@@ -1,0 +1,100 @@
+{
+   "abstract" : "Yet another scraping library like jQuery",
+   "author" : [
+      "Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ GMAIL COM>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 5.043, CPAN::Meta::Converter version 2.150001",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Web-Query",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::More" : "0.96",
+            "Test::PAUSE::Permissions" : "0",
+            "Test::Vars" : "0",
+            "utf8" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Exporter" : "0",
+            "HTML::Entities" : "0",
+            "HTML::Selector::XPath" : "0.20",
+            "HTML::TreeBuilder::LibXML" : "0",
+            "HTML::TreeBuilder::XPath" : "0",
+            "LWP::UserAgent" : "0",
+            "List::Util" : "1.44",
+            "Scalar::Util" : "0",
+            "parent" : "0",
+            "perl" : "5.008005",
+            "strict" : "0",
+            "warnings" : "0"
+         }
+      },
+      "test" : {
+         "recommends" : {
+            "CPAN::Meta" : "2.120900"
+         },
+         "requires" : {
+            "Cwd" : "0",
+            "ExtUtils::MakeMaker" : "0",
+            "File::Spec" : "0",
+            "FindBin" : "0",
+            "IO::Handle" : "0",
+            "IPC::Open3" : "0",
+            "Test::Exception" : "0",
+            "Test::More" : "0",
+            "lib" : "0",
+            "utf8" : "0"
+         }
+      }
+   },
+   "provides" : {
+      "Web::Query" : {
+         "file" : "lib/Web/Query.pm",
+         "version" : "0.38"
+      },
+      "Web::Query::LibXML" : {
+         "file" : "lib/Web/Query/LibXML.pm",
+         "version" : "0.38"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/tokuhirom/Web-Query/issues"
+      },
+      "homepage" : "https://github.com/tokuhirom/Web-Query",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/tokuhirom/Web-Query.git",
+         "web" : "https://github.com/tokuhirom/Web-Query"
+      }
+   },
+   "version" : "0.38",
+   "x_authority" : "cpan:TOKUHIROM",
+   "x_contributors" : [
+      "Carlos Fernando Avila Gratz <cafe01@gmail.com>",
+      "DQNEO <dqneoo@gmail.com>",
+      "Hiroki Honda <cside.story@gmail.com>",
+      "Kang-min Liu <gugod@gugod.org>",
+      "moznion <moznion@gmail.com>",
+      "Oleg <verdrehung@gmail.com>",
+      "Tokuhiro Matsuno <tokuhirom+cpan@gmail.com>",
+      "xaicron <xaicron@gmail.com>",
+      "Yanick Champoux <yanick@cpan.org>"
+   ]
+}
+
