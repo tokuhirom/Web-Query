@@ -7,7 +7,7 @@ use 5.008001;
 use parent qw/Exporter/;
 use HTML::TreeBuilder::XPath;
 use LWP::UserAgent;
-use HTML::Selector::XPath 0.06 qw/selector_to_xpath/;
+use HTML::Selector::XPath 0.20 qw/selector_to_xpath/;
 use Scalar::Util qw/blessed refaddr/;
 use HTML::Entities qw/encode_entities/;
 

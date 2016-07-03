@@ -4,6 +4,7 @@ Revision history for Perl extension Web::Query
   [ API CHANGES ]
 
   [ BUG FIXES ]
+  - HTML::Selector::XPath 0.19 has a bug regarding '//b' expressions.
 
   [ DOCUMENTATION ]
 
