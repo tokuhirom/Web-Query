@@ -4,6 +4,7 @@ Revision history for Perl extension Web::Query
   [ API CHANGES ]
 
   [ BUG FIXES ]
+    - localize $@ in destructor to prevent clobbering. (GH#51, Maurice Aubrey)
 
   [ DOCUMENTATION ]
 
