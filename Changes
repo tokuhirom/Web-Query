@@ -4,7 +4,6 @@ Revision history for Perl extension Web::Query
   [ API CHANGES ]
 
   [ BUG FIXES ]
-    - localize $@ in destructor to prevent clobbering. (GH#51, Maurice Aubrey)
 
   [ DOCUMENTATION ]
 
@@ -13,6 +12,14 @@ Revision history for Perl extension Web::Query
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+0.39 2018-08-21
+  [ BUG FIXES ]
+    - localize $@ in destructor to prevent clobbering. (GH#51, Maurice
+      Aubrey)
+
+  [ STATISTICS ]
+    - code churn: 6 files changed, 81 insertions(+), 4 deletions(-)
 
 0.38 2016-07-03
   [ BUG FIXES ]
