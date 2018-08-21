@@ -1,3 +1,4 @@
+CODE_OF_CONDUCT.md
 CONTRIBUTORS
 Changes
 INSTALL
@@ -6,7 +7,6 @@ MANIFEST
 META.json
 META.yml
 Makefile.PL
-README
 README.mkdn
 SIGNATURE
 cpanfile
@@ -40,6 +40,7 @@ t/clone.t
 t/contents.t
 t/data/foo.html
 t/data/html5_snippet.html
+t/destroy.t
 t/detach.t
 t/filter.t
 t/find.t
@@ -67,5 +68,4 @@ t/store_comments.t
 t/tagname.t
 t/xpath.t
 xt/live/01_simple.t
-xt/release/pause-permissions.t
 xt/release/unused-vars.t

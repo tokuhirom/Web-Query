@@ -706,6 +706,7 @@ sub DESTROY {
     return unless $_[0]->{need_delete};
 
     # avoid memory leaks
+    local $@;
     eval { $_->delete } for @{$_[0]->{trees}};
 }
 
