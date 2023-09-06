@@ -22,6 +22,7 @@ on 'test' => sub {
   requires "Test::More" => "0";
   requires "lib" => "0";
   requires "utf8" => "0";
+  requires 'Test2::V0' => 0;
 };
 
 on 'test' => sub {

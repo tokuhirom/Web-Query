@@ -20,12 +20,9 @@ our $RESPONSE;
 
 sub wq { Web::Query->new(@_) }
 
-our $UserAgent = LWP::UserAgent->new();
+our $UserAgent; 
 
-sub __ua {
-    $UserAgent ||= LWP::UserAgent->new( agent => __PACKAGE__ . "/" . __PACKAGE__->VERSION );
-    $UserAgent;
-}
+sub __ua { $UserAgent ||= LWP::UserAgent->new }
 
 sub _build_tree {
     my( $self, $options ) = @_;
@@ -88,7 +85,12 @@ sub new_from_url {
 
     $RESPONSE = __ua()->get($url);
 
-    return undef unless $RESPONSE->is_success;
+    no warnings 'uninitialized';
+
+    unless( $RESPONSE->is_success ) {
+        die "failed to retrieve '$url', " . $RESPONSE->code. " "
+            . $RESPONSE->message."\n";
+    };
 
     return $class->new_from_html($RESPONSE->decoded_content,$options);
 }

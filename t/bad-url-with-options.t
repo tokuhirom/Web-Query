@@ -1,24 +1,28 @@
+use Test2::V0;
+use Test2::Tools::Exception qw/dies/;
+
 use strict;
 use warnings;
 use utf8;
-use Test::More;
 use LWP::UserAgent;
 use Web::Query;
 
-my $ua = LWP::UserAgent->new( agent => 'Mozilla/5.0' );
-$Web::Query::UserAgent = $ua;
+my $ua = $Web::Query::UserAgent = LWP::UserAgent->new( agent => 'Mozilla/5.0' );
+
 $ua->add_handler(request_send => sub {
-    my ($request, $ua, $h) = @_;
-    if ($request->uri->host eq 'bad.com') {
-        return HTTP::Response->new(500);
-    } else {
-        return HTTP::Response->new(200);
-    }
+    my ($request) = @_;
+    my $code = $request->uri->host eq 'bad.com' ? 500 : 200;
+    return HTTP::Response->new($code);
 });
 
 plan tests => 2;
 
-is( Web::Query->new('http://bad.com/'), undef, 'without options' );
+ok dies {
+    Web::Query->new('http://bad.com/');
+}, "without options";
 
-is( Web::Query->new('http://bad.com/', { indent => 3 }) => undef, 'with options' );
+ok dies {
+    Web::Query->new('http://bad.com/',{indent=>3});
+}, "with options";
+
 
