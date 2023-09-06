@@ -2,6 +2,8 @@ Revision history for Perl extension Web::Query
 
 {{$NEXT}}
   [ API CHANGES ]
+  - Web::Query will now throw when failing to retrieve an url, instead of
+    silently returning C<undef>. (GH#55)
 
   [ BUG FIXES ]
 

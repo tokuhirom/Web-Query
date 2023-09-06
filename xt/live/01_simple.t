@@ -7,7 +7,7 @@ use Web::Query;
 binmode Test::More->builder->$_, ":utf8" for qw/output failure_output todo_output/;                       
 
 my @res;
-wq('http://64p.org/')
+wq('https://techblog.babyl.ca/')
   ->find('div')
   ->each(sub {
         my $i = shift;
