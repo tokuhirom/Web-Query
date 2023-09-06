@@ -1,6 +1,7 @@
 package Web::Query;
+our $AUTHORITY = 'cpan:TOKUHIROM';
 # ABSTRACT: Yet another scraping library like jQuery
-
+$Web::Query::VERSION = '1.00';
 use strict;
 use warnings;
 use 5.008001;
@@ -713,12 +714,20 @@ sub DESTROY {
 }
 
 1;
+
 __END__
 
-=encoding utf8
+=pod
 
-=for stopwords prev
+=encoding UTF-8
 
+=head1 NAME
+
+Web::Query - Yet another scraping library like jQuery
+
+=head1 VERSION
+
+version 1.00
 
 =head1 SYNOPSIS
 
@@ -746,8 +755,9 @@ passed as a scalar ref, it'll be taken as a straight XPath expression.
     $wq( '<div><p>hello</p><p>there</p></div>' )->find( 'p' );       # css selector
     $wq( '<div><p>hello</p><p>there</p></div>' )->find( \'/div/p' ); # xpath selector
 
-
 B<THIS LIBRARY IS UNDER DEVELOPMENT. ANY API MAY CHANGE WITHOUT NOTICE>.
+
+=for stopwords prev
 
 =head1 FUNCTIONS
 
@@ -871,7 +881,7 @@ Reduce the elements to those that pass the function's test.
 Get the descendants of each element in the current set of matched elements, filtered by a selector.
 
     my $q2 = $q->find($selector); # $selector is a CSS3 selector.
-    
+
 B<NOTE> If you want to match the element itself, use L</filter>.
 
 B<INCOMPATIBLE CHANGE> 
@@ -967,7 +977,6 @@ Classes are toggled once, no matter how many times they appear in the argument l
 
     $q->toggle_class('foo')->toggle_class('foo')->toggle_class('bar');
 
-
 =head3 after
 
 Insert content, specified by the parameter, after each element in the set of matched elements.
@@ -976,7 +985,7 @@ Insert content, specified by the parameter, after each element in the set of mat
                                ->after('<b>bar</b>')
                                ->end
                                ->as_html; # <div><p>foo</p><b>bar</b></div>
-    
+
 The content can be anything accepted by L</new>.
 
 =head3 append
@@ -984,7 +993,7 @@ The content can be anything accepted by L</new>.
 Insert content, specified by the parameter, to the end of each element in the set of matched elements.
 
     wq('<div></div>')->append('<p>foo</p>')->as_html; # <div><p>foo</p></div>
-    
+
 The content can be anything accepted by L</new>.
 
 =head3 as_html
@@ -1058,7 +1067,6 @@ Get/set the elements's 'data-*name*' attributes.
     my $data = $q->data('foo');  # equivalent to $q->attr( 'data-foo' );
 
     $q->data( 'foo' => 'bar' );  # equivalent to $q->attr( 'data-foo' => 'bar' );
-    
 
 =head3 tagname
 
@@ -1076,7 +1084,7 @@ Insert content, specified by the parameter, before each element in the set of ma
                                ->before('<b>bar</b>')
                                ->end
                                ->as_html; # <div><b>bar</b><p>foo</p></div>
-    
+
 The content can be anything accepted by L</new>.
 
 =head3 clone
@@ -1160,7 +1168,7 @@ Get/Set the text.
     my $text = $q->text(); # 1st matching element only
 
     $q->text('text');
-    
+
 If called in a scalar context, only return the string representation
 of the first element
 
@@ -1194,7 +1202,6 @@ However, note that the support for processing instructions
 in L<HTML::TreeBuilder::LibXML::Node> is sketchy, so there
 are methods like C<attr()> that won't work.
 
-
 =head2 Can't get the content of script elements
 
 The <script> tag is treated differently by L<HTML::TreeBuilder>, the 
@@ -1215,7 +1222,6 @@ or use L<Web::Query::LibXML>, which parse the 'script' element differently.
         
     say Web::Query::LibXML::wq( $node )->html;
         # var x = '&lt;p&gt;foo&lt;/p&gt;';
-
 
 =head1 INCOMPATIBLE CHANGES
 
@@ -1247,5 +1253,14 @@ Copyright (C) Tokuhiro Matsuno
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website
+L<https://github.com/tokuhirom/Web-Query/issues>
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
 
 =cut
