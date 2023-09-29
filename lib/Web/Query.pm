@@ -735,7 +735,7 @@ __END__
 
 Web::Query is a yet another scraping framework, have a jQuery like interface.
 
-Yes, I know Ingy's L<pQuery>. But it's just a alpha quality. It doesn't works.
+Yes, I know Ingy's L<pQuery>. But it's just alpha quality. It doesn't work.
 Web::Query built at top of the CPAN modules, L<HTML::TreeBuilder::XPath>, L<LWP::UserAgent>, and L<HTML::Selector::XPath>.
 
 So, this module uses L<HTML::Selector::XPath> and only supports the CSS 3
