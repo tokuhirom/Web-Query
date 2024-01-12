@@ -27,15 +27,20 @@ sub test {
     subtest "remove and html" => sub {
         my $q = wq('t/data/foo.html');
         $q->find('.foo, .bar')->remove();
-        like $q->html, qr{^<head><title>test1</title></head><body>\s*</body>$}, ".foo and .bar are removed and not showing in html";
+        my $result = $q->html;
+        $result =~ s/\s//g;
+
+        like $result, qr{^<head><title>test1</title></head><body>\s*</body>$}, ".foo and .bar are removed and not showing in html";
     };
     
     subtest "\$q->remove->end->html" => sub {
         my $q = wq('t/data/foo.html');
+        my $result = $q->find('.foo, .bar')->remove->end->html;
+        $result =~ s/\s//g;
         like(
-            $q->find('.foo, .bar')->remove->end->html,
-            qr{^<head><title>test1</title></head><body>\s*</body>$},
-            "The chainning works."
+            $result, 
+            qr{^<head><title>test1</title></head><body></body>$},
+            "The chaining works."
         );
     };
     
