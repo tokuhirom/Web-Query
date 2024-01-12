@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
 use lib 't/lib';
 
@@ -23,7 +23,7 @@ HTML
     is $wq->find('p')->filter( '#second' )->size => 1, 'filter';
 
     subtest 'match' => sub {
-        is_deeply [ $wq->find('p')->match( '.foo' ) ], [ 1, '', 1 ], "list context";
+        is [ $wq->find('p')->match( '.foo' ) ], [ 1, '', 1 ], "list context";
         is scalar $wq->find('p')->match( '.foo' ) =>  1, "scalar context";
     };
 

@@ -4,11 +4,13 @@ Revision history for Perl extension Web::Query
  [API CHANGES]
 
  [BUG FIXES]
+ - Fix tests to work with new version of HTML::TreeBuilder::LibXML. (GH#57)
 
  [DOCUMENTATION]
  - Fix documentation typos. (GH#56, esabol)
 
  [ENHANCEMENTS]
+ - Move tests to Test2::V0.
 
  [NEW FEATURES]
 

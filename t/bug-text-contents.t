@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
 use lib 't/lib';
 use WQTest;
@@ -29,7 +29,7 @@ WQTest::test {
         push @contents, $elem->contents;
     });
 
-    is_deeply \@text, [qw/ Hello World /], 'elements';
+    is \@text, [qw/ Hello World /], 'elements';
 
     is @contents, 2, 'two contents';
 

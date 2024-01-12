@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
 use lib 't/lib';
 
@@ -50,7 +50,7 @@ sub test_name {
     });
 
     subtest 'getter' => sub {
-        is_deeply [ $wq->find('a,b,c')->name ], [ 'foo', undef, 'bar' ], "getter, list context";
+        is [ $wq->find('a,b,c')->name ], [ 'foo', undef, 'bar' ], "getter, list context";
         is scalar $wq->find('a,b,c')->name, 'foo', "getter, scalar context";
     };
 
@@ -74,14 +74,14 @@ sub test_id {
     </div>
 });
 
-    is_deeply [ $wq->find('a')->id ] => [ undef ], "no id, list context";
+    is [ $wq->find('a')->id ] => [ undef ], "no id, list context";
     is scalar $wq->find('a')->id  => undef, "no id, scalar context";
 
     is $wq->find('#foo')->id => 'foo', 'single element';
     is scalar($wq->find('#foo')->id) => 'foo', 'single element, scalar context';
 
-    is_deeply [ $wq->find('c')->id ], [ 'bar', undef, 'baz' ], 'many elements, list context';
-    is_deeply scalar $wq->find('c')->id, 'bar', 'many elements, scalar context';
+    is [ $wq->find('c')->id ], [ 'bar', undef, 'baz' ], 'many elements, list context';
+    is scalar $wq->find('c')->id, 'bar', 'many elements, scalar context';
 
     $wq->find('b')->id('fool');
     is $wq->find('#fool')->tagname => 'b', 'change id, scalar';

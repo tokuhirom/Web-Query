@@ -1,4 +1,8 @@
 use strict;
-use Test::More tests => 1;
+use Test2::V0;
 
-BEGIN { use_ok 'Web::Query' }
+use Web::Query;
+
+pass "it compiles";
+
+done_testing;
