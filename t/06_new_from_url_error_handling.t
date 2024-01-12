@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More;
+use Test2::V0;
 use LWP::UserAgent;
 use Web::Query;
 

@@ -3,7 +3,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More;
+use Test2::V0;
 use Web::Query;
 
 use WQTest;

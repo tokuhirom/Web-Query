@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More;
+use Test2::V0;
 use Web::Query;
 
 
@@ -28,7 +28,7 @@ sub test {
     my @array = $q->find('p')->as_html;
     
     is $scalar => '<p>Hi there</p>', 'called in scalar context';
-    is_deeply \@array => [ '<p>Hi there</p>', q{<p>How is life?</p>} ],
+    is \@array => [ '<p>Hi there</p>', q{<p>How is life?</p>} ],
         'called in list context';
 
     subtest 'join' => sub {

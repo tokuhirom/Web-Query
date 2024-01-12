@@ -1,8 +1,11 @@
 use strict;
 use warnings;
 
-use Test::More tests => 2;
+use Test2::V0;
+
 use Web::Query;
+
+plan tests => 2;
 
 my $inner = "<head></head><body><p>Hi there</p></body>";
 my $html = "<html>$inner</html>";

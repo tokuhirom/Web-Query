@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
 my @modules = qw/ Web::Query Web::Query::LibXML /;
 

@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More;
+use Test2::V0;
 use Scalar::Util qw/refaddr/;
 use Web::Query;
 
@@ -44,8 +44,8 @@ sub test {
         is wq($html)->find('.null')->last->size,  0;
     };
     subtest 'map' => sub {
-        is_deeply wq($html)->find('div')->map(sub {$_[0]}), [0, 1, 2];
-        is_deeply wq($html)->find('div')->map(sub {$_->attr('id')}), [qw/foo bar baz/];
+        is wq($html)->find('div')->map(sub {$_[0]}), [0, 1, 2];
+        is wq($html)->find('div')->map(sub {$_->attr('id')}), [qw/foo bar baz/];
     };
     subtest 'filter' => sub {
         is wq($html)->filter('div')->size,                                          0;

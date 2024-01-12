@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More;
+use Test2::V0;
 use Web::Query;
 
 test('Web::Query');
@@ -33,7 +33,7 @@ sub test {
 
         $doc->find('img')->attr(alt => sub{ $_ ||= 'A picture' });
 
-        is_deeply [ $doc->find('img')->attr('alt') ],
+        is [ $doc->find('img')->attr('alt') ],
             [ 'A picture', 'kitten' ];
     }
 

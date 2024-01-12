@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
 use lib 't/lib';
 
@@ -31,15 +31,15 @@ sub test_toggle_class {
 
     $q->toggle_class( 'foo' );
 
-    is_deeply $q->map( sub { $_->has_class('foo') } ), [ undef, 1, undef ];
+    is $q->map( sub { $_->has_class('foo') } ), [ undef, 1, undef ];
 
     $q->toggle_class( 'foo', 'bar' );
-    is_deeply $q->map( sub { $_->has_class('foo') } ), [ 1, undef, 1 ];
-    is_deeply $q->map( sub { $_->has_class('bar') } ), [ undef, 1, 1 ];
+    is $q->map( sub { $_->has_class('foo') } ), [ 1, undef, 1 ];
+    is $q->map( sub { $_->has_class('bar') } ), [ undef, 1, 1 ];
 
     subtest "double toggling" => sub {
         $q->toggle_class( 'foo', 'foo' );
-        is_deeply $q->map( sub { $_->has_class('foo') } ), [ undef, 1, undef ];
+        is $q->map( sub { $_->has_class('foo') } ), [ undef, 1, undef ];
     };
 }
 
